@@ -1,0 +1,84 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model JobSeeker {
+  id                           Int                            @id @default(autoincrement())
+  name                         String
+  surname                      String
+  middlename                   String
+  dateOfBirth                  DateTime
+  tin                          String
+  gender                       String
+  email                        String
+  passportCode                 String
+  countryOfBirth               String
+  addressOfBirth               String
+  phoneNumber                  String
+  messengerNumber              String
+  currentAddress               String
+  education                    String
+  specialization               String
+  desiredSalary                String
+  dateOfReadiness              DateTime
+  desiredCountry               String
+  desiredCity                  String
+  desiredWorkplace             String
+  criminalRecord               String
+  syncedWith1C                 Boolean
+  additionalContactInformation AdditionalContactInfromation[]
+  knowledgeOfLanguages         KnowledgeOfLanguages[]
+  WorkExperience               WorkExperience[]
+  createdAt                    DateTime
+}
+
+model AdditionalContactInfromation {
+  id          Int       @id @default(autoincrement())
+  jobSeeker   JobSeeker @relation(fields: [jobSeekerId], references: [id])
+  jobSeekerId Int
+  fullname    String
+  status      String
+  phoneNumber String
+}
+
+model KnowledgeOfLanguages {
+  id          Int       @id @default(autoincrement())
+  jobSeeker   JobSeeker @relation(fields: [jobSeekerId], references: [id])
+  jobSeekerId Int
+  language    String
+  level       String
+}
+
+model WorkExperience {
+  id          Int       @id @default(autoincrement())
+  jobSeeker   JobSeeker @relation(fields: [jobSeekerId], references: [id])
+  jobSeekerId Int
+  jobTitle    String
+  workplace   String
+  dateStart   DateTime
+  dateEnd     DateTime
+}
+
+model User {
+  id       Int    @id @default(autoincrement())
+  email    String
+  password String
+}
+
+model SendSMS {
+  id          Int    @id @default(autoincrement())
+  txn_id      Int
+  phoneNumber String
+}
