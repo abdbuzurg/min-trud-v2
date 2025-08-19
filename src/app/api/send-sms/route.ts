@@ -32,33 +32,14 @@ export async function POST(request: NextRequest) {
       phoneNumber = phoneNumber.substring(1)
     }
 
-    let sendSms = await prisma.sendSMS.findFirst({
-      where: {
-        phoneNumber: phoneNumber,
-      }
-    })
-    let txn_id: number
-    if (!sendSms) {
-      sendSms = await prisma.sendSMS.create({
-        data: {
-          phoneNumber: phoneNumber,
-          txn_id: 1000,
-        }
-      })
-
-      txn_id = 1000
-    } else {
-      txn_id = sendSms.txn_id + 1
-    }
-    await prisma.sendSMS.update({
-      where: {
-        phoneNumber: phoneNumber,
-        id: sendSms.id,
-      },
+    let smsCount = await prisma.sendSMS.count()
+    let txn_id: number = 1050 + smsCount
+    await prisma.sendSMS.create({
       data: {
-        txn_id: txn_id + 1
+        phoneNumber: phoneNumber,
       }
     })
+
 
     const code = generateVerificationCode()
     const from = "OsonSMS"
@@ -68,6 +49,7 @@ export async function POST(request: NextRequest) {
     const hashContent = `${txn_id};${login};${from};${phoneNumber};${hash}`
     const str_hash = generateSha256Hash(hashContent)
     const url = `https://api.osonsms.com/sendsms_v1.php?from=${from}&msg=${msg}&login=${login}&str_hash=${str_hash}&phone_number=${phoneNumber}&txn_id=${txn_id}`
+    console.log(url)
     await axios.get(url)
 
     return NextResponse.json({ code: code }, { status: 200 })

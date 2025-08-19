@@ -79,6 +79,5 @@ model User {
 
 model SendSMS {
   id          Int    @id @default(autoincrement())
-  txn_id      Int
   phoneNumber String
 }

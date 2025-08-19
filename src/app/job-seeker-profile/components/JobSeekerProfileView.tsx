@@ -1996,10 +1996,10 @@ export default function JobSeekerProfileView() {
               </div>
             </div>
             <div id="seeker-profile-saving" className={`flex flex-col gap-y-2 px-6 ${currentStage != 6 && 'hidden'}`}>
-              <div className="w-full flex justify-center py-5 items-center gap-x-10">
-                <div className="w-20 h-20 rounded-full animate-spin border-4 border-solid border-green-500 border-t-transparent"></div>
-                <p>Идёт сохранения данных</p>
-              </div>
+              {/* <div className="w-full flex justify-center py-5 items-center gap-x-10"> */}
+              {/*   <div className="w-20 h-20 rounded-full animate-spin border-4 border-solid border-green-500 border-t-transparent"></div> */}
+              {/*   <p>Идёт сохранения данных</p> */}
+              {/* </div> */}
               <div className="flex justify-center gap-x-10 items-center py-5">
                 <Image
                   width={100}
@@ -2009,15 +2009,15 @@ export default function JobSeekerProfileView() {
                 />
                 <p>Ваш профиль принят</p>
               </div>
-              <div className="flex justify-center gap-x-10 items-center py-5">
-                <Image
-                  width={100}
-                  height={100}
-                  src="error.svg"
-                  alt="error"
-                />
-                <p>Ошибка при сохранения профиля</p>
-              </div>
+              {/* <div className="flex justify-center gap-x-10 items-center py-5"> */}
+              {/*   <Image */}
+              {/*     width={100} */}
+              {/*     height={100} */}
+              {/*     src="error.svg" */}
+              {/*     alt="error" */}
+              {/*   /> */}
+              {/*   <p>Ошибка при сохранения профиля</p> */}
+              {/* </div> */}
               <button type="button" onClick={() => setCurrentStage(4)}>BACK</button>
             </div>
           </form>
