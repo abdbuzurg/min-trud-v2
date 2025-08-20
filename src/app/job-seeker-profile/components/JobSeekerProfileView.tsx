@@ -954,7 +954,7 @@ export default function JobSeekerProfileView() {
           dateEnd: yup.date().required("required"),
         })
       ),
-      desiredSalary: yup.number().min(1).required("required"),
+      desiredSalary: yup.number().min(1).required("required").positive(),
       dateOfReadiness: yup.date().required("required"),
       desiredCountry: yup.string().required("required"),
       desiredCity: yup.string().required("required"),
@@ -1992,7 +1992,6 @@ export default function JobSeekerProfileView() {
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
                 />
-                <button type="button" onClick={() => setCurrentStage(4)}>back</button>
               </div>
             </div>
             <div id="seeker-profile-saving" className={`flex flex-col gap-y-2 px-6 ${currentStage != 6 && 'hidden'}`}>
@@ -2018,7 +2017,6 @@ export default function JobSeekerProfileView() {
               {/*   /> */}
               {/*   <p>Ошибка при сохранения профиля</p> */}
               {/* </div> */}
-              <button type="button" onClick={() => setCurrentStage(4)}>BACK</button>
             </div>
           </form>
         </div >
