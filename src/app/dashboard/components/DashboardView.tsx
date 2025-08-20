@@ -94,6 +94,10 @@ export default function DashboardView() {
             >
               Очистить
             </button>
+            <button
+              className="bg-blue-500 px-4 py-2 font-bold rounded text-white cursor-pointer"
+              type="button"
+            >Синхронизация с 1С</button>
           </div>
         </div>
         <div className="overflow-x-auto rounded-lg border">

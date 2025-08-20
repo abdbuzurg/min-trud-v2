@@ -1133,7 +1133,7 @@ export default function JobSeekerProfileView() {
                       type="text"
                       name="surname"
                       id="surname"
-                      placeholder="Иваныч"
+                      placeholder="Иванов"
                       value={form.values.surname}
                       onChange={form.handleChange}
                     />
