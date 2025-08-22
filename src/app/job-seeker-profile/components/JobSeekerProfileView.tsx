@@ -8,7 +8,6 @@ import * as yup from "yup"
 import { JobSeekerProfile } from "../../../../jobseeker"
 import axios from "axios"
 
-
 const languageOptions = [
   {
     label: "Русский",
@@ -1020,39 +1019,6 @@ export default function JobSeekerProfileView() {
     }
   })
 
-  const addAdditionalContactInformation = () => {
-    form.setFieldValue("additionalContacts", [
-      ...form.values.additionalContacts,
-      {
-        fullname: "",
-        status: "",
-        otherStatus: "",
-        phoneNumber: ""
-      }
-    ])
-  }
-
-  const removeAdditionalContactInfromation = (index: number) => {
-    const allInfo = form.values.additionalContacts
-    form.setFieldValue("additionalContacts", allInfo.filter((_, i) => i != index))
-  }
-
-  const addKnowledgeOfLanguage = () => {
-    form.setFieldValue("knowledgeOfLanguages", [
-      ...form.values.knowledgeOfLanguages,
-      {
-        language: "",
-        level: "",
-        otherLanguage: "",
-      }
-    ])
-  }
-
-  const removeKnowledgeOfLanguage = (index: number) => {
-    const languages = form.values.knowledgeOfLanguages
-    form.setFieldValue("knowledgeOfLanguages", languages.filter((_, i) => i != index))
-  }
-
   const addWorkExperience = () => {
     form.setFieldValue("workExperience", [
       ...form.values.workExperience,
@@ -1077,6 +1043,7 @@ export default function JobSeekerProfileView() {
       setCurrentStage(6)
       axios.post(`api/job-seeker`, formData)
     }
+
   }, [code])
 
   return (
@@ -1337,7 +1304,7 @@ export default function JobSeekerProfileView() {
                 <span className="text-2xl font-bold text-[#98FF78] rounded-full cursor-pointer" onClick={addAdditionalContactInformation}>+</span>
               </div>
               <div className="flex flex-col gap-y-2">
-                {form.values.additionalContacts.map((v, i) => (
+                {form.values.additionalContacts.map((_, i) => (
                   <Fragment key={i}>
                     <hr className="border-2 border-[#98FF78]" />
                     <div className="flex flex-col gap-y-2">
