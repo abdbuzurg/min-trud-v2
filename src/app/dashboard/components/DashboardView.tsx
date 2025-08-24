@@ -112,10 +112,7 @@ export default function DashboardView() {
                 <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Пол</th>
                 <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Email</th>
                 <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Серия Паспорта</th>
-                <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Место рождения(Старан)</th>
-                <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Место рождения</th>
                 <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Мобильный номер</th>
-                <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">WhatsApp/Telegram</th>
                 <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Текущий Адрес</th>
                 <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Допольнительные контактное лицо</th>
                 <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Знание языков</th>
@@ -125,8 +122,6 @@ export default function DashboardView() {
                 <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Желаемая зарплата</th>
                 <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Дата готовности к выезду</th>
                 <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Предпочитаемая страна</th>
-                <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Предпочитаемый город</th>
-                <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Предпочитаемая работа</th>
                 <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Наличие судимости</th>
                 <th scope="col" className="px-6 py-4 text-left font-medium text-gray-600">Синхронизация с 1С</th>
               </tr>
@@ -142,10 +137,7 @@ export default function DashboardView() {
                   <td className="px-6 py-4">{v.gender}</td>
                   <td className="px-6 py-4">{v.email}</td>
                   <td className="px-6 py-4">{v.passportCode}</td>
-                  <td className="px-6 py-4">{v.countryOfBirth}</td>
-                  <td className="px-6 py-4">{v.addressOfBirth}</td>
                   <td className="px-6 py-4">{v.phoneNumber}</td>
-                  <td className="px-6 py-4">{v.messengerNumber}</td>
                   <td className="px-6 py-4">{v.currentAddress}</td>
                   <td className="px-6 py-4 w-[270px] flex flex-col gap-y-2">
                     {v.additionalContactInformation.map((ac, i) => (
@@ -178,8 +170,6 @@ export default function DashboardView() {
                   <td className="px-6 py-4">{v.desiredSalary}</td>
                   <td className="px-6 py-4">{v.dateOfReadiness.toString().substring(0, 10)}</td>
                   <td className="px-6 py-4">{v.desiredCountry}</td>
-                  <td className="px-6 py-4">{v.desiredCity}</td>
-                  <td className="px-6 py-4">{v.desiredWorkplace}</td>
                   <td className="px-6 py-4">{v.criminalRecord}</td>
                   <td className="px-6 py-4">{v.syncedWith1C ? "ДА" : "НЕТ"}</td>
                 </tr>

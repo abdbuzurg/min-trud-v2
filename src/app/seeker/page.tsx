@@ -7,16 +7,16 @@ export const metadata: Metadata = {
 
 export default function Seeker() {
   return (
-    <body className="bg-[#98FF78]">
-      <div className=" items-center h-[100vh] w-[100vw] justify-center grid place-items-center">
-        <div className="flex gap-x-5 m-auto bg-white rounded-md p-15">
+    <body className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center py-8 px-4">
+      <div className="bg-white rounded-3xl shadow-xl shadow-green-100 p-8 border border-green-100">
+        <div className="flex gap-x-5 m-auto bg-white rounded-md py-10 px-15 text-center">
           <Link
             href="/job-seeker-profile"
-            className="px-15 py-7.5 text-black bg-[#98FF78] rounded-xl font-bold"
+            className="w-full flex items-center justify-center px-6 py-4 font-semibold rounded-xl transition-all duration-200 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300"
           >Соискатель работы</Link>
           <Link
             href="/employer-profile"
-            className="px-15 py-7.5 text-black bg-[#98FF78] rounded-xl font-bold"
+            className="w-full flex items-center justify-center px-6 py-4 font-semibold rounded-xl transition-all duration-200 bg-gradient-to-r from-green-500 to-emerald-600 text-white hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300"
           >Работодатель</Link>
         </div>
       </div>

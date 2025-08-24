@@ -1,5 +1,4 @@
 export interface JobSeekerProfile {
-  image: File | null
   name: string
   surname: string
   middlename: string
@@ -8,26 +7,17 @@ export interface JobSeekerProfile {
   gender: string
   email: string
   passportCode: string
-  countryOfBirth: string
-  addressOfBirth: string
   phoneNumber: string
-  messengerNumber: string
   currentAddress: string
   additionalContacts: AdditionalContactInfromation[]
   knowledgeOfLanguages: KnowledgeOfLanguages[]
   education: string
-  educationOther: string
   specialization: string
   workExperience: WorkExperience[]
   desiredSalary: number
   dateOfReadiness: Date | null
   desiredCountry: string
-  desiredCity: string
-  desiredWorkplace: string
   criminalRecord: string
-  passport: File | null
-  diploma: File | null
-  recomendationLetters: File | null
   agreement: boolean
 }
 
@@ -44,7 +34,7 @@ export interface KnowledgeOfLanguages {
   otherLanguage: string
 }
 
-interface WorkExperience {
+export interface WorkExperience {
   jobTitle: string
   workplace: string
   dateStart: Date | null

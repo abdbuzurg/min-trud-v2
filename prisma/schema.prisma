@@ -23,20 +23,17 @@ model JobSeeker {
   tin                          String
   gender                       String
   email                        String
+  maritalStatus String
   passportCode                 String
-  countryOfBirth               String
-  addressOfBirth               String
   phoneNumber                  String
-  messengerNumber              String
   currentAddress               String
   education                    String
   specialization               String
   desiredSalary                String
   dateOfReadiness              DateTime
   desiredCountry               String
-  desiredCity                  String
-  desiredWorkplace             String
   criminalRecord               String
+  additionalInformation String
   syncedWith1C                 Boolean
   additionalContactInformation AdditionalContactInfromation[]
   knowledgeOfLanguages         KnowledgeOfLanguages[]
