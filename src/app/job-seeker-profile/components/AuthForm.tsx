@@ -70,13 +70,13 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
 
     // Имитация отправки SMS
     const code = await sendSms()
+    setIsLoading(false)
     if (!code) {
       setError("Ошибка при отправки СМС")
       return
     }
 
     setVarificationCode(code.code)
-    setIsLoading(false)
     setStep('code')
   };
 

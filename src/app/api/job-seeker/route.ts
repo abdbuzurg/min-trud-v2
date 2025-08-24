@@ -45,12 +45,13 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Additional contacts missing" }, { status: 400 })
     }
 
-    let additionalContacts: AdditionalContactInfromation
+    let additionalContacts: AdditionalContactInfromation[] = []
     try {
       additionalContacts = JSON.parse(additionalContactsFormData)
     } catch (error) {
       return NextResponse.json({ message: "Invalid JSON for additional information" }, { status: 400 })
     }
+    console.log(additionalContacts)
 
     const knowledgeOfLanguagesFormData = formData.get("knowledgeOfLanguages") as string | null
     if (!knowledgeOfLanguagesFormData) {
@@ -112,13 +113,13 @@ export async function POST(req: NextRequest) {
       }
     })
 
-    await prisma.additionalContactInfromation.create({
-      data: {
-        fullname: additionalContacts.fullname,
-        status: additionalContacts.status,
-        phoneNumber: additionalContacts.phoneNumber,
+    await prisma.additionalContactInfromation.createMany({
+      data: [{
+        fullname: additionalContacts[0].fullname,
+        status: additionalContacts[0].status,
+        phoneNumber: additionalContacts[0].phoneNumber,
         jobSeekerId: jobSeekerResult.id,
-      },
+      }],
     })
 
     knowledgeOfLanguages = knowledgeOfLanguages.map(v => ({ ...v, jobSeekerId: jobSeekerResult.id }))
