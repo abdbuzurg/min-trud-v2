@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
     }
 
     let smsCount = await prisma.sendSMS.count()
-    let txn_id: number = 2000 + smsCount
+    let txn_id: number = 2100 + smsCount
     await prisma.sendSMS.create({
       data: {
         phoneNumber: phoneNumber,

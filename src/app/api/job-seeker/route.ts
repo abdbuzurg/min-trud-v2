@@ -5,7 +5,6 @@ import prisma from "../../../../lib/prisma";
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
-    console.log(formData)
 
     const dateOfBirth = formData.get("dateOfBirth") as string
     if (!dateOfBirth) {

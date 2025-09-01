@@ -15,11 +15,10 @@ export default function JobSeekerProfile() {
   return (
     <body>
       {!isAuthenticated
-
         ? <AuthForm onAuthSuccess={handleAuthSuccess} />
         : <JobSeekerForm />
       }
-      
+
     </body>
   )
 }
