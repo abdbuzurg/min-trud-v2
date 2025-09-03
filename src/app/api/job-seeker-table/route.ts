@@ -21,6 +21,9 @@ export async function GET(request: NextRequest) {
         additionalContactInformation: true,
         knowledgeOfLanguages: true,
         WorkExperience: true,
+      },
+      orderBy: {
+        id: 'desc',
       }
     })
 
@@ -39,6 +42,9 @@ export async function GET(request: NextRequest) {
         createdAt: {
           lte: new Date(dateEnd)
         }
+      },
+      orderBy: {
+        id: 'desc',
       }
     })
 
@@ -57,7 +63,11 @@ export async function GET(request: NextRequest) {
         createdAt: {
           gte: new Date(dateStart)
         }
+      },
+      orderBy: {
+        id: 'desc',
       }
+
     })
 
   }
@@ -76,7 +86,11 @@ export async function GET(request: NextRequest) {
           gte: new Date(dateStart),
           lte: new Date(dateEnd)
         }
+      },
+      orderBy: {
+        id: 'desc',
       }
+
     })
   }
 
