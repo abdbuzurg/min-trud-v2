@@ -19,6 +19,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ru } from 'date-fns/locale';
 import axios from 'axios';
 import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from '../../../../jobseeker';
+import { useRouter } from 'next/navigation';
 
 registerLocale('ru', ru)
 
@@ -87,6 +88,7 @@ const countries = [
 
 
 const JobSeekerForm: React.FC = () => {
+  const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -1106,7 +1108,9 @@ const JobSeekerForm: React.FC = () => {
                 Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.
               </p>
               <button
-                onClick={() => setIsSubmitted(false)}
+                onClick={() => {
+                  router.push("/seeker")
+                }}
                 className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
               >
                 Закрыть
