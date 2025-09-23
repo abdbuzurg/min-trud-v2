@@ -2,15 +2,15 @@
 import React, { useEffect, useState } from 'react';
 import { Phone, MessageSquare, ArrowRight, Shield } from 'lucide-react';
 import axios from 'axios';
+import { JobSeekerFromData } from '../../../../types/jobSeeker';
 
 interface AuthFormProps {
-  onAuthSuccess: () => void;
+  onAuthSuccess: (token: string | null, phoneNumber: string) => void;
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
   const [step, setStep] = useState<'phone' | 'code'>('phone');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [varificationCode, setVarificationCode] = useState('')
   const [smsCode, setSmsCode] = useState(['', '', '', '', '', '']);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
@@ -43,7 +43,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`
   }
 
-  const sendSms = async (): Promise<{ code: string } | null> => {
+  const sendSms = async (): Promise<{ message: string } | null> => {
     try {
       const res = await axios.post(`api/send-sms`, {
         phoneNumber: phoneNumber,
@@ -67,17 +67,22 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
     }
 
     setIsLoading(true);
-
-    // Имитация отправки SMS
-    const code = await sendSms()
-    setIsLoading(false)
-    if (!code) {
-      setError("Ошибка при отправки СМС")
-      return
+    try {
+      const response = await axios.post(`api/send-sms`, {
+        phoneNumber: phoneNumber,
+      });
+      if (response.status == 200 && response.data.message == "Успех") {
+        setStep('code')
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data.message ?? "Ошибка при отправке смс")
+      } else {
+        setError("Ошибка при отправке смс")
+      }
     }
 
-    setVarificationCode(code.code)
-    setStep('code')
+    setIsLoading(false)
   };
 
   const handleCodeSubmit = async (e: React.FormEvent) => {
@@ -92,15 +97,21 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
 
     setIsLoading(true);
 
-    // Имитация проверки кода
-    setTimeout(() => {
-      setIsLoading(false);
-      if (code === varificationCode) {
-        onAuthSuccess();
-      } else {
-        setError('Неверный код. Попробуйте еще раз');
+    try {
+      const response = await axios.post('/api/sms-verification', {
+        phoneNumber: phoneNumber,
+        code: code,
+      })
+      if (response.status == 200 && response.data.status == "Успех") {
+        onAuthSuccess(response.data.token, phoneNumber)
       }
-    }, 1000);
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(error.response?.data.message ?? "Ошибка проверки кода")
+      }
+    }
+
+    setIsLoading(false)
   };
 
   const formatPhoneNumber = (value: string) => {

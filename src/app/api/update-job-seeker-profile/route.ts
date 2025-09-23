@@ -1,43 +1,41 @@
-import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
-import path from "path";
-import { promises as fs } from 'fs'
+import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
 
-export async function POST(req: NextRequest) {
+export async function POST(request: NextRequest) {
   try {
-    const formData = await req.formData()
+    const formData = await request.formData()
     const phoneNumber = formData.get("verificationPhoneNumber") as string
     const phoneForName = (phoneNumber || '').replace(/[^\d+]/g, '') || 'unknown';
 
-    const uploadRoot = path.join(process.cwd(), "uploads", "jobseekers")
+    // const uploadRoot = path.join(process.cwd(), "uploads", "jobseekers")
+    //
+    // const extFromType = (type: string | undefined | null): string => {
+    //   switch (type) {
+    //     case "image/jpeg": return "jpg"
+    //     case "image/png": return "png"
+    //     case "image/webp": return "webp"
+    //     case "image/gif": return "gif"
+    //     case "application/pdf": return "pdf"
+    //     default: return "bin"
+    //   }
+    // }
+    //
+    // const saveFromForm = async (key: string, suffix: string) => {
+    //   const file = formData.get(key) as unknown as File | null;
+    //   if (!file) return null;
+    //   // @ts-ignore - Next.js File has arrayBuffer on Edge/Node runtimes
+    //   const buf = Buffer.from(await file.arrayBuffer());
+    //   const ext = extFromType((file as any).type);
+    //   const filename = `${phoneForName}_${suffix}.${ext}`;
+    //   const fullPath = path.join(uploadRoot, filename);
+    //   await fs.writeFile(fullPath, buf);
+    //   return { key, path: fullPath, filename };
+    // };
 
-    const extFromType = (type: string | undefined | null): string => {
-      switch (type) {
-        case "image/jpeg": return "jpg"
-        case "image/png": return "png"
-        case "image/webp": return "webp"
-        case "image/gif": return "gif"
-        case "application/pdf": return "pdf"
-        default: return "bin"
-      }
-    }
-
-    const saveFromForm = async (key: string, suffix: string) => {
-      const file = formData.get(key) as unknown as File | null;
-      if (!file) return null;
-      // @ts-ignore - Next.js File has arrayBuffer on Edge/Node runtimes
-      const buf = Buffer.from(await file.arrayBuffer());
-      const ext = extFromType((file as any).type);
-      const filename = `${phoneForName}_${suffix}.${ext}`;
-      const fullPath = path.join(uploadRoot, filename);
-      await fs.writeFile(fullPath, buf);
-      return { key, path: fullPath, filename };
-    };
-
-    await saveFromForm("photo", "image")
-    await saveFromForm("passport", "passport")
-    await saveFromForm("recommendationLetter", "recommendation")
+    // await saveFromForm("photo", "image")
+    // await saveFromForm("passport", "passport")
+    // await saveFromForm("recommendationLetter", "recommendation")
 
     const dateOfBirth = formData.get("dateOfBirth") as string
     if (!dateOfBirth) {
@@ -119,22 +117,43 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Invalid JSON for work experience" }, { status: 400 })
     }
 
-    const jobSeekerResult = await prisma.jobSeeker.create({
+    const jobSeeker = await prisma.jobSeeker.findFirst({
+      where: {
+        userId: user.id,
+      }
+    })
+    if (!jobSeeker) {
+      return NextResponse.json({ message: "No job seeker profile with given user" }, { status: 400 })
+    }
+    const jobSeekerResult = await prisma.jobSeeker.updateMany({
       data: {
         ...jobSeekerInfo,
+      },
+      where: {
+        id: jobSeeker.id,
       }
     })
 
+    await prisma.additionalContactInfromation.deleteMany({
+      where: {
+        jobSeekerId: jobSeeker.id,
+      }
+    })
     await prisma.additionalContactInfromation.createMany({
       data: [{
         fullname: additionalContacts[0].fullname,
         status: additionalContacts[0].status,
         phoneNumber: additionalContacts[0].phoneNumber,
-        jobSeekerId: jobSeekerResult.id,
+        jobSeekerId: jobSeeker.id,
       }],
     })
 
-    knowledgeOfLanguages = knowledgeOfLanguages.map(v => ({ ...v, jobSeekerId: jobSeekerResult.id }))
+    knowledgeOfLanguages = knowledgeOfLanguages.map(v => ({ ...v, jobSeekerId: jobSeeker.id }))
+    await prisma.knowledgeOfLanguages.deleteMany({
+      where: {
+        jobSeekerId: jobSeeker.id,
+      }
+    })
     await prisma.knowledgeOfLanguages.createMany({
       data: knowledgeOfLanguages.map((v) => ({
         language: v.language,
@@ -143,7 +162,12 @@ export async function POST(req: NextRequest) {
       }))
     })
 
-    workExperience = workExperience.map(v => ({ ...v, jobSeekerId: jobSeekerResult.id }))
+    workExperience = workExperience.map(v => ({ ...v, jobSeekerId: jobSeeker.id }))
+    await prisma.workExperience.deleteMany({
+      where: {
+        jobSeekerId: jobSeeker.id,
+      }
+    })
     await prisma.workExperience.createMany({
       data: workExperience.map(v => ({
         ...v,

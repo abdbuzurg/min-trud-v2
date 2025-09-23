@@ -1,0 +1,38 @@
+{
+  "lastName": "Иванов",
+  "firstName": "Иван",
+  "middleName": "Иванович",
+  "birthDate": "2025-08-19 00:00:00.000",
+  "gender": "мужской",
+  "passportCode": "A12345678",
+  "maritalStatus": "Холост/Не замужем",
+  "tin": "465465",
+  "phoneNumber": "+992931234567",
+  "email": "ivan.ivanov@gmail.com",
+  "currentAddress": "ул. Ленина, д. 15, кв.",
+  "additionalContactInformation": [
+    {
+      "fullname": "Иванов Сергей Сергеевич",
+      "status": "Отец",
+      "phone_number": "+992931234567",
+    }
+  ],
+  "education": "Высшее",
+  "institution": "УЦА",
+  "specialization": "Програмист",
+  "languages": [{
+    "language": "Русский ",
+    "level": "Отлично"
+  }],
+  "workExperience": [{
+    "company": "Зира",
+    "position": "Повар",
+    "startDate": "2025-08-01 00:00:00.000",
+    "endDate": "2025-08-19 00:00:00.000",
+  }],
+  "desiredCountry": "Россия",
+  "desiredSalary": "3500",
+  "additionalInformation": "",
+  "criminalRecord": "Нет",
+  "dateOfReadiness": "2025-08-19 00:00:00.000"
+}

@@ -12,6 +12,11 @@ export async function GET(request: NextRequest) {
   }
 
   const count = await prisma.jobSeeker.count()
+  const count1C = await prisma.jobSeeker.count({
+    where: {
+      syncedWith1C: true,
+    }
+  })
   let result
   if (!dateStart && !dateEnd) {
     result = await prisma.jobSeeker.findMany({
@@ -26,7 +31,6 @@ export async function GET(request: NextRequest) {
         id: 'desc',
       }
     })
-
   }
 
   if (!dateStart && dateEnd) {
@@ -95,5 +99,5 @@ export async function GET(request: NextRequest) {
   }
 
 
-  return NextResponse.json({ data: result, count: count }, { status: 200 })
+  return NextResponse.json({ data: result, count: count, count1C: count1C }, { status: 200 })
 } 

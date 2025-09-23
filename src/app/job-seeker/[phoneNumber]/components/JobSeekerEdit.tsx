@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   User,
   Phone,
@@ -10,17 +10,15 @@ import {
   Globe,
   Plus,
   Trash2,
-  ChevronRight,
-  ChevronLeft,
-  Save
+  Save, FileText
 } from 'lucide-react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { ru } from 'date-fns/locale';
 import axios from 'axios';
-import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from '../../../../jobseeker';
 import { useRouter } from 'next/navigation';
-import { JobSeekerFromData } from '../../../../types/jobSeeker';
+import { JobSeekerFromData } from '../../../../../types/jobSeeker';
+import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from '../../../../../jobseeker';
 
 registerLocale('ru', ru)
 
@@ -39,13 +37,17 @@ interface Props {
   phoneNumber: string
 }
 
-const JobSeekerForm = ({ phoneNumber }: Props) => {
+const JobSeekerEditForm = ({ phoneNumber }: Props) => {
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [filteredCountries, setFilteredCountries] = useState<string[]>([]);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [passportFile, setPassportFile] = useState<File | null>(null);
+  const [recommendationLetterFile, setRecommendationLetterFile] = useState<File | null>(null);
 
   const [formData, setFormData] = useState<JobSeekerFromData>({
     lastName: '',
@@ -84,8 +86,22 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     additionalInfo: '',
     criminalRecord: '',
     dateOfReadiness: '',
-  }
-  );
+  });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token")
+    if (!token) {
+      return
+    }
+
+    axios.get(`/api/job-seeker-data/${phoneNumber}`, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    }).then((response) => {
+      setFormData(response.data.profile)
+    })
+  }, [])
 
   const steps = [
     { id: 1, title: 'Личная информация', icon: User },
@@ -93,7 +109,8 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     { id: 3, title: 'Образование', icon: GraduationCap },
     { id: 4, title: 'Языки', icon: Languages },
     { id: 5, title: 'Опыт работы', icon: Briefcase },
-    { id: 6, title: 'Предпочтения', icon: Globe }
+    { id: 6, title: 'Предпочтения', icon: Globe },
+    { id: 7, title: 'Документы', icon: FileText }
   ];
 
   const validateStep = (step: number): boolean => {
@@ -101,34 +118,34 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
 
     switch (step) {
       case 1:
-        if (!formData.lastName.trim()) newErrors.lastName = 'Обязательное поле';
-        if (!formData.firstName.trim()) newErrors.firstName = 'Обязательное поле';
-        if (!formData.birthDate.trim()) newErrors.birthDate = 'Обязательное поле';
+        if (!(formData.lastName ?? '').trim()) newErrors.lastName = 'Обязательное поле';
+        if (!(formData.firstName ?? '').trim()) newErrors.firstName = 'Обязательное поле';
+        if (!(formData.birthDate ?? '').trim()) newErrors.birthDate = 'Обязательное поле';
         if (!formData.gender) newErrors.gender = 'Обязательное поле';
-        if (!formData.passportCode.trim()) newErrors.passportCode = 'Обязательное поле';
+        if (!(formData.passportCode ?? '').trim()) newErrors.passportCode = 'Обязательное поле';
         if (!formData.maritalStatus) newErrors.maritalStatus = 'Обязательное поле';
         if (!formData.tin) newErrors.tin = 'Обязательное поле';
         break;
       case 2:
-        if (!formData.phone.trim()) newErrors.phone = 'Обязательное поле';
-        if (!formData.email.trim()) newErrors.email = 'Обязательное поле';
-        if (!formData.address.trim()) newErrors.address = 'Обязательное поле';
+        if (!(formData.phone ?? '').trim()) newErrors.phone = 'Обязательное поле';
+        if (!(formData.email ?? '').trim()) newErrors.email = 'Обязательное поле';
+        if (!(formData.address ?? '').trim()) newErrors.address = 'Обязательное поле';
         if (formData.additionalContact) {
           if (!formData.contactRelation) newErrors.contactRelation = 'Обязательное поле';
-          if (formData.contactRelation === 'другое' && !formData.contactRelationOther.trim()) {
+          if (formData.contactRelation === 'другое' && !(formData.contactRelationOther ?? '').trim()) {
             newErrors.contactRelationOther = 'Обязательное поле';
           }
-          if (!formData.contactName.trim()) newErrors.contactName = 'Обязательное поле';
-          if (!formData.contactPhone.trim()) newErrors.contactPhone = 'Обязательное поле';
+          if (!(formData.contactName ?? '').trim()) newErrors.contactName = 'Обязательное поле';
+          if (!(formData.contactPhone ?? '').trim()) newErrors.contactPhone = 'Обязательное поле';
         }
         break;
       case 3:
         if (!formData.education) newErrors.education = 'Обязательное поле';
-        if (formData.education === 'другое' && !formData.educationOther.trim()) {
+        if (formData.education === 'другое' && !(formData.educationOther ?? '').trim()) {
           newErrors.educationOther = 'Обязательное поле';
         }
-        if (!formData.institution.trim()) newErrors.institution = 'Обязательное поле';
-        if (!formData.specialty.trim()) newErrors.specialty = 'Обязательное поле';
+        if (!(formData.institution ?? '').trim()) newErrors.institution = 'Обязательное поле';
+        if (!(formData.specialty ?? '').trim()) newErrors.specialty = 'Обязательное поле';
         break;
       case 4:
         formData.languages.forEach((lang, index) => {
@@ -148,8 +165,14 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         });
         break;
       case 6:
-        if (!formData.preferredCountry.trim()) newErrors.preferredCountry = 'Обязательное поле';
-        if (!formData.expectedSalary.trim()) newErrors.expectedSalary = 'Обязательное поле';
+        if (!(formData.preferredCountry ?? '').trim()) newErrors.preferredCountry = 'Обязательное поле';
+        if (!(formData.expectedSalary ?? '').trim()) newErrors.expectedSalary = 'Обязательное поле';
+        break;
+
+      case 7:
+        if (!photoFile) newErrors.photoFile = 'Загрузите фотографию';
+        if (!passportFile) newErrors.passportFile = 'Загрузите паспорт';
+        if (!recommendationLetterFile) newErrors.recommendationLetterFile = 'Загрузите рекомендательное письмо';
         break;
     }
 
@@ -277,9 +300,9 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     }
   };
 
-  const sendForm = async (formData: globalThis.FormData): Promise<boolean> => {
+  const updateForm = async (formData: globalThis.FormData): Promise<boolean> => {
     try {
-      await axios.post(`api/job-seeker`, formData).then(res => res.data)
+      await axios.post(`/api/update-job-seeker-profile`, formData).then(res => res.data)
       return true
     } catch {
       return false
@@ -291,8 +314,11 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
       return;
     }
 
-    setIsSubmitted(true);
     const data = new FormData()
+
+    if (photoFile) data.set('photo', photoFile);
+    if (passportFile) data.set('passport', passportFile);
+    if (recommendationLetterFile) data.set('recommendationLetter', recommendationLetterFile);
     data.set("verificationPhoneNumber", phoneNumber)
     data.set("name", formData.firstName)
     data.set("surname", formData.lastName)
@@ -336,7 +362,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     data.set("criminalRecord", formData.criminalRecord)
     data.set("additionalInformation", formData.additionalInfo)
 
-    if (await sendForm(data)) {
+    if (await updateForm(data)) {
       setIsSubmitted(true)
     }
   };
@@ -350,7 +376,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.lastName}
+            value={(formData.lastName ?? '')}
             onChange={(e) => handleInputChange('lastName', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.lastName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -365,7 +391,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.firstName}
+            value={(formData.firstName ?? '')}
             onChange={(e) => handleInputChange('firstName', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.firstName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -383,7 +409,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.middleName}
+            value={(formData.middleName ?? '')}
             onChange={(e) => handleInputChange('middleName', e.target.value)}
             className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-400 focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none"
             placeholder="Азизович"
@@ -397,7 +423,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.tin}
+            value={(formData.tin ?? '')}
             onChange={(e) => handleInputChange('tin', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.firstName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -431,7 +457,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             Пол *
           </label>
           <select
-            value={formData.gender}
+            value={(formData.gender ?? '')}
             onChange={(e) => handleInputChange('gender', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.gender ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -451,7 +477,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.passportCode}
+            value={(formData.passportCode ?? '')}
             onChange={(e) => handleInputChange('passportCode', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.citizenship ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -465,7 +491,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             Семейное положение *
           </label>
           <select
-            value={formData.maritalStatus}
+            value={(formData.maritalStatus ?? '')}
             onChange={(e) => handleInputChange('maritalStatus', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.maritalStatus ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -491,7 +517,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="tel"
-            value={formData.phone}
+            value={(formData.phone ?? '')}
             onChange={(e) => handleInputChange('phone', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.phone ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -506,7 +532,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="email"
-            value={formData.email}
+            value={(formData.email ?? '')}
             onChange={(e) => handleInputChange('email', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.email ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -521,7 +547,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           Адрес проживания *
         </label>
         <textarea
-          value={formData.address}
+          value={(formData.address ?? '')}
           onChange={(e) => handleInputChange('address', e.target.value)}
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none resize-none ${errors.address ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
@@ -536,7 +562,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           <input
             type="checkbox"
             id="additionalContact"
-            checked={formData.additionalContact}
+            checked={!!formData.additionalContact}
             onChange={(e) => handleInputChange('additionalContact', e.target.checked)}
             className="w-5 h-5 text-green-600 border-2 border-gray-300 rounded focus:ring-green-500"
           />
@@ -576,7 +602,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 </label>
                 <input
                   type="text"
-                  value={formData.contactRelationOther}
+                  value={(formData.contactRelationOther ?? '')}
                   onChange={(e) => handleInputChange('contactRelationOther', e.target.value)}
                   className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactRelationOther ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                     }`}
@@ -593,7 +619,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 </label>
                 <input
                   type="text"
-                  value={formData.contactName}
+                  value={(formData.contactName ?? '')}
                   onChange={(e) => handleInputChange('contactName', e.target.value)}
                   className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                     }`}
@@ -608,7 +634,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 </label>
                 <input
                   type="tel"
-                  value={formData.contactPhone}
+                  value={(formData.contactPhone ?? '')}
                   onChange={(e) => handleInputChange('contactPhone', e.target.value)}
                   className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactPhone ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                     }`}
@@ -630,7 +656,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           Уровень образования *
         </label>
         <select
-          value={formData.education}
+          value={(formData.education ?? '')}
           onChange={(e) => handleInputChange('education', e.target.value)}
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.education ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
@@ -651,7 +677,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.educationOther}
+            value={(formData.educationOther ?? '')}
             onChange={(e) => handleInputChange('educationOther', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.educationOther ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -667,7 +693,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         </label>
         <input
           type="text"
-          value={formData.institution}
+          value={(formData.institution ?? '')}
           onChange={(e) => handleInputChange('institution', e.target.value)}
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.institution ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
@@ -683,7 +709,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         </label>
         <input
           type="text"
-          value={formData.specialty}
+          value={(formData.specialty ?? '')}
           onChange={(e) => handleInputChange('specialty', e.target.value)}
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.specialty ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
@@ -729,7 +755,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 Язык *
               </label>
               <select
-                value={language.language}
+                value={(language.language ?? '')}
                 onChange={(e) => handleLanguageChange(index, 'language', e.target.value)}
                 className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`language_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                   }`}
@@ -749,7 +775,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 Уровень владения *
               </label>
               <select
-                value={language.level}
+                value={(language.level ?? '')}
                 onChange={(e) => handleLanguageChange(index, 'level', e.target.value)}
                 className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`level_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                   }`}
@@ -771,7 +797,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
               </label>
               <input
                 type="text"
-                value={language.languageOther}
+                value={(language.languageOther ?? '')}
                 onChange={(e) => handleLanguageChange(index, 'languageOther', e.target.value)}
                 className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`languageOther_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                   }`}
@@ -822,7 +848,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 </label>
                 <input
                   type="text"
-                  value={experience.company}
+                  value={(experience.company ?? '')}
                   onChange={(e) => handleWorkExperienceChange(index, 'company', e.target.value)}
                   className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`company_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                     }`}
@@ -837,7 +863,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 </label>
                 <input
                   type="text"
-                  value={experience.position}
+                  value={(experience.position ?? '')}
                   onChange={(e) => handleWorkExperienceChange(index, 'position', e.target.value)}
                   className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`position_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                     }`}
@@ -897,12 +923,12 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         </label>
         <input
           type="text"
-          value={formData.preferredCountry}
+          value={(formData.preferredCountry ?? '')}
           onChange={(e) => handleCountrySearch(e.target.value)}
           onFocus={() => {
-            if (formData.preferredCountry.trim()) {
+            if ((formData.preferredCountry ?? '').trim()) {
               const filtered = countries.filter(country =>
-                country.toLowerCase().includes(formData.preferredCountry.toLowerCase())
+                country.toLowerCase().includes((formData.preferredCountry ?? '').toLowerCase())
               ).slice(0, 10);
               setFilteredCountries(filtered);
               setShowCountryDropdown(true);
@@ -959,7 +985,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.expectedSalary}
+            value={(formData.expectedSalary ?? '')}
             onChange={(e) => handleInputChange('expectedSalary', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.expectedSalary ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -973,7 +999,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             Наличие судимости
           </label>
           <select
-            value={formData.criminalRecord}
+            value={(formData.criminalRecord ?? '')}
             onChange={(e) => handleInputChange('criminalRecord', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.gender ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -991,12 +1017,62 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           Дополнительная информация
         </label>
         <textarea
-          value={formData.additionalInfo}
+          value={(formData.additionalInfo ?? '')}
           onChange={(e) => handleInputChange('additionalInfo', e.target.value)}
           className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-400 focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none resize-none"
           rows={4}
           placeholder="Расскажите о себе, своих навыках, достижениях..."
         />
+      </div>
+    </div>
+  );
+
+
+  const renderDocument = () => (
+    <div className="space-y-6">
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Фотография (изображение) *
+        </label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.photoFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            }`}
+        />
+        {errors.photoFile && <p className="text-red-500 text-sm mt-1">{errors.photoFile}</p>}
+        {photoFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {photoFile.name}</p>}
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Паспорт (скан/фото) *
+        </label>
+        <input
+          type="file"
+          accept="image/*,application/pdf"
+          onChange={(e) => setPassportFile(e.target.files?.[0] || null)}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.passportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            }`}
+        />
+        {errors.passportFile && <p className="text-red-500 text-sm mt-1">{errors.passportFile}</p>}
+        {passportFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {passportFile.name}</p>}
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Рекомендательное письмо *
+        </label>
+        <input
+          type="file"
+          accept="application/pdf,image/*"
+          onChange={(e) => setRecommendationLetterFile(e.target.files?.[0] || null)}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.recommendationLetterFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            }`}
+        />
+        {errors.recommendationLetterFile && <p className="text-red-500 text-sm mt-1">{errors.recommendationLetterFile}</p>}
+        {recommendationLetterFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {recommendationLetterFile.name}</p>}
       </div>
     </div>
   );
@@ -1009,6 +1085,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
       case 4: return renderLanguages();
       case 5: return renderWorkExperience();
       case 6: return renderPreferences();
+      case 7: return renderDocument();
       default: return null;
     }
   };
@@ -1024,14 +1101,14 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 <Save className="w-8 h-8 text-white" />
               </div>
               <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Заявка отправлена!
+                Заявка обновлена!
               </h2>
               <p className="text-gray-600 mb-6">
                 Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.
               </p>
               <button
                 onClick={() => {
-                  router.push("/seeker")
+                  setIsSubmitted(false)
                 }}
                 className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
               >
@@ -1046,9 +1123,6 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Профиль соискателя работы
           </h1>
-          <p className="text-gray-600">
-            Заполните все разделы для создания полного профиля
-          </p>
         </div>
 
         {/* Progress Steps */}
@@ -1057,18 +1131,14 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             {steps.map((step) => {
               const Icon = step.icon;
               const isActive = currentStep === step.id;
-              const isAccessible = step.id <= currentStep;
 
               return (
                 <button
                   key={step.id}
                   onClick={() => handleTabClick(step.id)}
-                  disabled={!isAccessible}
                   className={`flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 ${isActive
                     ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-200'
-                    : isAccessible
-                      ? 'bg-white text-gray-700 hover:bg-green-50 border border-gray-200'
-                      : 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-50'
+                    : 'bg-white text-gray-700 hover:bg-green-50 border border-gray-200'
                     }`}
                 >
                   <Icon size={18} className="mr-2" />
@@ -1097,36 +1167,14 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           {renderStepContent()}
 
           {/* Navigation Buttons */}
-          <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
+          <div className="flex justify-end mt-8 pt-6 border-t border-gray-200">
             <button
-              onClick={handlePrevStep}
-              disabled={currentStep === 1}
-              className={`flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${currentStep === 1
-                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
+              onClick={handleSubmit}
+              className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
             >
-              <ChevronLeft size={20} className="mr-2" />
-              Назад
+              <Save size={20} className="mr-2" />
+              Сохранить
             </button>
-
-            {currentStep === steps.length ? (
-              <button
-                onClick={handleSubmit}
-                className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
-              >
-                <Save size={20} className="mr-2" />
-                Отправить заявку
-              </button>
-            ) : (
-              <button
-                onClick={handleNextStep}
-                className="flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
-              >
-                Далее
-                <ChevronRight size={20} className="ml-2" />
-              </button>
-            )}
           </div>
         </div>
       </div>
@@ -1134,4 +1182,4 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
   );
 };
 
-export default JobSeekerForm;
+export default JobSeekerEditForm;

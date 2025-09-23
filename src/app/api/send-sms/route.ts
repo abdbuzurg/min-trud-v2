@@ -18,7 +18,7 @@ function generateVerificationCode(): string {
   return code.toString();
 }
 
-function generateSha256Hash(content: string) {
+function generateSha256Hash(content: string): string {
   return crypto.createHash('sha256').update(content).digest('hex')
 }
 
@@ -32,30 +32,50 @@ export async function POST(request: NextRequest) {
       phoneNumber = phoneNumber.substring(1)
     }
 
-    let smsCount = await prisma.sendSMS.count()
-    let txn_id: number = 2150 + smsCount
-    await prisma.sendSMS.create({
-      data: {
-        phoneNumber: phoneNumber,
+    //checking if current number is registered as user
+    let user = await prisma.user.findFirst({
+      where: {
+        phoneNumber: phoneNumber
       }
     })
 
+    // if not we create user using the number
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          phoneNumber: phoneNumber
+        }
+      })
+    }
 
+    // the code will be one time password for each entry
     const code = generateVerificationCode()
-    const from = "OsonSMS"
-    const msg = `Код - ${code}`
-    const login = "sparrow"
-    const hash = "367e04ea47a0c53f13a840ef74f8ad62"
-    const hashContent = `${txn_id};${login};${from};${phoneNumber};${hash}`
-    const str_hash = generateSha256Hash(hashContent)
-    const url = `https://api.osonsms.com/sendsms_v1.php?from=${from}&msg=${msg}&login=${login}&str_hash=${str_hash}&phone_number=${phoneNumber}&txn_id=${txn_id}`
-    console.log(url)
-    await axios.get(url)
+    await prisma.sendSMS.create({
+      data: {
+        userId: user.id,
+        code: code,
+      }
+    })
 
-    return NextResponse.json({ code: code }, { status: 200 })
+    // const smsCount = await prisma.sendSMS.count()
+    // const txn_id: number = 2730 + smsCount
+
+    // const from = "OsonSMS"
+    // const msg = `Код - ${code}`
+    // const login = "sparrow"
+    // const hash = "367e04ea47a0c53f13a840ef74f8ad62"
+    // const hashContent = `${txn_id};${login};${from};${phoneNumber};${hash}`
+    // const str_hash = generateSha256Hash(hashContent)
+    // const url = `https://api.osonsms.com/sendsms_v1.php?from=${from}&msg=${msg}&login=${login}&str_hash=${str_hash}&phone_number=${phoneNumber}&txn_id=${txn_id}`
+    // const smsResponse = await axios.get(url)
+    // if (smsResponse.status != 201) {
+    //   return NextResponse.json({ message: "Ошибка при генерации смс" }, { status: 500 })
+    // }
+
+    return NextResponse.json({ message: "Успех" }, { status: 200 })
 
   } catch (error) {
     console.error(error)
-    return NextResponse.json({ code: "error sending sms" }, { status: 500 })
+    return NextResponse.json({ message: "Ошибка сервера" }, { status: 500 })
   }
 }
