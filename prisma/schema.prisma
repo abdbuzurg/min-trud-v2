@@ -28,13 +28,17 @@ model JobSeeker {
   maritalStatus                String
   passportCode                 String
   phoneNumber                  String
+  messengerNumber              String                         @default("")
   address                      String
+  addressOfBirth               String                         @default("")
   education                    String
   institution                  String
   speciality                   String
   desiredSalary                String
   dateOfReadiness              DateTime
   desiredCountry               String
+  desiredCity                  String                         @default("")
+  desiredWorkPlace             String                         @default("")
   criminalRecord               String
   additionalInformation        String?
   syncedWith1C                 Boolean

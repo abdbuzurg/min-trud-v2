@@ -82,7 +82,11 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
       startDate: '',
       endDate: '',
     }],
-    preferredCountry: '',
+    desiredCountry: '',
+    addressOfBirth: '',
+    desiredCity: '',
+    desiredWorkPlace: '',
+    messengerNumber: '',
     expectedSalary: '',
     additionalInfo: '',
     criminalRecord: '',
@@ -100,7 +104,36 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         Authorization: `Bearer ${token}`
       }
     }).then((response) => {
-      setFormData(response.data.profile)
+      let education = response.data.profile.education
+      let educationOther: string = ""
+      const availableEducations = ["высшее", "средняя специальность", "профессиональное техническое", "другое"]
+      if (!availableEducations.find((v) => v == education)) {
+        education = 'другое'
+        educationOther = response.data.profile.educationOther
+      }
+
+      const availableLanguages = ["русский", "английский", "корейский", "арабский", "другое"]
+      const languages = response.data.profile.languages.map((v: any) => {
+        let language: string = v.language
+        let otherLanguage: string = ""
+        if (!availableLanguages.find(av => av == language)) {
+          language = "другое"
+          otherLanguage = v.language
+        }
+
+        return {
+          ...v,
+          language: language,
+          otherLanguage: otherLanguage,
+        }
+      })
+
+      setFormData({
+        ...response.data.profile,
+        education: education,
+        educationOther: educationOther,
+        languages: languages,
+      })
     })
   }, [])
 
@@ -129,16 +162,16 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         break;
       case 2:
         if (!(formData.phone ?? '').trim()) newErrors.phone = 'Обязательное поле';
+        if (!(formData.messengerNumber ?? '').trim()) newErrors.messengerNumber = 'Обязательное поле';
         if (!(formData.email ?? '').trim()) newErrors.email = 'Обязательное поле';
         if (!(formData.address ?? '').trim()) newErrors.address = 'Обязательное поле';
-        if (formData.additionalContact) {
-          if (!formData.contactRelation) newErrors.contactRelation = 'Обязательное поле';
-          if (formData.contactRelation === 'другое' && !(formData.contactRelationOther ?? '').trim()) {
-            newErrors.contactRelationOther = 'Обязательное поле';
-          }
-          if (!(formData.contactName ?? '').trim()) newErrors.contactName = 'Обязательное поле';
-          if (!(formData.contactPhone ?? '').trim()) newErrors.contactPhone = 'Обязательное поле';
+        if (!(formData.addressOfBirth ?? '').trim()) newErrors.addressOfBirth = 'Обязательное поле';
+        if (!formData.contactRelation) newErrors.contactRelation = 'Обязательное поле';
+        if (formData.contactRelation === 'другое' && !(formData.contactRelationOther ?? '').trim()) {
+          newErrors.contactRelationOther = 'Обязательное поле';
         }
+        if (!(formData.contactName ?? '').trim()) newErrors.contactName = 'Обязательное поле';
+        if (!(formData.contactPhone ?? '').trim()) newErrors.contactPhone = 'Обязательное поле';
         break;
       case 3:
         if (!formData.education) newErrors.education = 'Обязательное поле';
@@ -166,7 +199,10 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         });
         break;
       case 6:
-        if (!(formData.preferredCountry ?? '').trim()) newErrors.preferredCountry = 'Обязательное поле';
+        if (!(formData.desiredCountry ?? '').trim()) newErrors.desiredCountry = 'Обязательное поле';
+        if (!(formData.desiredCity ?? '').trim()) newErrors.desiredCity = 'Обязательное поле';
+        if (!(formData.dateOfReadiness ?? '').trim()) newErrors.dateOfReadiness = 'Обязательное поле';
+        if (!(formData.desiredWorkPlace ?? '').trim()) newErrors.desiredWorkPlace = 'Обязательное поле';
         if (!(formData.expectedSalary ?? '').trim()) newErrors.expectedSalary = 'Обязательное поле';
         break;
 
@@ -261,7 +297,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
   };
 
   const handleCountrySearch = (value: string) => {
-    handleInputChange('preferredCountry', value);
+    handleInputChange('desiredCountry', value);
 
     if (value.trim()) {
       const filtered = countries.filter(country =>
@@ -275,7 +311,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
   };
 
   const selectCountry = (country: string) => {
-    handleInputChange('preferredCountry', country);
+    handleInputChange('desiredCountry', country);
     setShowCountryDropdown(false);
   };
 
@@ -287,19 +323,30 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
     }
   };
 
-  const handleNextStep = () => {
-    if (validateStep(currentStep)) {
-      if (currentStep < steps.length) {
-        setCurrentStep(currentStep + 1);
+  const handleDownload = async (filename: string) => {
+    try {
+      const response = await fetch(`/api/files/${filename}`);
+
+      if (!response.ok) {
+        throw new Error('File not found');
       }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      // The backend doesn't tell us the extension, so you might need a more robust way
+      // to determine the filename, or the backend could provide it in a header.
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading the file:', error);
     }
   };
 
-  const handlePrevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
 
   const updateForm = async (formData: globalThis.FormData): Promise<boolean> => {
     try {
@@ -308,10 +355,6 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
     } catch {
       return false
     }
-  }
-
-  const handleExistingDownload = (filePrefix: string) => {
-
   }
 
   const handleSubmit = async () => {
@@ -334,7 +377,9 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
     data.set("maritalStatus", formData.maritalStatus)
     data.set("gender", formData.gender)
     data.set("phoneNumber", formData.phone)
-    data.set("currentAddress", formData.address)
+    data.set("messengerNumber", formData.messengerNumber)
+    data.set("address", formData.address)
+    data.set("addressOfBirth", formData.addressOfBirth)
     data.set("email", formData.email)
     const additionalContactInformation: AdditionalContactInfromation[] = [
       {
@@ -361,7 +406,9 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
       dateEnd: new Date(v.endDate),
     }))
     data.set("workExperience", JSON.stringify(workExperience))
-    data.set("desiredCountry", formData.preferredCountry)
+    data.set("desiredCountry", formData.desiredCountry)
+    data.set("desiredCity", formData.desiredCity)
+    data.set("desiredWorkPlace", formData.desiredWorkPlace)
     data.set("dateOfReadiness", formData.dateOfReadiness)
     data.set("desiredSalary", formData.expectedSalary)
     data.set("criminalRecord", formData.criminalRecord)
@@ -547,6 +594,39 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         </div>
       </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Whatapp/Telegram
+          </label>
+          <input
+            type="tel"
+            value={(formData.messengerNumber ?? '')}
+            onChange={(e) => handleInputChange('messengerNumber', e.target.value)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.messengerNumber ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+            placeholder="+7 (999) 123-45-67"
+          />
+          {errors.messengerNumber && <p className="text-red-500 text-sm mt-1">{errors.messengerNumber}</p>}
+        </div>
+
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Адрес рождения *
+        </label>
+        <textarea
+          value={(formData.addressOfBirth ?? '')}
+          onChange={(e) => handleInputChange('addressOfBirth', e.target.value)}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none resize-none ${errors.addressOfBirth ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            }`}
+          rows={3}
+          placeholder="Введите полный адрес рождения"
+        />
+        {errors.addressOfBirth && <p className="text-red-500 text-sm mt-1">{errors.addressOfBirth}</p>}
+      </div>
+
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Адрес проживания *
@@ -562,94 +642,64 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
       </div>
 
-      <div className="bg-gray-50 p-6 rounded-xl">
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            id="additionalContact"
-            checked={!!formData.additionalContact}
-            onChange={(e) => handleInputChange('additionalContact', e.target.checked)}
-            className="w-5 h-5 text-green-600 border-2 border-gray-300 rounded focus:ring-green-500"
-          />
-          <label htmlFor="additionalContact" className="ml-3 text-sm font-semibold text-gray-700">
-            Добавить дополнительное контактное лицо
+      <div className="space-y-4">
+        <span className="text-2xl font-semibold text-gray-700">
+          Добавить дополнительное контактное лицо
+        </span>
+
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Статус контактного лица *
           </label>
+          <div className="grid grid-cols-2 gap-3">
+            {['родитель', 'супруг/супруга', 'родственник', 'друг'].map((status) => (
+              <label key={status} className="flex items-center">
+                <input
+                  type="radio"
+                  name="contactRelation"
+                  value={status}
+                  checked={formData.contactRelation === status}
+                  onChange={(e) => handleInputChange('contactRelation', e.target.value)}
+                  className="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
+                />
+                <span className="ml-2 text-sm text-gray-700 capitalize">{status}</span>
+              </label>
+            ))}
+          </div>
+          {errors.contactRelation && <p className="text-red-500 text-sm mt-1">{errors.contactRelation}</p>}
         </div>
 
-        {formData.additionalContact && (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Статус контактного лица *
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                {['родитель', 'супруг/супруга', 'родственник', 'друг', 'другое'].map((status) => (
-                  <label key={status} className="flex items-center">
-                    <input
-                      type="radio"
-                      name="contactRelation"
-                      value={status}
-                      checked={formData.contactRelation === status}
-                      onChange={(e) => handleInputChange('contactRelation', e.target.value)}
-                      className="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
-                    />
-                    <span className="ml-2 text-sm text-gray-700 capitalize">{status}</span>
-                  </label>
-                ))}
-              </div>
-              {errors.contactRelation && <p className="text-red-500 text-sm mt-1">{errors.contactRelation}</p>}
-            </div>
-
-            {formData.contactRelation === 'другое' && (
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Укажите статус *
-                </label>
-                <input
-                  type="text"
-                  value={(formData.contactRelationOther ?? '')}
-                  onChange={(e) => handleInputChange('contactRelationOther', e.target.value)}
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactRelationOther ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-                    }`}
-                  placeholder="Введите статус"
-                />
-                {errors.contactRelationOther && <p className="text-red-500 text-sm mt-1">{errors.contactRelationOther}</p>}
-              </div>
-            )}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  ФИО контактного лица *
-                </label>
-                <input
-                  type="text"
-                  value={(formData.contactName ?? '')}
-                  onChange={(e) => handleInputChange('contactName', e.target.value)}
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-                    }`}
-                  placeholder="Введите ФИО"
-                />
-                {errors.contactName && <p className="text-red-500 text-sm mt-1">{errors.contactName}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Телефон контактного лица *
-                </label>
-                <input
-                  type="tel"
-                  value={(formData.contactPhone ?? '')}
-                  onChange={(e) => handleInputChange('contactPhone', e.target.value)}
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactPhone ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-                    }`}
-                  placeholder="+7 (999) 123-45-67"
-                />
-                {errors.contactPhone && <p className="text-red-500 text-sm mt-1">{errors.contactPhone}</p>}
-              </div>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              ФИО контактного лица *
+            </label>
+            <input
+              type="text"
+              value={(formData.contactName ?? '')}
+              onChange={(e) => handleInputChange('contactName', e.target.value)}
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+                }`}
+              placeholder="Введите ФИО"
+            />
+            {errors.contactName && <p className="text-red-500 text-sm mt-1">{errors.contactName}</p>}
           </div>
-        )}
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Телефон контактного лица *
+            </label>
+            <input
+              type="tel"
+              value={(formData.contactPhone ?? '')}
+              onChange={(e) => handleInputChange('contactPhone', e.target.value)}
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactPhone ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+                }`}
+              placeholder="+7 (999) 123-45-67"
+            />
+            {errors.contactPhone && <p className="text-red-500 text-sm mt-1">{errors.contactPhone}</p>}
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -928,12 +978,12 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         </label>
         <input
           type="text"
-          value={(formData.preferredCountry ?? '')}
+          value={(formData.desiredCountry ?? '')}
           onChange={(e) => handleCountrySearch(e.target.value)}
           onFocus={() => {
-            if ((formData.preferredCountry ?? '').trim()) {
+            if ((formData.desiredCountry ?? '').trim()) {
               const filtered = countries.filter(country =>
-                country.toLowerCase().includes((formData.preferredCountry ?? '').toLowerCase())
+                country.toLowerCase().includes((formData.desiredCountry ?? '').toLowerCase())
               ).slice(0, 10);
               setFilteredCountries(filtered);
               setShowCountryDropdown(true);
@@ -942,11 +992,11 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
           onBlur={() => {
             setTimeout(() => setShowCountryDropdown(false), 200);
           }}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.preferredCountry ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.desiredCountry ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
           placeholder="Начните вводить название страны"
         />
-        {errors.preferredCountry && <p className="text-red-500 text-sm mt-1">{errors.preferredCountry}</p>}
+        {errors.desiredCountry && <p className="text-red-500 text-sm mt-1">{errors.desiredCountry}</p>}
 
         {showCountryDropdown && filteredCountries.length > 0 && (
           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
@@ -968,6 +1018,21 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Предпочитаемый город*
+          </label>
+          <input
+            type="text"
+            value={(formData.desiredCity ?? '')}
+            onChange={(e) => handleInputChange('desiredCity', e.target.value)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.desiredCity ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+            placeholder="Москва, Новосибирск, Санкт-Питербург"
+          />
+          {errors.desiredCity && <p className="text-red-500 text-sm mt-1">{errors.desiredCity}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
             Дата готовности к выезду
           </label>
           <DatePicker
@@ -980,6 +1045,24 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
             onChange={(date) => handleInputChange('dateOfReadiness', date?.toString() ?? '')}
           />
           {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6">
+
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Предпочитаемое место работы
+          </label>
+          <input
+            type="text"
+            value={(formData.desiredWorkPlace ?? '')}
+            onChange={(e) => handleInputChange('desiredWorkPlace', e.target.value)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.desiredWorkPlace ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+            placeholder="Москва, Новосибирск, Санкт-Питербург"
+          />
+          {errors.desiredWorkPlace && <p className="text-red-500 text-sm mt-1">{errors.desiredWorkPlace}</p>}
         </div>
       </div>
 
@@ -1048,7 +1131,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
               }`}
           />
           <button
-            onClick={handleSubmit}
+            onClick={() => handleDownload(`${phoneNumber}_image`)}
             className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
           >
             <Download size={20} className="mr-2" />
@@ -1070,12 +1153,12 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.passportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
           />
-          <a
-            href={`/api/files?name=${phoneNumber}_passport`}
+          <button
+            onClick={() => handleDownload(`${phoneNumber}_passport`)}
             className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
           >
             <Download size={20} className="mr-2" />
-          </a>
+          </button>
         </div>
         {errors.passportFile && <p className="text-red-500 text-sm mt-1">{errors.passportFile}</p>}
         {passportFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {passportFile.name}</p>}
@@ -1094,7 +1177,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
               }`}
           />
           <button
-            onClick={handleSubmit}
+            onClick={() => handleDownload(`${phoneNumber}_recommendation`)}
             className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
           >
             <Download size={20} className="mr-2" />

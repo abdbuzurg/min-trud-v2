@@ -1,4 +1,4 @@
-import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
+import { AdditionalContactInfromation, JobSeeker, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
 import path from "path";
@@ -59,7 +59,6 @@ export async function POST(req: NextRequest) {
     }
 
     const jobSeekerInfo = {
-      userId: user.id,
       firstName: formData.get("name") as string,
       lastName: formData.get("surname") as string,
       middleName: formData.get("middlename") as string,
@@ -70,13 +69,17 @@ export async function POST(req: NextRequest) {
       passportCode: formData.get("passportCode") as string,
       maritalStatus: formData.get("maritalStatus") as string,
       phoneNumber: formData.get("phoneNumber") as string,
-      address: formData.get("currentAddress") as string,
+      messengerNumber: formData.get("messengerNumber") as string,
+      address: formData.get("address") as string,
+      addressOfBirth: formData.get("addressOfBirth") as string,
       education: formData.get("education") as string,
       institution: formData.get("institution") as string,
       speciality: formData.get("specialization") as string,
       desiredSalary: formData.get("desiredSalary") as string,
       dateOfReadiness: new Date(dateOfReadiness),
       desiredCountry: formData.get("desiredCountry") as string,
+      desiredCity: formData.get("desiredCity") as string,
+      desiredWorkPlace: formData.get("desiredWorkPlace") as string,
       criminalRecord: formData.get("criminalRecord") as string,
       additionalInformation: formData.get("additionalInformation") as string,
       syncedWith1C: false,
@@ -121,6 +124,7 @@ export async function POST(req: NextRequest) {
 
     const jobSeekerResult = await prisma.jobSeeker.create({
       data: {
+        userId: user.id,
         ...jobSeekerInfo,
       }
     })

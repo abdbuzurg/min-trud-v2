@@ -11,8 +11,10 @@ export interface JobSeekerFromData {
 
   // Контактная информация
   phone: string;
+  messengerNumber: string;
   email: string;
   address: string;
+  addressOfBirth: string;
   additionalContact: boolean;
   contactRelation: string;
   contactRelationOther: string;
@@ -32,7 +34,9 @@ export interface JobSeekerFromData {
   workExperience: Array<WorkExperienceForm>;
 
   // Предпочтения
-  preferredCountry: string;
+  desiredCountry: string;
+  desiredCity: string
+  desiredWorkPlace: string;
   expectedSalary: string;
   additionalInfo: string;
   criminalRecord: string

@@ -12,7 +12,7 @@ import {
   Trash2,
   ChevronRight,
   ChevronLeft,
-  Save
+  Save, FileText
 } from 'lucide-react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -47,6 +47,10 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
   const [filteredCountries, setFilteredCountries] = useState<string[]>([]);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
 
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [passportFile, setPassportFile] = useState<File | null>(null);
+  const [recommendationLetterFile, setRecommendationLetterFile] = useState<File | null>(null);
+
   const [formData, setFormData] = useState<JobSeekerFromData>({
     lastName: '',
     firstName: '',
@@ -57,8 +61,10 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     maritalStatus: '',
     tin: '',
     phone: '',
+    messengerNumber: '',
     email: '',
     address: '',
+    addressOfBirth: '',
     additionalContact: false,
     contactRelation: '',
     contactRelationOther: '',
@@ -79,7 +85,9 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
       startDate: '',
       endDate: '',
     }],
-    preferredCountry: '',
+    desiredCountry: '',
+    desiredCity: '',
+    desiredWorkPlace: '',
     expectedSalary: '',
     additionalInfo: '',
     criminalRecord: '',
@@ -93,7 +101,8 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     { id: 3, title: 'Образование', icon: GraduationCap },
     { id: 4, title: 'Языки', icon: Languages },
     { id: 5, title: 'Опыт работы', icon: Briefcase },
-    { id: 6, title: 'Предпочтения', icon: Globe }
+    { id: 6, title: 'Предпочтения', icon: Globe },
+    { id: 7, title: 'Документы', icon: FileText }
   ];
 
   const validateStep = (step: number): boolean => {
@@ -101,34 +110,34 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
 
     switch (step) {
       case 1:
-        if (!formData.lastName.trim()) newErrors.lastName = 'Обязательное поле';
-        if (!formData.firstName.trim()) newErrors.firstName = 'Обязательное поле';
-        if (!formData.birthDate.trim()) newErrors.birthDate = 'Обязательное поле';
+        if (!(formData.lastName ?? '').trim()) newErrors.lastName = 'Обязательное поле';
+        if (!(formData.firstName ?? '').trim()) newErrors.firstName = 'Обязательное поле';
+        if (!(formData.birthDate ?? '').trim()) newErrors.birthDate = 'Обязательное поле';
         if (!formData.gender) newErrors.gender = 'Обязательное поле';
-        if (!formData.passportCode.trim()) newErrors.passportCode = 'Обязательное поле';
+        if (!(formData.passportCode ?? '').trim()) newErrors.passportCode = 'Обязательное поле';
         if (!formData.maritalStatus) newErrors.maritalStatus = 'Обязательное поле';
         if (!formData.tin) newErrors.tin = 'Обязательное поле';
         break;
       case 2:
-        if (!formData.phone.trim()) newErrors.phone = 'Обязательное поле';
-        if (!formData.email.trim()) newErrors.email = 'Обязательное поле';
-        if (!formData.address.trim()) newErrors.address = 'Обязательное поле';
-        if (formData.additionalContact) {
-          if (!formData.contactRelation) newErrors.contactRelation = 'Обязательное поле';
-          if (formData.contactRelation === 'другое' && !formData.contactRelationOther.trim()) {
-            newErrors.contactRelationOther = 'Обязательное поле';
-          }
-          if (!formData.contactName.trim()) newErrors.contactName = 'Обязательное поле';
-          if (!formData.contactPhone.trim()) newErrors.contactPhone = 'Обязательное поле';
+        if (!(formData.phone ?? '').trim()) newErrors.phone = 'Обязательное поле';
+        if (!(formData.messengerNumber ?? '').trim()) newErrors.messengerNumber = 'Обязательное поле';
+        if (!(formData.email ?? '').trim()) newErrors.email = 'Обязательное поле';
+        if (!(formData.address ?? '').trim()) newErrors.address = 'Обязательное поле';
+        if (!(formData.addressOfBirth ?? '').trim()) newErrors.addressOfBirth = 'Обязательное поле';
+        if (!formData.contactRelation) newErrors.contactRelation = 'Обязательное поле';
+        if (formData.contactRelation === 'другое' && !(formData.contactRelationOther ?? '').trim()) {
+          newErrors.contactRelationOther = 'Обязательное поле';
         }
+        if (!(formData.contactName ?? '').trim()) newErrors.contactName = 'Обязательное поле';
+        if (!(formData.contactPhone ?? '').trim()) newErrors.contactPhone = 'Обязательное поле';
         break;
       case 3:
         if (!formData.education) newErrors.education = 'Обязательное поле';
-        if (formData.education === 'другое' && !formData.educationOther.trim()) {
+        if (formData.education === 'другое' && !(formData.educationOther ?? '').trim()) {
           newErrors.educationOther = 'Обязательное поле';
         }
-        if (!formData.institution.trim()) newErrors.institution = 'Обязательное поле';
-        if (!formData.specialty.trim()) newErrors.specialty = 'Обязательное поле';
+        if (!(formData.institution ?? '').trim()) newErrors.institution = 'Обязательное поле';
+        if (!(formData.specialty ?? '').trim()) newErrors.specialty = 'Обязательное поле';
         break;
       case 4:
         formData.languages.forEach((lang, index) => {
@@ -148,8 +157,17 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         });
         break;
       case 6:
-        if (!formData.preferredCountry.trim()) newErrors.preferredCountry = 'Обязательное поле';
-        if (!formData.expectedSalary.trim()) newErrors.expectedSalary = 'Обязательное поле';
+        if (!(formData.desiredCountry ?? '').trim()) newErrors.desiredCountry = 'Обязательное поле';
+        if (!(formData.desiredCity ?? '').trim()) newErrors.desiredCity = 'Обязательное поле';
+        if (!(formData.dateOfReadiness ?? '').trim()) newErrors.dateOfReadiness = 'Обязательное поле';
+        if (!(formData.desiredWorkPlace ?? '').trim()) newErrors.desiredWorkPlace = 'Обязательное поле';
+        if (!(formData.expectedSalary ?? '').trim()) newErrors.expectedSalary = 'Обязательное поле';
+        break;
+
+      case 7:
+        if (!photoFile) newErrors.photoFile = 'Загрузите фотографию';
+        if (!passportFile) newErrors.passportFile = 'Загрузите паспорт';
+        if (!recommendationLetterFile) newErrors.recommendationLetterFile = 'Загрузите рекомендательное письмо';
         break;
     }
 
@@ -237,7 +255,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
   };
 
   const handleCountrySearch = (value: string) => {
-    handleInputChange('preferredCountry', value);
+    handleInputChange('desiredCountry', value);
 
     if (value.trim()) {
       const filtered = countries.filter(country =>
@@ -251,7 +269,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
   };
 
   const selectCountry = (country: string) => {
-    handleInputChange('preferredCountry', country);
+    handleInputChange('desiredCountry', country);
     setShowCountryDropdown(false);
   };
 
@@ -291,8 +309,11 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
       return;
     }
 
-    setIsSubmitted(true);
     const data = new FormData()
+
+    if (photoFile) data.set('photo', photoFile);
+    if (passportFile) data.set('passport', passportFile);
+    if (recommendationLetterFile) data.set('recommendationLetter', recommendationLetterFile);
     data.set("verificationPhoneNumber", phoneNumber)
     data.set("name", formData.firstName)
     data.set("surname", formData.lastName)
@@ -303,7 +324,9 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     data.set("maritalStatus", formData.maritalStatus)
     data.set("gender", formData.gender)
     data.set("phoneNumber", formData.phone)
-    data.set("currentAddress", formData.address)
+    data.set("messengerNumber", formData.messengerNumber)
+    data.set("address", formData.address)
+    data.set("addressOfBirth", formData.addressOfBirth)
     data.set("email", formData.email)
     const additionalContactInformation: AdditionalContactInfromation[] = [
       {
@@ -330,7 +353,9 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
       dateEnd: new Date(v.endDate),
     }))
     data.set("workExperience", JSON.stringify(workExperience))
-    data.set("desiredCountry", formData.preferredCountry)
+    data.set("desiredCountry", formData.desiredCountry)
+    data.set("desiredCity", formData.desiredCity)
+    data.set("desiredWorkPlace", formData.desiredWorkPlace)
     data.set("dateOfReadiness", formData.dateOfReadiness)
     data.set("desiredSalary", formData.expectedSalary)
     data.set("criminalRecord", formData.criminalRecord)
@@ -350,7 +375,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.lastName}
+            value={(formData.lastName ?? '')}
             onChange={(e) => handleInputChange('lastName', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.lastName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -365,7 +390,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.firstName}
+            value={(formData.firstName ?? '')}
             onChange={(e) => handleInputChange('firstName', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.firstName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -383,7 +408,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.middleName}
+            value={(formData.middleName ?? '')}
             onChange={(e) => handleInputChange('middleName', e.target.value)}
             className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-400 focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none"
             placeholder="Азизович"
@@ -397,7 +422,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.tin}
+            value={(formData.tin ?? '')}
             onChange={(e) => handleInputChange('tin', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.firstName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -431,7 +456,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             Пол *
           </label>
           <select
-            value={formData.gender}
+            value={(formData.gender ?? '')}
             onChange={(e) => handleInputChange('gender', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.gender ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -451,7 +476,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.passportCode}
+            value={(formData.passportCode ?? '')}
             onChange={(e) => handleInputChange('passportCode', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.citizenship ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -465,7 +490,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             Семейное положение *
           </label>
           <select
-            value={formData.maritalStatus}
+            value={(formData.maritalStatus ?? '')}
             onChange={(e) => handleInputChange('maritalStatus', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.maritalStatus ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -491,7 +516,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="tel"
-            value={formData.phone}
+            value={(formData.phone ?? '')}
             onChange={(e) => handleInputChange('phone', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.phone ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -506,7 +531,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="email"
-            value={formData.email}
+            value={(formData.email ?? '')}
             onChange={(e) => handleInputChange('email', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.email ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -516,111 +541,114 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         </div>
       </div>
 
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Whatapp/Telegram
+          </label>
+          <input
+            type="tel"
+            value={(formData.messengerNumber ?? '')}
+            onChange={(e) => handleInputChange('messengerNumber', e.target.value)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.messengerNumber ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+            placeholder="+7 (999) 123-45-67"
+          />
+          {errors.messengerNumber && <p className="text-red-500 text-sm mt-1">{errors.messengerNumber}</p>}
+        </div>
+
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Адрес рождения *
+        </label>
+        <textarea
+          value={(formData.addressOfBirth ?? '')}
+          onChange={(e) => handleInputChange('addressOfBirth', e.target.value)}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none resize-none ${errors.addressOfBirth ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            }`}
+          rows={3}
+          placeholder="Введите полный адрес рождения"
+        />
+        {errors.addressOfBirth && <p className="text-red-500 text-sm mt-1">{errors.addressOfBirth}</p>}
+      </div>
+
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Адрес проживания *
         </label>
         <textarea
-          value={formData.address}
+          value={(formData.address ?? '')}
           onChange={(e) => handleInputChange('address', e.target.value)}
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none resize-none ${errors.address ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
           rows={3}
-          placeholder="Введите полный адрес"
+          placeholder="Введите полный адрес проживания"
         />
         {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
       </div>
 
-      <div className="bg-gray-50 p-6 rounded-xl">
-        <div className="flex items-center mb-4">
-          <input
-            type="checkbox"
-            id="additionalContact"
-            checked={formData.additionalContact}
-            onChange={(e) => handleInputChange('additionalContact', e.target.checked)}
-            className="w-5 h-5 text-green-600 border-2 border-gray-300 rounded focus:ring-green-500"
-          />
-          <label htmlFor="additionalContact" className="ml-3 text-sm font-semibold text-gray-700">
-            Добавить дополнительное контактное лицо
+      <div className="space-y-4">
+        <span className="text-2xl font-semibold text-gray-700">
+          Добавить дополнительное контактное лицо
+        </span>
+
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Статус контактного лица *
           </label>
+          <div className="grid grid-cols-2 gap-3">
+            {['родитель', 'супруг/супруга', 'родственник', 'друг'].map((status) => (
+              <label key={status} className="flex items-center">
+                <input
+                  type="radio"
+                  name="contactRelation"
+                  value={status}
+                  checked={formData.contactRelation === status}
+                  onChange={(e) => handleInputChange('contactRelation', e.target.value)}
+                  className="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
+                />
+                <span className="ml-2 text-sm text-gray-700 capitalize">{status}</span>
+              </label>
+            ))}
+          </div>
+          {errors.contactRelation && <p className="text-red-500 text-sm mt-1">{errors.contactRelation}</p>}
         </div>
 
-        {formData.additionalContact && (
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Статус контактного лица *
-              </label>
-              <div className="grid grid-cols-2 gap-3">
-                {['родитель', 'супруг/супруга', 'родственник', 'друг', 'другое'].map((status) => (
-                  <label key={status} className="flex items-center">
-                    <input
-                      type="radio"
-                      name="contactRelation"
-                      value={status}
-                      checked={formData.contactRelation === status}
-                      onChange={(e) => handleInputChange('contactRelation', e.target.value)}
-                      className="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
-                    />
-                    <span className="ml-2 text-sm text-gray-700 capitalize">{status}</span>
-                  </label>
-                ))}
-              </div>
-              {errors.contactRelation && <p className="text-red-500 text-sm mt-1">{errors.contactRelation}</p>}
-            </div>
-
-            {formData.contactRelation === 'другое' && (
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Укажите статус *
-                </label>
-                <input
-                  type="text"
-                  value={formData.contactRelationOther}
-                  onChange={(e) => handleInputChange('contactRelationOther', e.target.value)}
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactRelationOther ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-                    }`}
-                  placeholder="Введите статус"
-                />
-                {errors.contactRelationOther && <p className="text-red-500 text-sm mt-1">{errors.contactRelationOther}</p>}
-              </div>
-            )}
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  ФИО контактного лица *
-                </label>
-                <input
-                  type="text"
-                  value={formData.contactName}
-                  onChange={(e) => handleInputChange('contactName', e.target.value)}
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-                    }`}
-                  placeholder="Введите ФИО"
-                />
-                {errors.contactName && <p className="text-red-500 text-sm mt-1">{errors.contactName}</p>}
-              </div>
-
-              <div>
-                <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Телефон контактного лица *
-                </label>
-                <input
-                  type="tel"
-                  value={formData.contactPhone}
-                  onChange={(e) => handleInputChange('contactPhone', e.target.value)}
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactPhone ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-                    }`}
-                  placeholder="+7 (999) 123-45-67"
-                />
-                {errors.contactPhone && <p className="text-red-500 text-sm mt-1">{errors.contactPhone}</p>}
-              </div>
-            </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              ФИО контактного лица *
+            </label>
+            <input
+              type="text"
+              value={(formData.contactName ?? '')}
+              onChange={(e) => handleInputChange('contactName', e.target.value)}
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+                }`}
+              placeholder="Введите ФИО"
+            />
+            {errors.contactName && <p className="text-red-500 text-sm mt-1">{errors.contactName}</p>}
           </div>
-        )}
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Телефон контактного лица *
+            </label>
+            <input
+              type="tel"
+              value={(formData.contactPhone ?? '')}
+              onChange={(e) => handleInputChange('contactPhone', e.target.value)}
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactPhone ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+                }`}
+              placeholder="+7 (999) 123-45-67"
+            />
+            {errors.contactPhone && <p className="text-red-500 text-sm mt-1">{errors.contactPhone}</p>}
+          </div>
+        </div>
       </div>
-    </div>
+    </div >
   );
 
   const renderEducation = () => (
@@ -630,7 +658,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           Уровень образования *
         </label>
         <select
-          value={formData.education}
+          value={(formData.education ?? '')}
           onChange={(e) => handleInputChange('education', e.target.value)}
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.education ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
@@ -651,7 +679,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.educationOther}
+            value={(formData.educationOther ?? '')}
             onChange={(e) => handleInputChange('educationOther', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.educationOther ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -667,7 +695,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         </label>
         <input
           type="text"
-          value={formData.institution}
+          value={(formData.institution ?? '')}
           onChange={(e) => handleInputChange('institution', e.target.value)}
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.institution ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
@@ -683,7 +711,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         </label>
         <input
           type="text"
-          value={formData.specialty}
+          value={(formData.specialty ?? '')}
           onChange={(e) => handleInputChange('specialty', e.target.value)}
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.specialty ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
@@ -729,7 +757,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 Язык *
               </label>
               <select
-                value={language.language}
+                value={(language.language ?? '')}
                 onChange={(e) => handleLanguageChange(index, 'language', e.target.value)}
                 className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`language_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                   }`}
@@ -749,7 +777,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 Уровень владения *
               </label>
               <select
-                value={language.level}
+                value={(language.level ?? '')}
                 onChange={(e) => handleLanguageChange(index, 'level', e.target.value)}
                 className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`level_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                   }`}
@@ -771,7 +799,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
               </label>
               <input
                 type="text"
-                value={language.languageOther}
+                value={(language.languageOther ?? '')}
                 onChange={(e) => handleLanguageChange(index, 'languageOther', e.target.value)}
                 className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`languageOther_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                   }`}
@@ -822,7 +850,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 </label>
                 <input
                   type="text"
-                  value={experience.company}
+                  value={(experience.company ?? '')}
                   onChange={(e) => handleWorkExperienceChange(index, 'company', e.target.value)}
                   className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`company_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                     }`}
@@ -837,7 +865,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 </label>
                 <input
                   type="text"
-                  value={experience.position}
+                  value={(experience.position ?? '')}
                   onChange={(e) => handleWorkExperienceChange(index, 'position', e.target.value)}
                   className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`position_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                     }`}
@@ -897,12 +925,12 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         </label>
         <input
           type="text"
-          value={formData.preferredCountry}
+          value={(formData.desiredCountry ?? '')}
           onChange={(e) => handleCountrySearch(e.target.value)}
           onFocus={() => {
-            if (formData.preferredCountry.trim()) {
+            if ((formData.desiredCountry ?? '').trim()) {
               const filtered = countries.filter(country =>
-                country.toLowerCase().includes(formData.preferredCountry.toLowerCase())
+                country.toLowerCase().includes((formData.desiredCountry ?? '').toLowerCase())
               ).slice(0, 10);
               setFilteredCountries(filtered);
               setShowCountryDropdown(true);
@@ -911,11 +939,11 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           onBlur={() => {
             setTimeout(() => setShowCountryDropdown(false), 200);
           }}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.preferredCountry ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.desiredCountry ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
           placeholder="Начните вводить название страны"
         />
-        {errors.preferredCountry && <p className="text-red-500 text-sm mt-1">{errors.preferredCountry}</p>}
+        {errors.desiredCountry && <p className="text-red-500 text-sm mt-1">{errors.desiredCountry}</p>}
 
         {showCountryDropdown && filteredCountries.length > 0 && (
           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
@@ -937,18 +965,51 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Предпочитаемый город*
+          </label>
+          <input
+            type="text"
+            value={(formData.desiredCity ?? '')}
+            onChange={(e) => handleInputChange('desiredCity', e.target.value)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.desiredCity ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+            placeholder="Москва, Новосибирск, Санкт-Питербург"
+          />
+          {errors.desiredCity && <p className="text-red-500 text-sm mt-1">{errors.desiredCity}</p>}
+        </div>
+
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
             Дата готовности к выезду
           </label>
           <DatePicker
             locale="ru"
-            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.birthDate ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.dateOfReadiness ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
             placeholderText='мм/дд/гггг'
             wrapperClassName='w-full'
             selected={formData.dateOfReadiness == '' ? null : new Date(formData.dateOfReadiness)}
             onChange={(date) => handleInputChange('dateOfReadiness', date?.toString() ?? '')}
           />
-          {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
+          {errors.dateOfReadiness && <p className="text-red-500 text-sm mt-1">{errors.dateOfReadiness}</p>}
+        </div>
+      </div>
+
+      <div className="grid grid-cols-1 gap-6">
+
+        <div>
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Предпочитаемое место работы
+          </label>
+          <input
+            type="text"
+            value={(formData.desiredWorkPlace ?? '')}
+            onChange={(e) => handleInputChange('desiredWorkPlace', e.target.value)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.desiredWorkPlace ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+            placeholder="Москва, Новосибирск, Санкт-Питербург"
+          />
+          {errors.desiredWorkPlace && <p className="text-red-500 text-sm mt-1">{errors.desiredWorkPlace}</p>}
         </div>
       </div>
 
@@ -959,7 +1020,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           </label>
           <input
             type="text"
-            value={formData.expectedSalary}
+            value={(formData.expectedSalary ?? '')}
             onChange={(e) => handleInputChange('expectedSalary', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.expectedSalary ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -973,7 +1034,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             Наличие судимости
           </label>
           <select
-            value={formData.criminalRecord}
+            value={(formData.criminalRecord ?? '')}
             onChange={(e) => handleInputChange('criminalRecord', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.gender ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
@@ -991,12 +1052,62 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           Дополнительная информация
         </label>
         <textarea
-          value={formData.additionalInfo}
+          value={(formData.additionalInfo ?? '')}
           onChange={(e) => handleInputChange('additionalInfo', e.target.value)}
           className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-400 focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none resize-none"
           rows={4}
           placeholder="Расскажите о себе, своих навыках, достижениях..."
         />
+      </div>
+    </div>
+  );
+
+
+  const renderDocument = () => (
+    <div className="space-y-6">
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Фотография (изображение) *
+        </label>
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.photoFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            }`}
+        />
+        {errors.photoFile && <p className="text-red-500 text-sm mt-1">{errors.photoFile}</p>}
+        {photoFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {photoFile.name}</p>}
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Паспорт (скан/фото) *
+        </label>
+        <input
+          type="file"
+          accept="image/*,application/pdf"
+          onChange={(e) => setPassportFile(e.target.files?.[0] || null)}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.passportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            }`}
+        />
+        {errors.passportFile && <p className="text-red-500 text-sm mt-1">{errors.passportFile}</p>}
+        {passportFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {passportFile.name}</p>}
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Рекомендательное письмо *
+        </label>
+        <input
+          type="file"
+          accept="application/pdf,image/*"
+          onChange={(e) => setRecommendationLetterFile(e.target.files?.[0] || null)}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.recommendationLetterFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            }`}
+        />
+        {errors.recommendationLetterFile && <p className="text-red-500 text-sm mt-1">{errors.recommendationLetterFile}</p>}
+        {recommendationLetterFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {recommendationLetterFile.name}</p>}
       </div>
     </div>
   );
@@ -1009,6 +1120,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
       case 4: return renderLanguages();
       case 5: return renderWorkExperience();
       case 6: return renderPreferences();
+      case 7: return renderDocument();
       default: return null;
     }
   };

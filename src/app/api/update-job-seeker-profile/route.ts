@@ -1,6 +1,67 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
 import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
+import { promises as fs } from 'fs';
+import path from 'path';
+
+async function handleFileUpload(
+  formData: FormData,
+  key: string,
+  suffix: string,
+  phoneNumber: string
+): Promise<string | null> {
+  // 1. Get the file from FormData and validate it
+  const file = formData.get(key);
+
+  // If no file is associated with the key, or if it's not a File object, return null.
+  if (!file || !(file instanceof File)) {
+    console.log(`No file found for key: '${key}'`);
+    return null;
+  }
+
+  const uploadsDir = path.join(process.cwd(), 'uploads', 'jobseekers');
+  const filenameWithoutExt = `${phoneNumber}_${suffix}`;
+
+  // 2. Ensure the target directory exists
+  try {
+    await fs.mkdir(uploadsDir, { recursive: true });
+  } catch (error) {
+    console.error('Failed to create upload directory:', error);
+    throw new Error('Could not create storage directory.');
+  }
+
+  // 3. Delete any existing file with the same base name
+  try {
+    const existingFiles = await fs.readdir(uploadsDir);
+    for (const existingFile of existingFiles) {
+      if (path.parse(existingFile).name === filenameWithoutExt) {
+        await fs.unlink(path.join(uploadsDir, existingFile));
+        console.log(`Deleted existing file: ${existingFile}`);
+        break; // Assume only one match and stop searching
+      }
+    }
+  } catch (error) {
+    // Log the error but don't stop the process. The main goal is to save the new file.
+    console.error('Error during deletion of existing file (continuing with upload):', error);
+  }
+
+  // 4. Save the new file
+  const fileExtension = path.extname(file.name);
+  const newFilename = `${filenameWithoutExt}${fileExtension}`;
+  const newFilePath = path.join(uploadsDir, newFilename);
+
+  // Convert the File object to a Node.js Buffer
+  const buffer = Buffer.from(await file.arrayBuffer());
+
+  try {
+    await fs.writeFile(newFilePath, buffer);
+    console.log(`Successfully saved new file: ${newFilename}`);
+    return newFilename; // Return the name of the created file
+  } catch (error) {
+    console.error('Failed to write new file to disk:', error);
+    throw new Error('Could not save the new file.');
+  }
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -8,34 +69,9 @@ export async function POST(request: NextRequest) {
     const phoneNumber = formData.get("verificationPhoneNumber") as string
     const phoneForName = (phoneNumber || '').replace(/[^\d+]/g, '') || 'unknown';
 
-    // const uploadRoot = path.join(process.cwd(), "uploads", "jobseekers")
-    //
-    // const extFromType = (type: string | undefined | null): string => {
-    //   switch (type) {
-    //     case "image/jpeg": return "jpg"
-    //     case "image/png": return "png"
-    //     case "image/webp": return "webp"
-    //     case "image/gif": return "gif"
-    //     case "application/pdf": return "pdf"
-    //     default: return "bin"
-    //   }
-    // }
-    //
-    // const saveFromForm = async (key: string, suffix: string) => {
-    //   const file = formData.get(key) as unknown as File | null;
-    //   if (!file) return null;
-    //   // @ts-ignore - Next.js File has arrayBuffer on Edge/Node runtimes
-    //   const buf = Buffer.from(await file.arrayBuffer());
-    //   const ext = extFromType((file as any).type);
-    //   const filename = `${phoneForName}_${suffix}.${ext}`;
-    //   const fullPath = path.join(uploadRoot, filename);
-    //   await fs.writeFile(fullPath, buf);
-    //   return { key, path: fullPath, filename };
-    // };
-
-    // await saveFromForm("photo", "image")
-    // await saveFromForm("passport", "passport")
-    // await saveFromForm("recommendationLetter", "recommendation")
+    await handleFileUpload(formData, 'photo', 'image', phoneForName)
+    await handleFileUpload(formData, 'passport', 'passport', phoneForName)
+    await handleFileUpload(formData, 'recommendationLetter', 'recommendation', phoneForName)
 
     const dateOfBirth = formData.get("dateOfBirth") as string
     if (!dateOfBirth) {
@@ -57,7 +93,6 @@ export async function POST(request: NextRequest) {
     }
 
     const jobSeekerInfo = {
-      userId: user.id,
       firstName: formData.get("name") as string,
       lastName: formData.get("surname") as string,
       middleName: formData.get("middlename") as string,
@@ -68,13 +103,17 @@ export async function POST(request: NextRequest) {
       passportCode: formData.get("passportCode") as string,
       maritalStatus: formData.get("maritalStatus") as string,
       phoneNumber: formData.get("phoneNumber") as string,
-      address: formData.get("currentAddress") as string,
+      messengerNumber: formData.get("messengerNumber") as string,
+      address: formData.get("address") as string,
+      addressOfBirth: formData.get("addressOfBirth") as string,
       education: formData.get("education") as string,
       institution: formData.get("institution") as string,
       speciality: formData.get("specialization") as string,
       desiredSalary: formData.get("desiredSalary") as string,
       dateOfReadiness: new Date(dateOfReadiness),
       desiredCountry: formData.get("desiredCountry") as string,
+      desiredCity: formData.get("desiredCity") as string,
+      desiredWorkPlace: formData.get("desiredWorkPlace") as string,
       criminalRecord: formData.get("criminalRecord") as string,
       additionalInformation: formData.get("additionalInformation") as string,
       syncedWith1C: false,
@@ -125,7 +164,7 @@ export async function POST(request: NextRequest) {
     if (!jobSeeker) {
       return NextResponse.json({ message: "No job seeker profile with given user" }, { status: 400 })
     }
-    const jobSeekerResult = await prisma.jobSeeker.updateMany({
+    await prisma.jobSeeker.updateMany({
       data: {
         ...jobSeekerInfo,
       },

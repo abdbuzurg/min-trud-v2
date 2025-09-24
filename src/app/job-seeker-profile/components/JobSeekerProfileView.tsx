@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import AuthForm from "./AuthForm";
-import JobSeekerForm from "./JobSeekerFormVer";
+import JobSeekerForm from "./JobSeekerForm";
 import { useRouter } from "next/navigation";
 
 export default function JobSeekerProfile() {

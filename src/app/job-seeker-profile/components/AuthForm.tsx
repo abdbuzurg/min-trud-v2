@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import { Phone, MessageSquare, ArrowRight, Shield } from 'lucide-react';
 import axios from 'axios';
-import { JobSeekerFromData } from '../../../../types/jobSeeker';
 
 interface AuthFormProps {
   onAuthSuccess: (token: string | null, phoneNumber: string) => void;
