@@ -11,10 +11,10 @@ type TokenPayload = JwtPayload & {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { phoneNumber: string } }
+  { params }: { params: Promise<{ phoneNumber: string }> }
 ) {
 
-  const phoneNumber = await params.phoneNumber
+  const { phoneNumber } = await params
   const noCache = {
     "Cache-Control": "no-store, max-age=0",
     Pragma: "no-cache",

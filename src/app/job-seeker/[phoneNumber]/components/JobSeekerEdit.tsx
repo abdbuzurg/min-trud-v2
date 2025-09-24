@@ -10,7 +10,8 @@ import {
   Globe,
   Plus,
   Trash2,
-  Save, FileText
+  Save, FileText,
+  Download
 } from 'lucide-react';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -307,6 +308,10 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
     } catch {
       return false
     }
+  }
+
+  const handleExistingDownload = (filePrefix: string) => {
+
   }
 
   const handleSubmit = async () => {
@@ -1034,13 +1039,21 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Фотография (изображение) *
         </label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.photoFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-        />
+        <div className="flex gap-x-2">
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.photoFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+          />
+          <button
+            onClick={handleSubmit}
+            className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+          >
+            <Download size={20} className="mr-2" />
+          </button>
+        </div>
         {errors.photoFile && <p className="text-red-500 text-sm mt-1">{errors.photoFile}</p>}
         {photoFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {photoFile.name}</p>}
       </div>
@@ -1049,13 +1062,21 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Паспорт (скан/фото) *
         </label>
-        <input
-          type="file"
-          accept="image/*,application/pdf"
-          onChange={(e) => setPassportFile(e.target.files?.[0] || null)}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.passportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-        />
+        <div className="flex gap-x-2">
+          <input
+            type="file"
+            accept="image/*,application/pdf"
+            onChange={(e) => setPassportFile(e.target.files?.[0] || null)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.passportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+          />
+          <a
+            href={`/api/files?name=${phoneNumber}_passport`}
+            className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+          >
+            <Download size={20} className="mr-2" />
+          </a>
+        </div>
         {errors.passportFile && <p className="text-red-500 text-sm mt-1">{errors.passportFile}</p>}
         {passportFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {passportFile.name}</p>}
       </div>
@@ -1064,13 +1085,21 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Рекомендательное письмо *
         </label>
-        <input
-          type="file"
-          accept="application/pdf,image/*"
-          onChange={(e) => setRecommendationLetterFile(e.target.files?.[0] || null)}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.recommendationLetterFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-        />
+        <div className="flex gap-x-2">
+          <input
+            type="file"
+            accept="application/pdf,image/*"
+            onChange={(e) => setRecommendationLetterFile(e.target.files?.[0] || null)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.recommendationLetterFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+          />
+          <button
+            onClick={handleSubmit}
+            className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+          >
+            <Download size={20} className="mr-2" />
+          </button>
+        </div>
         {errors.recommendationLetterFile && <p className="text-red-500 text-sm mt-1">{errors.recommendationLetterFile}</p>}
         {recommendationLetterFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {recommendationLetterFile.name}</p>}
       </div>

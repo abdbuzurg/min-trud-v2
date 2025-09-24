@@ -1,7 +1,7 @@
 import JobSeekerEditForm from "./components/JobSeekerEdit";
 
 export default async function JobSeekerPersonal(
-  { params }: { params: { phoneNumber: string } }
+  { params }: { params: Promise<{ phoneNumber: string }> }
 ) {
 
   const { phoneNumber } = await params
