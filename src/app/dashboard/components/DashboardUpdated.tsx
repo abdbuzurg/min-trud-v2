@@ -66,7 +66,7 @@ export default function EmployeeListPage() {
   }, [page, end, start])
 
   return (
-    <div className="min-h-screen bg-[#F2FFF4]">
+    <div className="bg-[#F2FFF4]">
       {/* Top bar */}
       <header className="bg-[#39B36E] text-white px-6 py-3 font-semibold shadow-sm">
         Министерство Труда
@@ -168,7 +168,7 @@ export default function EmployeeListPage() {
           </div>
 
         </section>
-        <div className="flex items-center justify-end bg-white px-6 py-4">
+        <div className="flex items-center justify-end bg-gradient-to-br from-green-50 to-emerald-50 px-6 py-4">
           <div className="flex gap-2">
             <button
               className="cursor-pointer rounded-lg border bg-white px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"

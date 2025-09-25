@@ -22,7 +22,7 @@ export default function SeekerModal({
               <div className="font-semibold text-gray-900">
                 {employee.lastName} {employee.firstName} {employee.middleName || ""}
               </div>
-              <div className="text-sm text-gray-500">Инженер-строитель</div>
+              <div className="text-sm text-gray-500">{employee.speciality}</div>
             </div>
           </div>
           <button
@@ -49,6 +49,11 @@ export default function SeekerModal({
                 ]}
               />
 
+              <SectionTitle icon={<MapPin className="h-4 w-4" />}>Место рождения</SectionTitle>
+              <div className="rounded-xl bg-gray-50 px-4 py-3 text-sm text-gray-700">
+                {employee.addressOfBirth}
+              </div>
+
               <SectionTitle icon={<MapPin className="h-4 w-4" />}>Адрес</SectionTitle>
               <div className="rounded-xl bg-gray-50 px-4 py-3 text-sm text-gray-700">
                 {employee.address}
@@ -72,6 +77,7 @@ export default function SeekerModal({
                     ),
                   },
                   { label: "Мобильный:", value: employee.phoneNumber },
+                  { label: "Whatsapp/Telegram", value: employee.messengerNumber },
                   {
                     label: "Доп.",
                     value: (
@@ -86,7 +92,7 @@ export default function SeekerModal({
               <SectionTitle icon={<GraduationCap className="h-4 w-4" />}>Образование и навыки</SectionTitle>
               <InfoRows rows={[
                 { label: "Образование:", value: `${employee.education}, ${employee.speciality}, ${employee.speciality}` },
-                { label: "Языки:", value: employee.knowledgeOfLanguages.map(v => `${v.language}(${v.level})`).toString() }
+                { label: "Языки:", value: employee.knowledgeOfLanguages.map(v => ` ${v.language}(${v.level})`).toString() }
               ]}
               />
 
@@ -94,6 +100,8 @@ export default function SeekerModal({
               <InfoRows rows={[
                 { label: "Готовность к выезду:", value: formatDate(employee.dateOfReadiness.toString()) },
                 { label: "Предпочитаемая страна:", value: employee.desiredCountry },
+                { label: "Предпочитаемый город:", value: employee.desiredCity },
+                { label: "Предпочитаемое место работы:", value: employee.desiredWorkPlace },
                 { label: "Предпочитаемая зарплата", value: employee.desiredSalary }
               ]}
               />

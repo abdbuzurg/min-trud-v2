@@ -165,7 +165,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center py-8 px-4">
+    <div className="bg-gradient-to-br from-green-50 to-emerald-50 flex items-center justify-center py-8 px-4">
       <div className="max-w-md w-full">
         {/* Header */}
         <div className="text-center mb-8">

@@ -7,8 +7,6 @@ export default async function JobSeekerPersonal(
   const { phoneNumber } = await params
 
   return (
-    <body>
-      <JobSeekerEditForm phoneNumber={phoneNumber} />
-    </body>
+    <JobSeekerEditForm phoneNumber={phoneNumber} />
   )
 }

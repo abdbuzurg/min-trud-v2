@@ -51,6 +51,8 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
   const [passportFile, setPassportFile] = useState<File | null>(null);
   const [recommendationLetterFile, setRecommendationLetterFile] = useState<File | null>(null);
 
+  const [agreement, setAgreement] = useState(false)
+
   const [formData, setFormData] = useState<JobSeekerFromData>({
     lastName: '',
     firstName: '',
@@ -1109,6 +1111,18 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         {errors.recommendationLetterFile && <p className="text-red-500 text-sm mt-1">{errors.recommendationLetterFile}</p>}
         {recommendationLetterFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {recommendationLetterFile.name}</p>}
       </div>
+
+      <div className="flex gap-x-3 items-center">
+        <input
+          className="w-8 h-8"
+          type="checkbox"
+          onChange={(() => setAgreement(!agreement))}
+          checked={agreement}
+        />
+        <span>
+          Я согласен(на) на обработку персональных данных (ссылка на полный текст согласия) и ознакомлен(а) с [политикой конфиденциальности](ссылка на политику).
+        </span>
+      </div>
     </div>
   );
 
@@ -1225,7 +1239,11 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             {currentStep === steps.length ? (
               <button
                 onClick={handleSubmit}
-                className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+                disabled={!agreement}
+                className={agreement
+                  ? "flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+                  : "flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-200 bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }
               >
                 <Save size={20} className="mr-2" />
                 Отправить заявку
