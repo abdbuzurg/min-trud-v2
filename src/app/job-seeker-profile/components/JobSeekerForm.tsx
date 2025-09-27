@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   User,
   Phone,
@@ -25,15 +25,7 @@ import { JobSeekerFromData } from '../../../../types/jobSeeker';
 registerLocale('ru', ru)
 
 
-const countries = [
-  'Россия', 'Казахстан', 'Беларусь', 'Украина', 'Узбекистан', 'Кыргызстан', 'Таджикистан',
-  'Туркменистан', 'Азербайджан', 'Армения', 'Грузия', 'Молдова', 'США', 'Канада', 'Германия',
-  'Франция', 'Великобритания', 'Италия', 'Испания', 'Нидерланды', 'Швеция', 'Норвегия',
-  'Дания', 'Финляндия', 'Польша', 'Чехия', 'Австрия', 'Швейцария', 'Бельгия', 'Португалия',
-  'Китай', 'Япония', 'Южная Корея', 'Индия', 'Таиланд', 'Вьетнам', 'Сингапур', 'Малайзия',
-  'Индонезия', 'Филиппины', 'Австралия', 'Новая Зеландия', 'ОАЭ', 'Саудовская Аравия',
-  'Катар', 'Кувейт', 'Турция', 'Израиль', 'Египет', 'ЮАР', 'Бразилия', 'Аргентина', 'Чили'
-];
+const countries = ["Афганистан", "Албания", "Алжир", "Андорра", "Ангола", "Антигуа и Барбуда", "Аргентина", "Армения", "Австралия", "Австрия", "Азербайджан", "Багамы", "Бахрейн", "Бангладеш", "Барбадос", "Беларусь", "Бельгия", "Белиз", "Бенин", "Бутан", "Боливия", "Босния и Герцеговина", "Ботсвана", "Бразилия", "Бруней", "Болгария", "Буркина-Фасо", "Бурунди", "Кабо-Верде", "Камбоджа", "Камерун", "Канада", "Центральноафриканская Республика", "Чад", "Чили", "Китай", "Колумбия", "Коморы", "Конго", "Коста-Рика", "Хорватия", "Куба", "Кипр", "Чехия", "Демократическая Республика Конго", "Дания", "Джибути", "Доминика", "Доминиканская Республика", "Эквадор", "Египет", "Сальвадор", "Экваториальная Гвинея", "Эритрея", "Эстония", "Эсватини", "Эфиопия", "Фиджи", "Финляндия", "Франция", "Габон", "Гамбия", "Грузия", "Германия", "Гана", "Греция", "Гренада", "Гватемала", "Гвинея", "Гвинея-Бисау", "Гайана", "Гаити", "Ватикан", "Гондурас", "Венгрия", "Исландия", "Индия", "Индонезия", "Иран", "Ирак", "Ирландия", "Израиль", "Италия", "Ямайка", "Япония", "Иордания", "Казахстан", "Кения", "Кирибати", "Кувейт", "Киргизия", "Лаос", "Латвия", "Ливан", "Лесото", "Либерия", "Ливия", "Лихтенштейн", "Литва", "Люксембург", "Мадагаскар", "Малави", "Малайзия", "Мальдивы", "Мали", "Мальта", "Маршалловы Острова", "Мавритания", "Маврикий", "Мексика", "Микронезия", "Молдова", "Монако", "Монголия", "Черногория", "Марокко", "Мозамбик", "Мьянма", "Намибия", "Науру", "Непал", "Нидерланды", "Новая Зеландия", "Никарагуа", "Нигер", "Нигерия", "КНДР", "Северная Македония", "Норвегия", "Оман", "Пакистан", "Палау", "Палестина", "Панама", "Папуа — Новая Гвинея", "Парагвай", "Перу", "Филиппины", "Польша", "Португалия", "Катар", "Румыния", "Россия", "Руанда", "Сент-Китс и Невис", "Сент-Люсия", "Сент-Винсент и Гренадины", "Самоа", "Сан-Марино", "Сан-Томе и Принсипи", "Саудовская Аравия", "Сенегал", "Сербия", "Сейшельские Острова", "Сьерра-Леоне", "Сингапур", "Словакия", "Словения", "Соломоновы Острова", "Сомали", "Южная Африка", "Южная Корея", "Южный Судан", "Испания", "Шри-Ланка", "Судан", "Суринам", "Швеция", "Швейцария", "Сирия", "Таджикистан", "Танзания", "Таиланд", "Восточный Тимор", "Того", "Тонга", "Тринидад и Тобаго", "Тунис", "Турция", "Туркмения", "Тувалу", "Уганда", "Украина", "ОАЭ", "Великобритания", "США", "Уругвай", "Узбекистан", "Вануату", "Венесуэла", "Вьетнам", "Йемен", "Замбия", "Зимбабве"];
 
 interface Props {
   phoneNumber: string
@@ -47,9 +39,15 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
   const [filteredCountries, setFilteredCountries] = useState<string[]>([]);
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
 
+  const [selectedCountries, setSelectedCountries] = useState<string[]>([])
+  const [countryQuery, setCountryQuery] = useState('')
+
   const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [passportFile, setPassportFile] = useState<File | null>(null);
+  const [frontPassportFile, setFrontPassportFile] = useState<File | null>(null);
+  const [backPassportFile, setBackPassportFile] = useState<File | null>(null)
+  const [diplomaFile, setDiplomaFile] = useState<File | null>(null)
   const [recommendationLetterFile, setRecommendationLetterFile] = useState<File | null>(null);
+  const [certificates, setCertificates] = useState<File[] | null>(null)
 
   const [agreement, setAgreement] = useState(false)
 
@@ -168,8 +166,10 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
 
       case 7:
         if (!photoFile) newErrors.photoFile = 'Загрузите фотографию';
-        if (!passportFile) newErrors.passportFile = 'Загрузите паспорт';
+        if (!frontPassportFile) newErrors.frontPassportFile = 'Загрузите переднюю сторону паспорта'; if (!backPassportFile) newErrors.backPassportFile = 'Загрузите заднюю сторону паспорта';
+        if (!diplomaFile) newErrors.diplomaFile = 'Загрузите диплом';
         if (!recommendationLetterFile) newErrors.recommendationLetterFile = 'Загрузите рекомендательное письмо';
+        if (!certificates) newErrors.certificates = 'Загрузите сертификаты';
         break;
     }
 
@@ -256,23 +256,39 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     }
   };
 
+  const syncDesiredCountry = (list: string[]) => {
+    handleInputChange('desiredCountry', list.join(", "))
+  }
+
   const handleCountrySearch = (value: string) => {
-    handleInputChange('desiredCountry', value);
+    setCountryQuery(value);
 
     if (value.trim()) {
-      const filtered = countries.filter(country =>
-        country.toLowerCase().includes(value.toLowerCase())
-      ).slice(0, 10);
+      const filtered = countries
+        .filter(c => c.toLowerCase().includes(value.toLowerCase()))
+        .slice(0, 10);
       setFilteredCountries(filtered);
       setShowCountryDropdown(true);
     } else {
+      setFilteredCountries([]);
       setShowCountryDropdown(false);
     }
   };
 
   const selectCountry = (country: string) => {
-    handleInputChange('desiredCountry', country);
+    if (!selectedCountries.includes(country)) {
+      const updated = [...selectedCountries, country];
+      setSelectedCountries(updated);
+      syncDesiredCountry(updated);
+    }
+    setCountryQuery('');
     setShowCountryDropdown(false);
+  };
+
+  const removeCountry = (country: string) => {
+    const updated = selectedCountries.filter(c => c !== country);
+    setSelectedCountries(updated);
+    syncDesiredCountry(updated);
   };
 
   const handleTabClick = (stepId: number) => {
@@ -314,8 +330,16 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     const data = new FormData()
 
     if (photoFile) data.set('photo', photoFile);
-    if (passportFile) data.set('passport', passportFile);
+    if (frontPassportFile) data.set('frontPassport', frontPassportFile);
+    if (backPassportFile) data.set('backPassport', backPassportFile);
+    if (diplomaFile) data.set('diploma', diplomaFile);
     if (recommendationLetterFile) data.set('recommendationLetter', recommendationLetterFile);
+    if (certificates && certificates.length > 0) {
+      certificates.forEach((file) => {
+        data.append("certificates", file);
+        // formData.append(`certificates[${index}]`, file);
+      });
+    }
     data.set("verificationPhoneNumber", phoneNumber)
     data.set("name", formData.firstName)
     data.set("surname", formData.lastName)
@@ -925,27 +949,47 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Предпочитаемая страна работы *
         </label>
+        {/* Selected countries as chips */}
+        <div className="flex flex-wrap gap-2 mb-2">
+          {selectedCountries.map((c) => (
+            <span
+              key={c}
+              className="inline-flex items-center px-3 py-1 rounded-full border text-sm bg-green-50 text-green-700"
+            >
+              {c}
+              <button
+                type="button"
+                onClick={() => removeCountry(c)}
+                className="ml-2 leading-none focus:outline-none hover:opacity-70 cursor-pointer"
+                aria-label={`Удалить ${c}`}
+              >
+                ×
+              </button>
+            </span>
+          ))}
+        </div>
+
         <input
           type="text"
-          value={(formData.desiredCountry ?? '')}
+          value={countryQuery}
           onChange={(e) => handleCountrySearch(e.target.value)}
           onFocus={() => {
-            if ((formData.desiredCountry ?? '').trim()) {
-              const filtered = countries.filter(country =>
-                country.toLowerCase().includes((formData.desiredCountry ?? '').toLowerCase())
-              ).slice(0, 10);
+            if (countryQuery.trim()) {
+              const filtered = countries
+                .filter(c => c.toLowerCase().includes(countryQuery.toLowerCase()))
+                .slice(0, 10);
               setFilteredCountries(filtered);
               setShowCountryDropdown(true);
             }
           }}
-          onBlur={() => {
-            setTimeout(() => setShowCountryDropdown(false), 200);
-          }}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.desiredCountry ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-          placeholder="Начните вводить название страны"
+          onBlur={() => setTimeout(() => setShowCountryDropdown(false), 200)}
+          className="w-full px-4 py-3 border-2 rounded-xl /* keep your existing focus/invalid classes here */"
+          placeholder={selectedCountries.length ? 'Добавьте ещё страны' : 'Начните вводить название страны'}
         />
-        {errors.desiredCountry && <p className="text-red-500 text-sm mt-1">{errors.desiredCountry}</p>}
+
+        {errors.desiredCountry && (
+          <p className="text-red-500 text-sm mt-1">{errors.desiredCountry}</p>
+        )}
 
         {showCountryDropdown && filteredCountries.length > 0 && (
           <div className="absolute z-10 w-full mt-1 bg-white border border-gray-200 rounded-xl shadow-lg max-h-60 overflow-y-auto">
@@ -1082,19 +1126,50 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         {photoFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {photoFile.name}</p>}
       </div>
 
+      <div className="flex gap-x-2 w-full">
+        <div className="flex-1">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Фронтальная сторона паспорта (скан/фото) *
+          </label>
+          <input
+            type="file"
+            accept="image/png,image/jpeg,application/pdf"
+            onChange={(e) => setFrontPassportFile(e.target.files?.[0] || null)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.frontPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+          />
+          {errors.frontPassportFile && <p className="text-red-500 text-sm mt-1">{errors.frontPassportFile}</p>}
+          {frontPassportFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {frontPassportFile.name}</p>}
+        </div>
+        <div className="flex-1">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Задняя сторона паспорта (скан/фото) *
+          </label>
+          <input
+            type="file"
+            accept="image/png,image/jpeg,application/pdf"
+            onChange={(e) => setBackPassportFile(e.target.files?.[0] || null)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.backPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+          />
+          {errors.backPassportFile && <p className="text-red-500 text-sm mt-1">{errors.backPassportFile}</p>}
+          {backPassportFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {backPassportFile.name}</p>}
+        </div>
+      </div>
+
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Паспорт (скан/фото) *
+          Диплом
         </label>
         <input
           type="file"
-          accept="image/*,application/pdf"
-          onChange={(e) => setPassportFile(e.target.files?.[0] || null)}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.passportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+          accept="application/pdf"
+          onChange={(e) => setDiplomaFile(e.target.files?.[0] || null)}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.diplomaFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
         />
-        {errors.passportFile && <p className="text-red-500 text-sm mt-1">{errors.passportFile}</p>}
-        {passportFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {passportFile.name}</p>}
+        {errors.diplomaFile && <p className="text-red-500 text-sm mt-1">{errors.diplomaFile}</p>}
+        {diplomaFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {diplomaFile.name}</p>}
       </div>
 
       <div>
@@ -1110,6 +1185,28 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         />
         {errors.recommendationLetterFile && <p className="text-red-500 text-sm mt-1">{errors.recommendationLetterFile}</p>}
         {recommendationLetterFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {recommendationLetterFile.name}</p>}
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Сертификаты
+        </label>
+        <input
+          type="file"
+          accept="application/pdf"
+          multiple
+          onChange={(e) => setCertificates(Array.from(e.target.files || []))}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.certificates ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            }`}
+        />
+        {errors.certificates && <p className="text-red-500 text-sm mt-1">{errors.certificates}</p>}
+        {certificates && certificates?.length > 0 && (
+          <ul className="mt-2 text-sm text-gray-600 list-disc pl-4">
+            {certificates.map((file, idx) => (
+              <li key={idx}>{file.name}</li>
+            ))}
+          </ul>
+        )}
       </div>
 
       <div className="flex gap-x-3 items-center">

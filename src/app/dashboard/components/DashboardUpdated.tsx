@@ -1,10 +1,11 @@
 "use client"
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Users, Calendar, X, CloudSun, Eye } from "lucide-react";
+import { Users, Calendar, X, CloudSun, Eye, Download } from "lucide-react";
 import SeekerModal from "./SeekerModal";
 import axios from "axios";
 import { JobSeeker } from "@/generated/prisma";
+import DownloadData from "./DownloadData";
 
 export interface JobSeekerAPIResult extends JobSeeker {
   knowledgeOfLanguages: {
@@ -38,6 +39,7 @@ export default function EmployeeListPage() {
   const [total, setTotal] = useState(0)
   const [synced, setSynced] = useState(0)
   const [tableData, setTableData] = useState<JobSeekerAPIResult[]>([])
+  const [downloadModal, setDownloadModal] = useState(false)
 
   const clearFilters = () => {
     setStart("");
@@ -103,9 +105,18 @@ export default function EmployeeListPage() {
                 <CloudSun className="h-4 w-4" />
                 Синхронизация с 1С
               </button>
+
+              <button
+                className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95"
+                onClick={() => setDownloadModal(true)}
+              >
+                <Download className="h-4 w-4" />
+                Скачать
+              </button>
             </div>
           </div>
         </section>
+        {downloadModal && <DownloadData setDownloadModal={setDownloadModal} />}
 
         {/* Table */}
         <section className="bg-white/90 backdrop-blur rounded-2xl shadow-sm ring-1 ring-black/5 overflow-hidden">

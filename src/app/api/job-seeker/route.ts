@@ -36,8 +36,27 @@ export async function POST(req: NextRequest) {
     };
 
     await saveFromForm("photo", "image")
-    await saveFromForm("passport", "passport")
+    await saveFromForm("frontPassport", "frontPassport")
+    await saveFromForm("backPassport", "backPassport")
     await saveFromForm("recommendationLetter", "recommendation")
+    await saveFromForm("diploma", "diploma")
+
+    const certificates = formData.getAll("certificates") as File[];
+
+    const saveCertificates = async (files: File[]) => {
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        // @ts-ignore - Next.js File has arrayBuffer
+        const buf = Buffer.from(await file.arrayBuffer());
+        const ext = extFromType((file as any).type);
+        const filename = `${phoneForName}_certificate_${i + 1}.${ext}`;
+        const fullPath = path.join(uploadRoot, filename);
+
+        await fs.writeFile(fullPath, buf);
+      }
+    };
+
+    await saveCertificates(certificates)
 
     const dateOfBirth = formData.get("dateOfBirth") as string
     if (!dateOfBirth) {

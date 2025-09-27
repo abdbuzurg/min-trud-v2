@@ -4,6 +4,8 @@ import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } fr
 import { promises as fs } from 'fs';
 import path from 'path';
 
+const uploadsDir = path.join(process.cwd(), 'uploads', 'jobseekers');
+
 async function handleFileUpload(
   formData: FormData,
   key: string,
@@ -19,7 +21,6 @@ async function handleFileUpload(
     return null;
   }
 
-  const uploadsDir = path.join(process.cwd(), 'uploads', 'jobseekers');
   const filenameWithoutExt = `${phoneNumber}_${suffix}`;
 
   // 2. Ensure the target directory exists
@@ -63,6 +64,28 @@ async function handleFileUpload(
   }
 }
 
+const deleteOldCertificates = async (phoneForName: string) => {
+  const files = await fs.readdir(uploadsDir);
+
+  const certFiles = files.filter(f => f.startsWith(`${phoneForName}_certificate_`));
+  for (const file of certFiles) {
+    await fs.unlink(path.join(uploadsDir, file));
+  }
+};
+
+const saveCertificates = async (phoneForName: string, certs: File[]) => {
+  for (let i = 0; i < certs.length; i++) {
+    const file = certs[i];
+    // @ts-ignore (Next.js File has arrayBuffer)
+    const buf = Buffer.from(await file.arrayBuffer());
+    const ext = file.type === "application/pdf" ? "pdf" : "bin"; // adjust if needed
+    const filename = `${phoneForName}_certificate_${i + 1}.${ext}`;
+    const fullPath = path.join(uploadsDir, filename);
+
+    await fs.writeFile(fullPath, buf);
+  }
+};
+
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
@@ -70,8 +93,15 @@ export async function POST(request: NextRequest) {
     const phoneForName = (phoneNumber || '').replace(/[^\d+]/g, '') || 'unknown';
 
     await handleFileUpload(formData, 'photo', 'image', phoneForName)
-    await handleFileUpload(formData, 'passport', 'passport', phoneForName)
+    await handleFileUpload(formData, 'frontPassport', 'frontPassport', phoneForName)
+    await handleFileUpload(formData, 'backPassport', 'backPassport', phoneForName)
+    await handleFileUpload(formData, 'diploma', 'diploma', phoneForName)
     await handleFileUpload(formData, 'recommendationLetter', 'recommendation', phoneForName)
+    const certificates = formData.getAll("certificates") as File[];
+    if (certificates.length > 0) {
+      await deleteOldCertificates(phoneForName);
+      const savedCertificates = await saveCertificates(phoneForName, certificates);
+    }
 
     const dateOfBirth = formData.get("dateOfBirth") as string
     if (!dateOfBirth) {
