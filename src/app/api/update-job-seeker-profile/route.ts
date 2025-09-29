@@ -241,7 +241,7 @@ export async function POST(request: NextRequest) {
       data: workExperience.map(v => ({
         ...v,
         dateStart: new Date(v.dateStart),
-        dateEnd: new Date(v.dateEnd)
+        dateEnd: !v.dateEnd ? null : new Date(v.dateEnd),
       }))
     })
 
