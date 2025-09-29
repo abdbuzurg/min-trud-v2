@@ -13,7 +13,6 @@ export default function JobSeekerProfile() {
 
   const handleAuthSuccess = (token: string | null, phoneNumber: string) => {
     if (!token) {
-      console.log("111")
       setIsAuthenticated(true);
       setPhoneNumber(phoneNumber)
     } else {

@@ -18,20 +18,16 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { ru } from 'date-fns/locale';
 import axios from 'axios';
-import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from '../../../../jobseeker';
 import { useRouter } from 'next/navigation';
-import { Education, JobSeekerFromData } from '../../../../types/jobSeeker';
+import { Education, JobSeekerFromData } from '../../../../../types/jobSeeker';
+import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from '../../../../../jobseeker';
 
 registerLocale('ru', ru)
 
 
 const countries = ["Афганистан", "Албания", "Алжир", "Андорра", "Ангола", "Антигуа и Барбуда", "Аргентина", "Армения", "Австралия", "Австрия", "Азербайджан", "Багамы", "Бахрейн", "Бангладеш", "Барбадос", "Беларусь", "Бельгия", "Белиз", "Бенин", "Бутан", "Боливия", "Босния и Герцеговина", "Ботсвана", "Бразилия", "Бруней", "Болгария", "Буркина-Фасо", "Бурунди", "Кабо-Верде", "Камбоджа", "Камерун", "Канада", "Центральноафриканская Республика", "Чад", "Чили", "Китай", "Колумбия", "Коморы", "Конго", "Коста-Рика", "Хорватия", "Куба", "Кипр", "Чехия", "Демократическая Республика Конго", "Дания", "Джибути", "Доминика", "Доминиканская Республика", "Эквадор", "Египет", "Сальвадор", "Экваториальная Гвинея", "Эритрея", "Эстония", "Эсватини", "Эфиопия", "Фиджи", "Финляндия", "Франция", "Габон", "Гамбия", "Грузия", "Германия", "Гана", "Греция", "Гренада", "Гватемала", "Гвинея", "Гвинея-Бисау", "Гайана", "Гаити", "Ватикан", "Гондурас", "Венгрия", "Исландия", "Индия", "Индонезия", "Иран", "Ирак", "Ирландия", "Израиль", "Италия", "Ямайка", "Япония", "Иордания", "Казахстан", "Кения", "Кирибати", "Кувейт", "Киргизия", "Лаос", "Латвия", "Ливан", "Лесото", "Либерия", "Ливия", "Лихтенштейн", "Литва", "Люксембург", "Мадагаскар", "Малави", "Малайзия", "Мальдивы", "Мали", "Мальта", "Маршалловы Острова", "Мавритания", "Маврикий", "Мексика", "Микронезия", "Молдова", "Монако", "Монголия", "Черногория", "Марокко", "Мозамбик", "Мьянма", "Намибия", "Науру", "Непал", "Нидерланды", "Новая Зеландия", "Никарагуа", "Нигер", "Нигерия", "КНДР", "Северная Македония", "Норвегия", "Оман", "Пакистан", "Палау", "Палестина", "Панама", "Папуа — Новая Гвинея", "Парагвай", "Перу", "Филиппины", "Польша", "Португалия", "Катар", "Румыния", "Россия", "Руанда", "Сент-Китс и Невис", "Сент-Люсия", "Сент-Винсент и Гренадины", "Самоа", "Сан-Марино", "Сан-Томе и Принсипи", "Саудовская Аравия", "Сенегал", "Сербия", "Сейшельские Острова", "Сьерра-Леоне", "Сингапур", "Словакия", "Словения", "Соломоновы Острова", "Сомали", "Южная Африка", "Южная Корея", "Южный Судан", "Испания", "Шри-Ланка", "Судан", "Суринам", "Швеция", "Швейцария", "Сирия", "Таджикистан", "Танзания", "Таиланд", "Восточный Тимор", "Того", "Тонга", "Тринидад и Тобаго", "Тунис", "Турция", "Туркмения", "Тувалу", "Уганда", "Украина", "ОАЭ", "Великобритания", "США", "Уругвай", "Узбекистан", "Вануату", "Венесуэла", "Вьетнам", "Йемен", "Замбия", "Зимбабве"];
 
-interface Props {
-  phoneNumber: string
-}
-
-const JobSeekerForm = ({ phoneNumber }: Props) => {
+export default function AdminJobSeekerForm() {
   const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -342,7 +338,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
 
   const sendForm = async (formData: globalThis.FormData): Promise<boolean> => {
     try {
-      await axios.post(`api/job-seeker`, formData).then(res => res.data)
+      await axios.post(`/api/dashboard/add-job-seeker`, formData).then(res => res.data)
       return true
     } catch {
       return false
@@ -367,7 +363,6 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         // formData.append(`certificates[${index}]`, file);
       });
     }
-    data.set("verificationPhoneNumber", phoneNumber)
     data.set("name", formData.firstName)
     data.set("surname", formData.lastName)
     data.set("middlename", formData.middleName)
@@ -614,6 +609,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
               }`}
             placeholder="+7 (999) 123-45-67"
           />
+          <p className="text-gray-500 italic text-sm">Соскатель будет привязан к этому номеру. Если соискатель сам захочет поменять информацию, он будет использовать этот номер</p>
           {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
         </div>
 
@@ -1350,18 +1346,18 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 <Save className="w-8 h-8 text-white" />
               </div>
               <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Заявка отправлена!
+                Соскатель добавлен
               </h2>
               <p className="text-gray-600 mb-6">
-                Ваша заявка успешно отправлена. Благодарим Вас за заполненую анкету
+                Данная заявка успешно добавлена в систему
               </p>
               <button
                 onClick={() => {
-                  router.push("/seeker")
+                  router.push("/dashboard")
                 }}
                 className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
               >
-                Закрыть
+                Обратно в админ панель
               </button>
             </div>
           </div>
@@ -1463,5 +1459,3 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     </div>
   );
 };
-
-export default JobSeekerForm;

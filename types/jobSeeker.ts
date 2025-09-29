@@ -22,10 +22,7 @@ export interface JobSeekerFromData {
   contactPhone: string;
 
   // Образование
-  education: string;
-  educationOther: string;
-  institution: string;
-  specialty: string;
+  education: Array<Education>
 
   // Языки
   languages: Array<LanguagesForm>;
@@ -36,7 +33,6 @@ export interface JobSeekerFromData {
   // Предпочтения
   desiredCountry: string;
   desiredCity: string
-  desiredWorkPlace: string;
   expectedSalary: string;
   additionalInfo: string;
   criminalRecord: string
@@ -54,4 +50,11 @@ export interface WorkExperienceForm {
   position: string
   startDate: string
   endDate: string
+}
+
+export interface Education {
+  education: string;
+  educationOther: string;
+  institution: string;
+  specialty: string;
 }

@@ -17,7 +17,7 @@ import DatePicker, { registerLocale } from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { ru } from 'date-fns/locale';
 import axios from 'axios';
-import { JobSeekerFromData } from '../../../../../types/jobSeeker';
+import { Education, JobSeekerFromData } from '../../../../../types/jobSeeker';
 import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from '../../../../../jobseeker';
 
 registerLocale('ru', ru)
@@ -39,8 +39,11 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
   const [countryQuery, setCountryQuery] = useState('')
 
   const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null)
   const [frontPassportFile, setFrontPassportFile] = useState<File | null>(null);
+  const [frontPassportPreview, setFrontPassportPreview] = useState<string | null>(null)
   const [backPassportFile, setBackPassportFile] = useState<File | null>(null)
+  const [backPassportPreview, setBackPassportPreview] = useState<string | null>(null)
   const [diplomaFile, setDiplomaFile] = useState<File | null>(null)
   const [recommendationLetterFile, setRecommendationLetterFile] = useState<File | null>(null);
   const [certificates, setCertificates] = useState<File[] | null>(null)
@@ -62,10 +65,12 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
     contactRelationOther: '',
     contactName: '',
     contactPhone: '',
-    education: '',
-    educationOther: '',
-    institution: '',
-    specialty: '',
+    education: [{
+      education: '',
+      educationOther: '',
+      institution: '',
+      specialty: '',
+    }],
     languages: [{
       language: '',
       languageOther: '',
@@ -80,7 +85,6 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
     desiredCountry: '',
     addressOfBirth: '',
     desiredCity: '',
-    desiredWorkPlace: '',
     messengerNumber: '',
     expectedSalary: '',
     additionalInfo: '',
@@ -99,13 +103,23 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         Authorization: `Bearer ${token}`
       }
     }).then((response) => {
-      let education = response.data.profile.education
-      let educationOther: string = ""
       const availableEducations = ["высшее", "средняя специальность", "профессиональное техническое", "другое"]
-      if (!availableEducations.find((v) => v == education)) {
-        education = 'другое'
-        educationOther = response.data.profile.educationOther
-      }
+      const educations = response.data.profile.education.map((v: any) => {
+        let education = v.education
+        let educationOther: string = ""
+
+        if (!availableEducations.find((v) => v == education)) {
+          education = 'другое'
+          educationOther = v.educationOther
+        }
+
+        return {
+          education: education,
+          educationOther: educationOther,
+          institution: v.institution,
+          specialty: v.specialty,
+        }
+      })
 
       const availableLanguages = ["русский", "английский", "корейский", "арабский", "другое"]
       const languages = response.data.profile.languages.map((v: any) => {
@@ -123,6 +137,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         }
       })
 
+
       const initial = (response.data.profile.desiredCountry as string ?? '')
         .split(',')
         .map(s => s.trim())
@@ -131,8 +146,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
 
       setFormData({
         ...response.data.profile,
-        education: education,
-        educationOther: educationOther,
+        education: educations,
         languages: languages,
       })
     })
@@ -175,12 +189,14 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         if (!(formData.contactPhone ?? '').trim()) newErrors.contactPhone = 'Обязательное поле';
         break;
       case 3:
-        if (!formData.education) newErrors.education = 'Обязательное поле';
-        if (formData.education === 'другое' && !(formData.educationOther ?? '').trim()) {
-          newErrors.educationOther = 'Обязательное поле';
-        }
-        if (!(formData.institution ?? '').trim()) newErrors.institution = 'Обязательное поле';
-        if (!(formData.specialty ?? '').trim()) newErrors.specialty = 'Обязательное поле';
+        formData.education.forEach((edu, index) => {
+          if (!edu.education) newErrors[`education_${index}`] = 'Обязательное поле';
+          if (edu.education === 'другое' && !edu.educationOther.trim()) {
+            newErrors[`educationOther_${index}`] = 'Обязательное поле';
+          }
+          if (!edu.institution) newErrors[`institution_${index}`] = 'Обязательное поле';
+          if (!edu.specialty) newErrors[`specialty_${index}`] = 'Обязательное поле';
+        })
         break;
       case 4:
         formData.languages.forEach((lang, index) => {
@@ -196,23 +212,19 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
           if (!exp.company.trim()) newErrors[`company_${index}`] = 'Обязательное поле';
           if (!exp.position.trim()) newErrors[`position_${index}`] = 'Обязательное поле';
           if (!exp.startDate.trim()) newErrors[`startDate_${index}`] = 'Обязательное поле';
-          if (!exp.endDate.trim()) newErrors[`endDate_${index}`] = 'Обязательное поле';
         });
         break;
       case 6:
         if (!(formData.desiredCountry ?? '').trim()) newErrors.desiredCountry = 'Обязательное поле';
         if (!(formData.desiredCity ?? '').trim()) newErrors.desiredCity = 'Обязательное поле';
         if (!(formData.dateOfReadiness ?? '').trim()) newErrors.dateOfReadiness = 'Обязательное поле';
-        if (!(formData.desiredWorkPlace ?? '').trim()) newErrors.desiredWorkPlace = 'Обязательное поле';
         if (!(formData.expectedSalary ?? '').trim()) newErrors.expectedSalary = 'Обязательное поле';
         break;
 
       case 7:
         if (!photoFile) newErrors.photoFile = 'Загрузите фотографию';
-        if (!frontPassportFile) newErrors.frontPassportFile = 'Загрузите переднюю сторону паспорта'; if (!backPassportFile) newErrors.backPassportFile = 'Загрузите заднюю сторону паспорта';
-        if (!diplomaFile) newErrors.diplomaFile = 'Загрузите диплом';
-        if (!recommendationLetterFile) newErrors.recommendationLetterFile = 'Загрузите рекомендательное письмо';
-        if (!certificates) newErrors.certificates = 'Загрузите сертификаты';
+        if (!frontPassportFile) newErrors.frontPassportFile = 'Загрузите переднюю сторону паспорта';
+        if (!backPassportFile) newErrors.backPassportFile = 'Загрузите заднюю сторону паспорта';
         break;
     }
 
@@ -262,6 +274,31 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
     const errorKey = `${field}_${index}`;
     if (errors[errorKey]) {
       setErrors(prev => ({ ...prev, [errorKey]: '' }));
+    }
+  };
+
+  const handleEducationChange = (index: number, field: string, value: string) => {
+    const newEducation = [...formData.education]
+    newEducation[index] = { ...newEducation[index], [field]: value }
+    setFormData(prev => ({ ...prev, education: newEducation }))
+
+    const errorKey = `${field}_${index}`
+    if (errors[errorKey]) {
+      setErrors(prev => ({ ...prev, [errorKey]: '' }));
+    }
+  }
+
+  const addEducation = () => {
+    setFormData(prev => ({
+      ...prev,
+      education: [...prev.education, { education: '', educationOther: '', institution: '', specialty: '' }]
+    }))
+  }
+
+  const removeEducation = (index: number) => {
+    if (formData.education.length > 1) {
+      const newEducation = formData.education.filter((_, i) => i !== index);
+      setFormData(prev => ({ ...prev, education: newEducation }));
     }
   };
 
@@ -417,14 +454,18 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
       }
     ]
     data.set("additionalContacts", JSON.stringify(additionalContactInformation))
-    data.set("education", formData.education == 'другое' ? formData.educationOther : formData.education)
-    data.set("institution", formData.institution)
-    data.set("specialization", formData.specialty)
     const knowledgeOfLanguages: KnowledgeOfLanguages[] = formData.languages.map<KnowledgeOfLanguages>((v) => ({
       level: v.level,
       language: v.language == 'другое' ? v.languageOther : v.language,
       otherLanguage: "",
     }))
+    const education: Education[] = formData.education.map<Education>((v) => ({
+      education: v.education == "другое" ? v.educationOther : v.education,
+      educationOther: "",
+      institution: v.institution,
+      specialty: v.specialty,
+    }))
+    data.set("education", JSON.stringify(education))
     data.set("knowledgeOfLanguages", JSON.stringify(knowledgeOfLanguages))
     const workExperience: WorkExperience[] = formData.workExperience.map<WorkExperience>(v => ({
       jobTitle: v.position,
@@ -435,7 +476,6 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
     data.set("workExperience", JSON.stringify(workExperience))
     data.set("desiredCountry", formData.desiredCountry)
     data.set("desiredCity", formData.desiredCity)
-    data.set("desiredWorkPlace", formData.desiredWorkPlace)
     data.set("dateOfReadiness", formData.dateOfReadiness)
     data.set("desiredSalary", formData.expectedSalary)
     data.set("criminalRecord", formData.criminalRecord)
@@ -445,6 +485,42 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
       setIsSubmitted(true)
     }
   };
+
+  const handleImageFileChange = (file: File | null, name: string) => {
+    const changeState = (name: string, url: string | null, file: File | null) => {
+      console.log(name)
+      switch (name) {
+        case 'photo':
+          setPhotoFile(file)
+          setPhotoPreview(url)
+          break
+        case 'front':
+          setFrontPassportFile(file)
+          setFrontPassportPreview(url)
+          break
+        case 'back':
+          setBackPassportFile(file)
+          setBackPassportPreview(url)
+          break
+
+        default:
+          console.log("ERROR")
+      }
+    }
+
+    if (file && ["image/jpeg", "image/jpg", "image/png"].includes(file.type)) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        changeState(name, reader.result as string, file)
+      }
+      reader.readAsDataURL(file)
+    } else {
+      changeState(name, null, null)
+      if (file) {
+        alert("Только фотографии формата JPG, JPEG, и PNG принимаются")
+      }
+    }
+  }
 
   const renderPersonalInfo = () => (
     <div className="space-y-6">
@@ -641,7 +717,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
 
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Адрес рождения *
+          Место рождения, страна и город (район, село)
         </label>
         <textarea
           value={(formData.addressOfBirth ?? '')}
@@ -733,72 +809,98 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
 
   const renderEducation = () => (
     <div className="space-y-6">
-      <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Уровень образования *
-        </label>
-        <select
-          value={(formData.education ?? '')}
-          onChange={(e) => handleInputChange('education', e.target.value)}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.education ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
+      <div className="flex items-center justify-end">
+        <button
+          type="button"
+          onClick={addEducation}
+          className="flex items-center px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors duration-200"
         >
-          <option value="">Выберите уровень образования</option>
-          <option value="высшее">Высшее</option>
-          <option value="средняя специальность">Средняя специальность</option>
-          <option value="профессиональное техническое">Профессиональное техническое</option>
-          <option value="другое">Другое</option>
-        </select>
-        {errors.education && <p className="text-red-500 text-sm mt-1">{errors.education}</p>}
+          <Plus size={16} className="mr-2" />
+          Добавить образование
+        </button>
       </div>
+      {formData.education.map((education, index) => (
+        <div key={index} className="bg-gray-50 p-6 rounded-xl flex flex-col gap-y-2">
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="font-semibold text-gray-700">Образование {index + 1}</h4>
+            {formData.education.length > 1 && (
+              <button
+                type="button"
+                onClick={() => removeEducation(index)}
+                className="text-red-500 hover:text-red-700 transition-colors duration-200"
+              >
+                <Trash2 size={16} />
+              </button>
+            )}
+          </div>
 
-      {formData.education === 'другое' && (
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Укажите уровень образования *
-          </label>
-          <input
-            type="text"
-            value={(formData.educationOther ?? '')}
-            onChange={(e) => handleInputChange('educationOther', e.target.value)}
-            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.educationOther ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-              }`}
-            placeholder="Введите уровень образования"
-          />
-          {errors.educationOther && <p className="text-red-500 text-sm mt-1">{errors.educationOther}</p>}
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Уровень образования *
+            </label>
+            <select
+              value={(education.education ?? '')}
+              onChange={(e) => handleEducationChange(index, 'education', e.target.value)}
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.education ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+                }`}
+            >
+              <option value="">Выберите уровень образования</option>
+              <option value="высшее">Высшее</option>
+              <option value="средняя специальность">Средняя специальность</option>
+              <option value="профессиональное техническое">Профессиональное техническое</option>
+              <option value="другое">Другое</option>
+            </select>
+            {errors[`education_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`education_${index}`]}</p>}
+          </div>
+
+          {education.education === 'другое' && (
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Укажите уровень образования *
+              </label>
+              <input
+                type="text"
+                value={(education.educationOther ?? '')}
+                onChange={(e) => handleEducationChange(index, 'educationOther', e.target.value)}
+                className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.educationOther ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+                  }`}
+                placeholder="Введите уровень образования"
+              />
+              {errors[`educationOther_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`educationOther_${index}`]}</p>}
+            </div>
+          )}
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Учебное заведение *
+            </label>
+            <input
+              type="text"
+              value={(education.institution ?? '')}
+              onChange={(e) => handleEducationChange(index, 'institution', e.target.value)}
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.institution ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+                }`}
+              placeholder="Название учебного заведения"
+            />
+            {errors[`institution_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`institution_${index}`]}</p>}
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold text-gray-700 mb-2">
+              Специальность *
+            </label>
+            <input
+              type="text"
+              value={(education.specialty ?? '')}
+              onChange={(e) => handleEducationChange(index, 'specialty', e.target.value)}
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.specialty ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+                }`}
+              placeholder="Введите специальность"
+            />
+            {errors[`specialty_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`specialty_${index}`]}</p>}
+          </div>
         </div>
-      )}
-
-      <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Учебное заведение *
-        </label>
-        <input
-          type="text"
-          value={(formData.institution ?? '')}
-          onChange={(e) => handleInputChange('institution', e.target.value)}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.institution ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-          placeholder="Название учебного заведения"
-        />
-        {errors.institution && <p className="text-red-500 text-sm mt-1">{errors.institution}</p>}
-      </div>
-
-
-      <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Специальность *
-        </label>
-        <input
-          type="text"
-          value={(formData.specialty ?? '')}
-          onChange={(e) => handleInputChange('specialty', e.target.value)}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.specialty ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-          placeholder="Введите специальность"
-        />
-        {errors.specialty && <p className="text-red-500 text-sm mt-1">{errors.specialty}</p>}
-      </div>
+      ))}
     </div>
   );
 
@@ -1095,24 +1197,6 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-6">
-
-        <div>
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Предпочитаемое место работы
-          </label>
-          <input
-            type="text"
-            value={(formData.desiredWorkPlace ?? '')}
-            onChange={(e) => handleInputChange('desiredWorkPlace', e.target.value)}
-            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.desiredWorkPlace ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-              }`}
-            placeholder="Москва, Новосибирск, Санкт-Питербург"
-          />
-          {errors.desiredWorkPlace && <p className="text-red-500 text-sm mt-1">{errors.desiredWorkPlace}</p>}
-        </div>
-      </div>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -1172,8 +1256,8 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         <div className="flex gap-x-2">
           <input
             type="file"
-            accept="image/*"
-            onChange={(e) => setPhotoFile(e.target.files?.[0] || null)}
+            accept=".jpg, .jpeg, .png"
+            onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, 'photo')}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.photoFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
           />
@@ -1185,7 +1269,15 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
           </button>
         </div>
         {errors.photoFile && <p className="text-red-500 text-sm mt-1">{errors.photoFile}</p>}
-        {photoFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {photoFile.name}</p>}
+        {photoFile && photoPreview && (
+          <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
+            <img
+              src={photoPreview}
+              alt="Превью фотографии"
+              className="max-w-full max-h-64 object-contain mx-auto"
+            />
+          </div>
+        )}
       </div>
 
       <div className="flex gap-x-2 w-full">
@@ -1196,8 +1288,8 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
           <div className="flex gap-x-2">
             <input
               type="file"
-              accept="image/png,image/jpeg,application/pdf"
-              onChange={(e) => setFrontPassportFile(e.target.files?.[0] || null)}
+              accept=".jpg, .jpeg, .png"
+              onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, "front")}
               className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.frontPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                 }`}
             />
@@ -1209,7 +1301,15 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
             </button>
           </div>
           {errors.frontPassportFile && <p className="text-red-500 text-sm mt-1">{errors.frontPassportFile}</p>}
-          {frontPassportFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {frontPassportFile.name}</p>}
+          {frontPassportFile && frontPassportPreview && (
+            <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
+              <img
+                src={frontPassportPreview}
+                alt="Превью передняй части паспорта"
+                className="max-w-full max-h-64 object-contain mx-auto"
+              />
+            </div>
+          )}
         </div>
         <div className="flex-1">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -1218,8 +1318,8 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
           <div className="flex gap-x-2">
             <input
               type="file"
-              accept="image/png,image/jpeg,application/pdf"
-              onChange={(e) => setBackPassportFile(e.target.files?.[0] || null)}
+              accept=".jpg, .jpeg, .png"
+              onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, "back")}
               className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.backPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                 }`}
             />
@@ -1232,7 +1332,15 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
             </button>
           </div>
           {errors.backPassportFile && <p className="text-red-500 text-sm mt-1">{errors.backPassportFile}</p>}
-          {backPassportFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {backPassportFile.name}</p>}
+          {backPassportFile && backPassportPreview && (
+            <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
+              <img
+                src={backPassportPreview}
+                alt="Превью задней части паспорта"
+                className="max-w-full max-h-64 object-contain mx-auto"
+              />
+            </div>
+          )}
         </div>
       </div>
 

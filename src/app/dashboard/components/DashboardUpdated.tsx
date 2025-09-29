@@ -1,11 +1,12 @@
 "use client"
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Users, Calendar, X, CloudSun, Eye, Download } from "lucide-react";
+import { Users, Calendar, X, CloudSun, Eye, Download, BadgePlus } from "lucide-react";
 import SeekerModal from "./SeekerModal";
 import axios from "axios";
 import { JobSeeker } from "@/generated/prisma";
 import DownloadData from "./DownloadData";
+import { useRouter } from "next/navigation";
 
 export interface JobSeekerAPIResult extends JobSeeker {
   knowledgeOfLanguages: {
@@ -13,7 +14,7 @@ export interface JobSeekerAPIResult extends JobSeeker {
     level: string;
     id: number;
     jobSeekerId: number;
-  }[];
+  }[],
   WorkExperience: {
     jobTitle: string;
     workplace: string;
@@ -21,16 +22,24 @@ export interface JobSeekerAPIResult extends JobSeeker {
     dateEnd: Date;
     id: number;
     jobSeekerId: number;
-  }[];
+  }[],
   additionalContactInformation: {
     phoneNumber: string;
     fullname: string;
     status: string;
     id: number;
     jobSeekerId: number;
-  }[];
+  }[],
+  education: {
+    id: number;
+    education: string;
+    institution: string;
+    specialty: string;
+    jobSeekerId: number;
+  }[],
 }
 export default function EmployeeListPage() {
+  const router = useRouter()
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
   const [selected, setSelected] = useState<JobSeekerAPIResult | null>(null)
@@ -104,6 +113,14 @@ export default function EmployeeListPage() {
               <button className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95">
                 <CloudSun className="h-4 w-4" />
                 Синхронизация с 1С
+              </button>
+
+              <button
+                className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95"
+                onClick={() => router.push("/dashboard/add-job-seeker")}
+              >
+                <BadgePlus className="h-4 w-4" />
+                Добавить соискателя работы
               </button>
 
               <button

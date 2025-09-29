@@ -22,7 +22,6 @@ export default function SeekerModal({
               <div className="font-semibold text-gray-900">
                 {employee.lastName} {employee.firstName} {employee.middleName || ""}
               </div>
-              <div className="text-sm text-gray-500">{employee.speciality}</div>
             </div>
           </div>
           <button
@@ -91,8 +90,8 @@ export default function SeekerModal({
 
               <SectionTitle icon={<GraduationCap className="h-4 w-4" />}>Образование и навыки</SectionTitle>
               <InfoRows rows={[
-                { label: "Образование:", value: `${employee.education}, ${employee.speciality}, ${employee.speciality}` },
-                { label: "Языки:", value: employee.knowledgeOfLanguages.map(v => ` ${v.language}(${v.level})`).toString() }
+                { label: "Образование:", value: employee.education.map((v) => `Категория - ${v.education}, Университет - ${v.institution}, Cпециальность - ${v.specialty}`).join(", ") },
+                { label: "Языки:", value: employee.knowledgeOfLanguages.map(v => `${v.language}(${v.level})`).join(", ") }
               ]}
               />
 
@@ -101,7 +100,6 @@ export default function SeekerModal({
                 { label: "Готовность к выезду:", value: formatDate(employee.dateOfReadiness.toString()) },
                 { label: "Предпочитаемая страна:", value: employee.desiredCountry },
                 { label: "Предпочитаемый город:", value: employee.desiredCity },
-                { label: "Предпочитаемое место работы:", value: employee.desiredWorkPlace },
                 { label: "Предпочитаемая зарплата", value: employee.desiredSalary }
               ]}
               />
@@ -157,7 +155,7 @@ function WorkExperienceInfoRow(
           <div className="text-gray-500">Позиция</div>
           <div className="text-gray-900">{v.jobTitle}</div>
           <div className="text-gray-500">Период</div>
-          <div className="text-gray-900">{formatDate(v.dateStart.toString())} - {formatDate(v.dateEnd.toString())}</div>
+          <div className="text-gray-900">{formatDate(v.dateStart.toString())} - {!v.dateEnd ? "текущее время" : formatDate(v.dateEnd.toString())}</div>
         </div>
       ))}
     </div>

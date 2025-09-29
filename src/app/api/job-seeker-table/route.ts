@@ -26,6 +26,7 @@ export async function GET(request: NextRequest) {
         additionalContactInformation: true,
         knowledgeOfLanguages: true,
         WorkExperience: true,
+        education: true,
       },
       orderBy: {
         id: 'desc',
@@ -41,6 +42,7 @@ export async function GET(request: NextRequest) {
         additionalContactInformation: true,
         knowledgeOfLanguages: true,
         WorkExperience: true,
+        education: true,
       },
       where: {
         createdAt: {
@@ -62,6 +64,7 @@ export async function GET(request: NextRequest) {
         additionalContactInformation: true,
         knowledgeOfLanguages: true,
         WorkExperience: true,
+        education: true,
       },
       where: {
         createdAt: {
@@ -84,6 +87,7 @@ export async function GET(request: NextRequest) {
         additionalContactInformation: true,
         knowledgeOfLanguages: true,
         WorkExperience: true,
+        education: true,
       },
       where: {
         createdAt: {

@@ -31,21 +31,19 @@ model JobSeeker {
   messengerNumber              String                         @default("")
   address                      String
   addressOfBirth               String                         @default("")
-  education                    String
-  institution                  String
-  speciality                   String
   desiredSalary                String
   dateOfReadiness              DateTime
   desiredCountry               String
   desiredCity                  String                         @default("")
-  desiredWorkPlace             String                         @default("")
   criminalRecord               String
   additionalInformation        String?
   syncedWith1C                 Boolean
   additionalContactInformation AdditionalContactInfromation[]
+  education                    Education[]
   knowledgeOfLanguages         KnowledgeOfLanguages[]
   WorkExperience               WorkExperience[]
-  createdAt                    DateTime
+  createdAt                    DateTime                       @default(now())
+  updatedAt                    DateTime                       @default(now())
 }
 
 model AdditionalContactInfromation {
@@ -72,8 +70,17 @@ model WorkExperience {
   jobTitle         String
   workplace        String
   dateStart        DateTime
-  dateEnd          DateTime
+  dateEnd          DateTime?
   responsibilities String?
+}
+
+model Education {
+  id          Int       @id @default(autoincrement())
+  jobSeeker   JobSeeker @relation(fields: [jobSeekerId], references: [id])
+  jobSeekerId Int
+  education   String
+  institution String
+  specialty   String
 }
 
 model User {

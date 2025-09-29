@@ -1,14 +1,15 @@
 import { AdditionalContactInfromation, Education, JobSeeker, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "../../../../lib/prisma";
 import path from "path";
 import { promises as fs } from 'fs'
+import prisma from "../../../../../lib/prisma";
 
 export async function POST(req: NextRequest) {
   try {
     const formData = await req.formData()
-    const phoneNumber = formData.get("verificationPhoneNumber") as string
-    const phoneForName = (phoneNumber || '').replace(/[^\d+]/g, '') || 'unknown';
+    const phoneNumber = formData.get("phoneNumber") as string
+    let phoneForName = (phoneNumber || '').replace(/[^\d+]/g, '') || 'unknown';
+    phoneForName = phoneForName.substring(1)
 
     const uploadRoot = path.join(process.cwd(), "uploads", "jobseekers")
 
@@ -64,9 +65,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "invalid date of readiness" }, { status: 400 })
     }
 
-    const user = await prisma.user.findFirst({
-      where: {
-        phoneNumber: phoneNumber,
+    const user = await prisma.user.create({
+      data: {
+        phoneNumber: phoneForName,
       }
     })
     if (!user) {

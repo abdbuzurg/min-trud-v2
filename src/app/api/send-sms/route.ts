@@ -57,19 +57,19 @@ export async function POST(request: NextRequest) {
       }
     })
 
-    const smsCount = await prisma.sendSMS.count()
-    const txn_id: number = 2730 + smsCount
-    const from = "MuhojiratTj"
-    const msg = `Код - ${code}`
-    const login = "mehnattj"
-    const hash = "e129257bd2607968f0502161132638c2"
-    const hashContent = `${txn_id};${login};${from};${phoneNumber};${hash}`
-    const str_hash = generateSha256Hash(hashContent)
-    const url = `https://api.osonsms.com/sendsms_v1.php?from=${from}&msg=${msg}&login=${login}&str_hash=${str_hash}&phone_number=${phoneNumber}&txn_id=${txn_id}`
-    const smsResponse = await axios.get(url)
-    if (smsResponse.status != 201) {
-      return NextResponse.json({ message: "Ошибка при генерации смс" }, { status: 500 })
-    }
+    // const smsCount = await prisma.sendSMS.count()
+    // const txn_id: number = 2730 + smsCount
+    // const from = "MuhojiratTj"
+    // const msg = `Код - ${code}`
+    // const login = "mehnattj"
+    // const hash = "e129257bd2607968f0502161132638c2"
+    // const hashContent = `${txn_id};${login};${from};${phoneNumber};${hash}`
+    // const str_hash = generateSha256Hash(hashContent)
+    // const url = `https://api.osonsms.com/sendsms_v1.php?from=${from}&msg=${msg}&login=${login}&str_hash=${str_hash}&phone_number=${phoneNumber}&txn_id=${txn_id}`
+    // const smsResponse = await axios.get(url)
+    // if (smsResponse.status != 201) {
+    //   return NextResponse.json({ message: "Ошибка при генерации смс" }, { status: 500 })
+    // }
 
     return NextResponse.json({ message: "Успех" }, { status: 200 })
 

@@ -1,4 +1,3 @@
-
 import { NextRequest, NextResponse } from "next/server";
 import jwt, { JwtPayload } from "jsonwebtoken"
 import { JWT_SECRET } from "@/app/secret";
@@ -88,6 +87,12 @@ export async function GET(
     return NextResponse.json({ profile: null, status: "Успех" }, { status: 200 })
   }
 
+  const education = await prisma.education.findMany({
+    where: {
+      jobSeekerId: jobSeekerData.id,
+    }
+  })
+
   const languages = await prisma.knowledgeOfLanguages.findMany({
     where: {
       jobSeekerId: jobSeekerData.id,
@@ -123,10 +128,12 @@ export async function GET(
     contactRelationOther: "",
     contactName: additionalContactInformation[0].fullname,
     contactPhone: additionalContactInformation[0].phoneNumber,
-    education: jobSeekerData.education,
-    educationOther: jobSeekerData.education,
-    institution: jobSeekerData.institution,
-    specialty: jobSeekerData.speciality,
+    education: education.map((v) => ({
+      education: v.education,
+      educationOther: v.education,
+      institution: v.institution,
+      specialty: v.specialty,
+    })),
     languages: languages.map((v) => ({
       language: v.language,
       languageOther: v.language,
@@ -135,14 +142,12 @@ export async function GET(
     workExperience: workExperience.map(v => ({
       company: v.workplace,
       position: v.jobTitle,
-      endDate: v.dateEnd.toString(),
+      endDate: v.dateEnd?.toString() ?? "",
       startDate: v.dateStart.toString(),
-      responsibilities: "",
     })),
     desiredCountry: jobSeekerData.desiredCountry,
     desiredCity: jobSeekerData.desiredCity,
     addressOfBirth: jobSeekerData.addressOfBirth,
-    desiredWorkPlace: jobSeekerData.desiredWorkPlace,
     messengerNumber: jobSeekerData.messengerNumber,
     expectedSalary: jobSeekerData.desiredSalary,
     additionalInfo: jobSeekerData.additionalInformation ?? "",

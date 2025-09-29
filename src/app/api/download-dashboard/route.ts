@@ -32,6 +32,7 @@ export async function POST(req: NextRequest) {
         additionalContactInformation: true,
         knowledgeOfLanguages: true,
         WorkExperience: true,
+        education: true,
       },
     });
 
@@ -69,9 +70,7 @@ export async function POST(req: NextRequest) {
       { header: "Адрес рождения", key: "addressOfBirth", width: 50 },
       { header: "Адрес проживания", key: "address", width: 50 },
       { header: "Дополнительная контактная информация", key: "additionalContacts", width: 35 },
-      { header: "Образование", key: "education", width: 25 },
-      { header: "Университет", key: "institution", width: 30 },
-      { header: "Специализация", key: "specialization", width: 30 },
+      { header: "Образование", key: "education", width: 100 },
       { header: "Языки", key: "languages", width: 100 },
       { header: "Трудовая информация", key: "workExperience", width: 100 },
       { header: "Готовность к выезду", key: "dateOfReadiness", width: 20 },
@@ -102,22 +101,21 @@ export async function POST(req: NextRequest) {
         messengerNumber: row.messengerNumber,
         address: row.address,
         addressOfBirth: row.addressOfBirth,
-        education: row.education,
-        institution: row.institution,
-        speciality: row.speciality,
         desiredSalary: row.desiredSalary,
         dateOfReadiness: row.dateOfReadiness,
         desiredCountry: row.desiredCountry,
         desiredCity: row.desiredCity,
-        desiredWorkPlace: row.desiredWorkPlace,
         criminalRecord: row.criminalRecord,
         syncedWith1C: row.syncedWith1C ? "Да" : "Нет",
         createdAt: row.createdAt,
+        education: row.education.map((v) => {
+          return `Категория - ${v.education}, Университет - ${v.institution}, Cпециальность - ${v.specialty}`
+        }).join("\n"),
         additionalContacts: row.additionalContactInformation.map((v) => {
           return `ФИО - ${v.fullname}, Статус - ${v.status}, Номер - ${v.phoneNumber}`
         }).join("\n"),
         workExperience: row.WorkExperience.map((v) => {
-          return `Компания - ${v.workplace}, Позиция - ${v.jobTitle} , Период: ${formatDate(v.dateStart.toString())} - ${formatDate(v.dateEnd.toString())}`
+          return `Компания - ${v.workplace}, Позиция - ${v.jobTitle} , Период: ${formatDate(v.dateStart.toString())} - ${!v.dateEnd ? "текущяя работа" : formatDate(v.dateEnd.toString())}`
         }).join("\n"),
         languages: row.knowledgeOfLanguages.map((v) => {
           return `${v.language}(${v.level})`

@@ -18,7 +18,6 @@ export default function RootLayout({
         <div className="flex-grow flex flex-col justify-center">
           {children}
         </div>
-        <Logos />
       </body>
     </html>
   );
