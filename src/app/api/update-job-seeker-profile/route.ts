@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
-import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
+import { AdditionalContactInfromation, Education, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
 import { promises as fs } from 'fs';
 import path from 'path';
 
@@ -136,14 +136,10 @@ export async function POST(request: NextRequest) {
       messengerNumber: formData.get("messengerNumber") as string,
       address: formData.get("address") as string,
       addressOfBirth: formData.get("addressOfBirth") as string,
-      education: formData.get("education") as string,
-      institution: formData.get("institution") as string,
-      speciality: formData.get("specialization") as string,
       desiredSalary: formData.get("desiredSalary") as string,
       dateOfReadiness: new Date(dateOfReadiness),
       desiredCountry: formData.get("desiredCountry") as string,
       desiredCity: formData.get("desiredCity") as string,
-      desiredWorkPlace: formData.get("desiredWorkPlace") as string,
       criminalRecord: formData.get("criminalRecord") as string,
       additionalInformation: formData.get("additionalInformation") as string,
       syncedWith1C: false,
@@ -160,6 +156,18 @@ export async function POST(request: NextRequest) {
       additionalContacts = JSON.parse(additionalContactsFormData)
     } catch (error) {
       return NextResponse.json({ message: "Invalid JSON for additional information" }, { status: 400 })
+    }
+
+    const educationFormData = formData.get("education") as string | null
+    if (!educationFormData) {
+      return NextResponse.json({ message: "Education missing" }, { status: 400 })
+    }
+
+    let education: Education[] = []
+    try {
+      education = JSON.parse(educationFormData)
+    } catch (error) {
+      return NextResponse.json({ message: "Invalid JSON for education" }, { status: 400 })
     }
 
     const knowledgeOfLanguagesFormData = formData.get("knowledgeOfLanguages") as string | null
@@ -215,6 +223,20 @@ export async function POST(request: NextRequest) {
         phoneNumber: additionalContacts[0].phoneNumber,
         jobSeekerId: jobSeeker.id,
       }],
+    })
+
+    await prisma.education.deleteMany({
+      where: {
+        jobSeekerId: jobSeeker.id,
+      }
+    })
+    await prisma.education.createMany({
+      data: education.map(v => ({
+        education: v.education,
+        institution: v.institution,
+        specialty: v.specialty,
+        jobSeekerId: jobSeeker.id
+      })),
     })
 
     knowledgeOfLanguages = knowledgeOfLanguages.map(v => ({ ...v, jobSeekerId: jobSeeker.id }))
