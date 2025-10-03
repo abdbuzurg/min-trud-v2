@@ -53,6 +53,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
   const [certificates, setCertificates] = useState<File[] | null>(null)
 
   const [agreement, setAgreement] = useState(false)
+  const [isSavingData, setIsSavingData] = useState(true)
 
   const [formData, setFormData] = useState<JobSeekerFromData>({
     lastName: '',
@@ -63,7 +64,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     passportCode: '',
     maritalStatus: '',
     tin: '',
-    phone: '',
+    phone: phoneNumber,
     messengerNumber: '',
     email: '',
     address: '',
@@ -341,8 +342,9 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
   };
 
   const sendForm = async (formData: globalThis.FormData): Promise<boolean> => {
+    setIsSubmitted(true)
     try {
-      await axios.post(`api/job-seeker`, formData).then(res => res.data)
+      await axios.post(`api/job-seeker`, formData).then(res => res.data).finally(() => setIsSavingData(false))
       return true
     } catch {
       return false
@@ -417,9 +419,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     data.set("criminalRecord", formData.criminalRecord)
     data.set("additionalInformation", formData.additionalInfo)
 
-    if (await sendForm(data)) {
-      setIsSubmitted(true)
-    }
+    await sendForm(data)
   };
 
   const handleImageFileChange = (file: File | null, name: string) => {
@@ -506,7 +506,6 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             placeholder="Азизович"
           />
         </div>
-
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
@@ -613,6 +612,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.phone ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
             placeholder="+7 (999) 123-45-67"
+            disabled={true}
           />
           {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
         </div>
@@ -1346,23 +1346,39 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         {isSubmitted && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
             <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 text-center shadow-2xl">
-              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mb-4">
-                <Save className="w-8 h-8 text-white" />
-              </div>
-              <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                Заявка отправлена!
-              </h2>
-              <p className="text-gray-600 mb-6">
-                Ваша заявка успешно отправлена. Благодарим Вас за заполненую анкету
-              </p>
-              <button
-                onClick={() => {
-                  router.push("/seeker")
-                }}
-                className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
-              >
-                Закрыть
-              </button>
+              {isSavingData
+                ?
+                <>
+                  <div className="flex items-center justify-center py-2">
+                    <div
+                      className="w-12 h-12 border-4 border-green-500 border-t-transparent rounded-full animate-spin"
+                    ></div>
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                    Отправляем заявку
+                  </h2>
+                </>
+                :
+                <>
+                  <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mb-4">
+                    <Save className="w-8 h-8 text-white" />
+                  </div>
+                  <h2 className="text-2xl font-bold text-gray-800 mb-2">
+                    Заявка отправлена!
+                  </h2>
+                  <p className="text-gray-600 mb-6">
+                    Ваша заявка успешно отправлена. Благодарим Вас за заполненую анкету
+                  </p>
+                  <button
+                    onClick={() => {
+                      router.push("/seeker")
+                    }}
+                    className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
+                  >
+                    Закрыть
+                  </button>
+                </>
+              }
             </div>
           </div>
         )}

@@ -1,6 +1,7 @@
 import React from "react";
-import { X, UserRound, Phone, MapPin, Briefcase, GraduationCap, Plane } from "lucide-react";
+import { X, UserRound, Phone, MapPin, Briefcase, GraduationCap, Plane, Pencil } from "lucide-react";
 import { JobSeekerAPIResult } from "./DashboardUpdated";
+import Link from "next/link";
 
 export default function SeekerModal({
   employee,
@@ -15,12 +16,26 @@ export default function SeekerModal({
         {/* Header */}
         <div className="flex items-start justify-between p-6 border-b border-gray-100">
           <div className="flex items-start gap-3">
-            <div className="h-10 w-10 rounded-full bg-[#39B36E] grid place-items-center text-white">
-              <UserRound className="h-5 w-5" />
+            <div className="h-20 w-20 rounded-full bg-[#39B36E] grid place-items-center text-white">
+              <img
+                src={`/api/files/${employee.phoneNumber[0] == "+" ? employee.phoneNumber.substring(1) : employee.phoneNumber}_image`}
+                alt="Profile"
+                className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-md"
+              />
             </div>
-            <div>
+            <div className="flex flex-col gap-y-1">
               <div className="font-semibold text-gray-900">
                 {employee.lastName} {employee.firstName} {employee.middleName || ""}
+              </div>
+              <div>
+                <Link
+                  href={`/dashboard/edit-job-seeker/${employee.phoneNumber[0] == "+" ? employee.phoneNumber.substring(1) : employee.phoneNumber}`}
+                  target="_blank"
+                  className="inline-flex items-center gap-2 rounded-full bg-red-500 text-white px-3 py-1.5 text-sm font-medium hover:opacity-95"
+                >
+                  <Pencil className="h-4 w-4" />
+                  Изменить
+                </Link>
               </div>
             </div>
           </div>
@@ -122,8 +137,8 @@ export default function SeekerModal({
             </div>
           </div>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
 

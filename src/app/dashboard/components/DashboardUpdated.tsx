@@ -1,12 +1,13 @@
 "use client"
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Users, Calendar, X, CloudSun, Eye, Download, BadgePlus } from "lucide-react";
+import { Users, Calendar, X, CloudSun, Eye, Download, BadgePlus, Pencil } from "lucide-react";
 import SeekerModal from "./SeekerModal";
 import axios from "axios";
 import { JobSeeker } from "@/generated/prisma";
 import DownloadData from "./DownloadData";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export interface JobSeekerAPIResult extends JobSeeker {
   knowledgeOfLanguages: {
@@ -149,7 +150,7 @@ export default function EmployeeListPage() {
                     "пол",
                     "мобильный номер",
                     "синхронизация с 1С",
-                    "подробнее",
+                    "",
                   ].map((h) => (
                     <th key={h} className="text-left font-semibold tracking-wide px-5 py-3">
                       {h}
@@ -177,9 +178,9 @@ export default function EmployeeListPage() {
                         </span>
                       )}
                     </td>
-                    <td className="px-5 py-4">
+                    <td className="px-5 py-4 flex gap-x-2">
                       <button
-                        className="inline-flex items-center gap-2 rounded-full bg-[#39B36E] text-white px-3 py-1.5 text-sm font-medium hover:opacity-95"
+                        className="cursor-pointer inline-flex items-center gap-2 rounded-full bg-[#39B36E] text-white px-3 py-1.5 text-sm font-medium hover:opacity-95"
                         onClick={() => {
                           setOpen(true)
                           setSelected(e)
@@ -188,6 +189,14 @@ export default function EmployeeListPage() {
                         <Eye className="h-4 w-4" />
                         Подробнее
                       </button>
+                      <Link
+                        href={`/dashboard/edit-job-seeker/${e.phoneNumber[0] == "+" ? e.phoneNumber.substring(1) : e.phoneNumber}`}
+                        target="_blank"
+                        className="inline-flex items-center gap-2 rounded-full bg-red-500 text-white px-3 py-1.5 text-sm font-medium hover:opacity-95"
+                      >
+                        <Pencil className="h-4 w-4" />
+                        Изменить
+                      </Link>
                     </td>
                   </tr>
                 ))}

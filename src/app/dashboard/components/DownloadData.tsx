@@ -12,8 +12,10 @@ export default function DownloadData({ setDownloadModal }: Props) {
   const [gender, setGender] = useState("all");
   const [country, setCountry] = useState("");
   const [error, setError] = useState("")
+  const [isDownloading, setIsDownloading] = useState(false)
 
   const handleDownload = async () => {
+    setIsDownloading(true)
     try {
       const response = await fetch("/api/download-dashboard", {
         method: "POST",
@@ -37,6 +39,7 @@ export default function DownloadData({ setDownloadModal }: Props) {
       link.download = "jobseeker.zip"
       document.body.appendChild(link)
       link.click()
+      setIsDownloading(false)
       link.remove()
       window.URL.revokeObjectURL(url)
     } catch (err: any) {
@@ -116,9 +119,22 @@ export default function DownloadData({ setDownloadModal }: Props) {
           </button>
           <button
             onClick={handleDownload}
+            disabled={isDownloading}
             className="px-4 py-2 rounded-xl bg-[#39B36E] text-white font-medium hover:opacity-95"
           >
-            Скачать
+            {isDownloading
+              ?
+              <div className="flex gap-x-2 items-center">
+                <div className="flex items-center justify-center py-2">
+                  <div
+                    className="w-5 h-5 border-4 border-white border-t-transparent rounded-full animate-spin"
+                  ></div>
+                </div>
+                <p>Идет подготовка файлов...</p>
+              </div>
+              :
+              <>Скачать</>
+            }
           </button>
         </div>
       </div>

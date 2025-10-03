@@ -1,34 +1,23 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
-import {
-  User,
-  Phone,
-  GraduationCap,
-  Briefcase,
-  Languages,
-  Globe,
-  Plus,
-  Trash2,
-  ChevronRight,
-  ChevronLeft,
-  Save, FileText
-} from 'lucide-react';
+import { useEffect, useState } from "react";
+import { Education, JobSeekerFromData } from "../../../../../../types/jobSeeker";
+import axios from "axios";
+import { Briefcase, Globe, GraduationCap, Languages, Phone, Plus, Save, Trash2, User } from "lucide-react";
+import { ru } from 'date-fns/locale';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import { ru } from 'date-fns/locale';
-import axios from 'axios';
-import { useRouter } from 'next/navigation';
-import { Education, JobSeekerFromData } from '../../../../../types/jobSeeker';
-import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from '../../../../../jobseeker';
+import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from "../../../../../../jobseeker";
 
 registerLocale('ru', ru)
 
-
 const countries = ["Афганистан", "Албания", "Алжир", "Андорра", "Ангола", "Антигуа и Барбуда", "Аргентина", "Армения", "Австралия", "Австрия", "Азербайджан", "Багамы", "Бахрейн", "Бангладеш", "Барбадос", "Беларусь", "Бельгия", "Белиз", "Бенин", "Бутан", "Боливия", "Босния и Герцеговина", "Ботсвана", "Бразилия", "Бруней", "Болгария", "Буркина-Фасо", "Бурунди", "Кабо-Верде", "Камбоджа", "Камерун", "Канада", "Центральноафриканская Республика", "Чад", "Чили", "Китай", "Колумбия", "Коморы", "Конго", "Коста-Рика", "Хорватия", "Куба", "Кипр", "Чехия", "Демократическая Республика Конго", "Дания", "Джибути", "Доминика", "Доминиканская Республика", "Эквадор", "Египет", "Сальвадор", "Экваториальная Гвинея", "Эритрея", "Эстония", "Эсватини", "Эфиопия", "Фиджи", "Финляндия", "Франция", "Габон", "Гамбия", "Грузия", "Германия", "Гана", "Греция", "Гренада", "Гватемала", "Гвинея", "Гвинея-Бисау", "Гайана", "Гаити", "Ватикан", "Гондурас", "Венгрия", "Исландия", "Индия", "Индонезия", "Иран", "Ирак", "Ирландия", "Израиль", "Италия", "Ямайка", "Япония", "Иордания", "Казахстан", "Кения", "Кирибати", "Кувейт", "Киргизия", "Лаос", "Латвия", "Ливан", "Лесото", "Либерия", "Ливия", "Лихтенштейн", "Литва", "Люксембург", "Мадагаскар", "Малави", "Малайзия", "Мальдивы", "Мали", "Мальта", "Маршалловы Острова", "Мавритания", "Маврикий", "Мексика", "Микронезия", "Молдова", "Монако", "Монголия", "Черногория", "Марокко", "Мозамбик", "Мьянма", "Намибия", "Науру", "Непал", "Нидерланды", "Новая Зеландия", "Никарагуа", "Нигер", "Нигерия", "КНДР", "Северная Македония", "Норвегия", "Оман", "Пакистан", "Палау", "Палестина", "Панама", "Папуа — Новая Гвинея", "Парагвай", "Перу", "Филиппины", "Польша", "Португалия", "Катар", "Румыния", "Россия", "Руанда", "Сент-Китс и Невис", "Сент-Люсия", "Сент-Винсент и Гренадины", "Самоа", "Сан-Марино", "Сан-Томе и Принсипи", "Саудовская Аравия", "Сенегал", "Сербия", "Сейшельские Острова", "Сьерра-Леоне", "Сингапур", "Словакия", "Словения", "Соломоновы Острова", "Сомали", "Южная Африка", "Южная Корея", "Южный Судан", "Испания", "Шри-Ланка", "Судан", "Суринам", "Швеция", "Швейцария", "Сирия", "Таджикистан", "Танзания", "Таиланд", "Восточный Тимор", "Того", "Тонга", "Тринидад и Тобаго", "Тунис", "Турция", "Туркмения", "Тувалу", "Уганда", "Украина", "ОАЭ", "Великобритания", "США", "Уругвай", "Узбекистан", "Вануату", "Венесуэла", "Вьетнам", "Йемен", "Замбия", "Зимбабве"];
 
-export default function AdminJobSeekerForm() {
-  const router = useRouter()
+interface Props {
+  phoneNumber: string
+}
+
+export default function AdminEditJobSeeker({ phoneNumber }: Props) {
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -37,18 +26,6 @@ export default function AdminJobSeekerForm() {
 
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [countryQuery, setCountryQuery] = useState('')
-
-  const [photoFile, setPhotoFile] = useState<File | null>(null);
-  const [photoPreview, setPhotoPreview] = useState<string | null>(null)
-  const [frontPassportFile, setFrontPassportFile] = useState<File | null>(null);
-  const [frontPassportPreview, setFrontPassportPreview] = useState<string | null>(null)
-  const [backPassportFile, setBackPassportFile] = useState<File | null>(null)
-  const [backPassportPreview, setBackPassportPreview] = useState<string | null>(null)
-  const [diplomaFile, setDiplomaFile] = useState<File | null>(null)
-  const [recommendationLetterFile, setRecommendationLetterFile] = useState<File | null>(null);
-  const [certificates, setCertificates] = useState<File[] | null>(null)
-
-  const [agreement, setAgreement] = useState(false)
 
   const [isSavingData, setIsSavingData] = useState(true)
 
@@ -62,10 +39,8 @@ export default function AdminJobSeekerForm() {
     maritalStatus: '',
     tin: '',
     phone: '',
-    messengerNumber: '',
     email: '',
     address: '',
-    addressOfBirth: '',
     additionalContact: false,
     contactRelation: '',
     contactRelationOther: '',
@@ -89,13 +64,69 @@ export default function AdminJobSeekerForm() {
       endDate: '',
     }],
     desiredCountry: '',
+    addressOfBirth: '',
     desiredCity: '',
+    messengerNumber: '',
     expectedSalary: '',
     additionalInfo: '',
     criminalRecord: '',
     dateOfReadiness: '',
-  }
-  );
+  });
+
+  useEffect(() => {
+    axios.get(`/api/dashboard/edit-job-seeker`, {
+      params: {
+        phoneNumber: phoneNumber,
+      }
+    }).then((response) => {
+      const availableEducations = ["высшее", "средняя специальность", "профессиональное техническое", "другое"]
+      const educations = response.data.profile.education.map((v: any) => {
+        let education = v.education
+        let educationOther: string = ""
+
+        if (!availableEducations.find((v) => v == education)) {
+          education = 'другое'
+          educationOther = v.educationOther
+        }
+
+        return {
+          education: education,
+          educationOther: educationOther,
+          institution: v.institution,
+          specialty: v.specialty,
+        }
+      })
+
+      const availableLanguages = ["русский", "английский", "корейский", "арабский", "другое"]
+      const languages = response.data.profile.languages.map((v: any) => {
+        let language: string = v.language
+        let otherLanguage: string = ""
+        if (!availableLanguages.find(av => av == language)) {
+          language = "другое"
+          otherLanguage = v.language
+        }
+
+        return {
+          ...v,
+          language: language,
+          otherLanguage: otherLanguage,
+        }
+      })
+
+
+      const initial = (response.data.profile.desiredCountry as string ?? '')
+        .split(',')
+        .map(s => s.trim())
+        .filter(Boolean);
+      if (initial.length) setSelectedCountries(initial);
+
+      setFormData({
+        ...response.data.profile,
+        education: educations,
+        languages: languages,
+      })
+    })
+  }, [])
 
   const steps = [
     { id: 1, title: 'Личная информация', icon: User },
@@ -104,7 +135,6 @@ export default function AdminJobSeekerForm() {
     { id: 4, title: 'Языки', icon: Languages },
     { id: 5, title: 'Опыт работы', icon: Briefcase },
     { id: 6, title: 'Предпочтения', icon: Globe },
-    { id: 7, title: 'Документы', icon: FileText }
   ];
 
   const validateStep = (step: number): boolean => {
@@ -164,12 +194,6 @@ export default function AdminJobSeekerForm() {
         if (!(formData.desiredCity ?? '').trim()) newErrors.desiredCity = 'Обязательное поле';
         if (!(formData.dateOfReadiness ?? '').trim()) newErrors.dateOfReadiness = 'Обязательное поле';
         if (!(formData.expectedSalary ?? '').trim()) newErrors.expectedSalary = 'Обязательное поле';
-        break;
-
-      case 7:
-        if (!photoFile) newErrors.photoFile = 'Загрузите фотографию';
-        if (!frontPassportFile) newErrors.frontPassportFile = 'Загрузите переднюю сторону паспорта';
-        if (!backPassportFile) newErrors.backPassportFile = 'Загрузите заднюю сторону паспорта';
         break;
     }
 
@@ -324,24 +348,10 @@ export default function AdminJobSeekerForm() {
     }
   };
 
-  const handleNextStep = () => {
-    if (validateStep(currentStep)) {
-      if (currentStep < steps.length) {
-        setCurrentStep(currentStep + 1);
-      }
-    }
-  };
-
-  const handlePrevStep = () => {
-    if (currentStep > 1) {
-      setCurrentStep(currentStep - 1);
-    }
-  };
-
-  const sendForm = async (formData: globalThis.FormData): Promise<boolean> => {
+  const updateForm = async (formData: globalThis.FormData): Promise<boolean> => {
     setIsSubmitted(true)
     try {
-      await axios.post(`/api/dashboard/add-job-seeker`, formData).then(res => res.data).finally(() => setIsSavingData(false))
+      await axios.post(`/api/dashboard/edit-job-seeker`, formData).then(res => res.data).finally(() => setIsSavingData(false))
       return true
     } catch {
       return false
@@ -355,17 +365,6 @@ export default function AdminJobSeekerForm() {
 
     const data = new FormData()
 
-    if (photoFile) data.set('photo', photoFile);
-    if (frontPassportFile) data.set('frontPassport', frontPassportFile);
-    if (backPassportFile) data.set('backPassport', backPassportFile);
-    if (diplomaFile) data.set('diploma', diplomaFile);
-    if (recommendationLetterFile) data.set('recommendationLetter', recommendationLetterFile);
-    if (certificates && certificates.length > 0) {
-      certificates.forEach((file) => {
-        data.append("certificates", file);
-        // formData.append(`certificates[${index}]`, file);
-      });
-    }
     data.set("name", formData.firstName)
     data.set("surname", formData.lastName)
     data.set("middlename", formData.middleName)
@@ -388,6 +387,11 @@ export default function AdminJobSeekerForm() {
       }
     ]
     data.set("additionalContacts", JSON.stringify(additionalContactInformation))
+    const knowledgeOfLanguages: KnowledgeOfLanguages[] = formData.languages.map<KnowledgeOfLanguages>((v) => ({
+      level: v.level,
+      language: v.language == 'другое' ? v.languageOther : v.language,
+      otherLanguage: "",
+    }))
     const education: Education[] = formData.education.map<Education>((v) => ({
       education: v.education == "другое" ? v.educationOther : v.education,
       educationOther: "",
@@ -395,11 +399,6 @@ export default function AdminJobSeekerForm() {
       specialty: v.specialty,
     }))
     data.set("education", JSON.stringify(education))
-    const knowledgeOfLanguages: KnowledgeOfLanguages[] = formData.languages.map<KnowledgeOfLanguages>((v) => ({
-      level: v.level,
-      language: v.language == 'другое' ? v.languageOther : v.language,
-      otherLanguage: "",
-    }))
     data.set("knowledgeOfLanguages", JSON.stringify(knowledgeOfLanguages))
     const workExperience: WorkExperience[] = formData.workExperience.map<WorkExperience>(v => ({
       jobTitle: v.position,
@@ -415,44 +414,8 @@ export default function AdminJobSeekerForm() {
     data.set("criminalRecord", formData.criminalRecord)
     data.set("additionalInformation", formData.additionalInfo)
 
-    await sendForm(data)
+    await updateForm(data)
   };
-
-  const handleImageFileChange = (file: File | null, name: string) => {
-    const changeState = (name: string, url: string | null, file: File | null) => {
-      console.log(name)
-      switch (name) {
-        case 'photo':
-          setPhotoFile(file)
-          setPhotoPreview(url)
-          break
-        case 'front':
-          setFrontPassportFile(file)
-          setFrontPassportPreview(url)
-          break
-        case 'back':
-          setBackPassportFile(file)
-          setBackPassportPreview(url)
-          break
-
-        default:
-          console.log("ERROR")
-      }
-    }
-
-    if (file && ["image/jpeg", "image/jpg", "image/png"].includes(file.type)) {
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        changeState(name, reader.result as string, file)
-      }
-      reader.readAsDataURL(file)
-    } else {
-      changeState(name, null, null)
-      if (file) {
-        alert("Только фотографии формата JPG, JPEG, и PNG принимаются")
-      }
-    }
-  }
 
   const renderPersonalInfo = () => (
     <div className="space-y-6">
@@ -610,7 +573,6 @@ export default function AdminJobSeekerForm() {
               }`}
             placeholder="+7 (999) 123-45-67"
           />
-          <p className="text-gray-500 italic text-sm">Соскатель будет привязан к этому номеру. Если соискатель сам захочет поменять информацию, он будет использовать этот номер</p>
           {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
         </div>
 
@@ -673,7 +635,7 @@ export default function AdminJobSeekerForm() {
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none resize-none ${errors.address ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
           rows={3}
-          placeholder="Введите полный адрес проживания"
+          placeholder="Введите полный адрес"
         />
         {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
       </div>
@@ -737,12 +699,11 @@ export default function AdminJobSeekerForm() {
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 
   const renderEducation = () => (
     <div className="space-y-6">
-
       <div className="flex items-center justify-end">
         <button
           type="button"
@@ -1023,7 +984,7 @@ export default function AdminJobSeekerForm() {
                   selected={experience.endDate == '' ? null : new Date(experience.endDate)}
                   onChange={(date) => handleWorkExperienceChange(index, 'endDate', date?.toString() ?? '')}
                 />
-                <p className="text-sm italic text-gray-400 mt-1">Оставьте пустым если до сих пор работаете</p>
+                {errors[`endDate_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`endDate_${index}`]}</p>}
               </div>
             </div>
 
@@ -1120,14 +1081,14 @@ export default function AdminJobSeekerForm() {
           </label>
           <DatePicker
             locale="ru"
-            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.dateOfReadiness ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.birthDate ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
             placeholderText='мм/дд/гггг'
             wrapperClassName='w-full'
             selected={formData.dateOfReadiness == '' ? null : new Date(formData.dateOfReadiness)}
             onChange={(date) => handleInputChange('dateOfReadiness', date?.toString() ?? '')}
           />
-          {errors.dateOfReadiness && <p className="text-red-500 text-sm mt-1">{errors.dateOfReadiness}</p>}
+          {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
         </div>
       </div>
 
@@ -1174,152 +1135,9 @@ export default function AdminJobSeekerForm() {
           onChange={(e) => handleInputChange('additionalInfo', e.target.value)}
           className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-400 focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none resize-none"
           rows={4}
-          placeholder="Расскажите о себе, своих навыках, что вы можете делать, о своих достижения и т.д. (не более 100 слов)"
+          placeholder="Расскажите о себе, своих навыках, достижениях..."
         />
       </div>
-    </div>
-  );
-
-
-  const renderDocument = () => (
-    <div className="space-y-6">
-      <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Фотография (изображение) *
-        </label>
-        <input
-          type="file"
-          accept=".jpg, .jpeg, .png"
-          onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, 'photo')}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.photoFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-        />
-        {errors.photoFile && <p className="text-red-500 text-sm mt-1">{errors.photoFile}</p>}
-        {photoFile && photoPreview && (
-          <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
-            <img
-              src={photoPreview}
-              alt="Превью фотографии"
-              className="max-w-full max-h-64 object-contain mx-auto"
-            />
-          </div>
-        )}
-      </div>
-
-      <div className="flex gap-x-2 w-full">
-        <div className="flex-1">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Фронтальная сторона паспорта (скан/фото) *
-          </label>
-          <input
-            type="file"
-            accept=".jpg, .jpeg, .png"
-            onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, "front")}
-            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.frontPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-              }`}
-          />
-          {errors.frontPassportFile && <p className="text-red-500 text-sm mt-1">{errors.frontPassportFile}</p>}
-          {frontPassportFile && frontPassportPreview && (
-            <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
-              <img
-                src={frontPassportPreview}
-                alt="Превью передняй части паспорта"
-                className="max-w-full max-h-64 object-contain mx-auto"
-              />
-            </div>
-          )}
-        </div>
-        <div className="flex-1">
-          <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Задняя сторона паспорта (скан/фото) *
-          </label>
-          <input
-            type="file"
-            accept=".jpg, .jpeg, .png"
-            onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, "back")}
-            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.backPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-              }`}
-          />
-          {errors.backPassportFile && <p className="text-red-500 text-sm mt-1">{errors.backPassportFile}</p>}
-          {backPassportFile && backPassportPreview && (
-            <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
-              <img
-                src={backPassportPreview}
-                alt="Превью задней части паспорта"
-                className="max-w-full max-h-64 object-contain mx-auto"
-              />
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Диплом
-        </label>
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={(e) => setDiplomaFile(e.target.files?.[0] || null)}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.diplomaFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-        />
-        {errors.diplomaFile && <p className="text-red-500 text-sm mt-1">{errors.diplomaFile}</p>}
-        {diplomaFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {diplomaFile.name}</p>}
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Рекомендательное письмо *
-        </label>
-        <input
-          type="file"
-          accept="application/pdf,image/*"
-          onChange={(e) => setRecommendationLetterFile(e.target.files?.[0] || null)}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.recommendationLetterFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-        />
-        {errors.recommendationLetterFile && <p className="text-red-500 text-sm mt-1">{errors.recommendationLetterFile}</p>}
-        {recommendationLetterFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {recommendationLetterFile.name}</p>}
-      </div>
-
-      <div>
-        <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Сертификаты
-        </label>
-        <input
-          type="file"
-          accept="application/pdf"
-          multiple
-          onChange={(e) => setCertificates(Array.from(e.target.files || []))}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.certificates ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-        />
-        {errors.certificates && <p className="text-red-500 text-sm mt-1">{errors.certificates}</p>}
-        {certificates && certificates?.length > 0 && (
-          <ul className="mt-2 text-sm text-gray-600 list-disc pl-4">
-            {certificates.map((file, idx) => (
-              <li key={idx}>{file.name}</li>
-            ))}
-          </ul>
-        )}
-      </div>
-
-      <div className="flex gap-x-3 items-center">
-        <input
-          className="w-8 h-8"
-          type="checkbox"
-          onChange={(() => setAgreement(!agreement))}
-          checked={agreement}
-        />
-        <span>
-          Я согласен(на) на обработку персональных данных (ссылка на полный текст согласия) и ознакомлен(а) с [политикой конфиденциальности](ссылка на политику).
-        </span>
-      </div>
-
-      <span className="text-center font-bold">
-        Предупреждение! Заполнение анкеты не дает сто процентную гарантию того что вас могут выбрать и вы поедете на миграцию в другую страну
-      </span>
     </div>
   );
 
@@ -1331,7 +1149,6 @@ export default function AdminJobSeekerForm() {
       case 4: return renderLanguages();
       case 5: return renderWorkExperience();
       case 6: return renderPreferences();
-      case 7: return renderDocument();
       default: return null;
     }
   };
@@ -1352,7 +1169,7 @@ export default function AdminJobSeekerForm() {
                     ></div>
                   </div>
                   <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                    Идет создание соискателя....
+                    Обновляем заявку...
                   </h2>
                 </>
                 :
@@ -1361,18 +1178,18 @@ export default function AdminJobSeekerForm() {
                     <Save className="w-8 h-8 text-white" />
                   </div>
                   <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                    Соскатель добавлен
+                    Заявка обновлена!
                   </h2>
                   <p className="text-gray-600 mb-6">
-                    Данная заявка успешно добавлена в систему
+                    Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.
                   </p>
                   <button
                     onClick={() => {
-                      router.push("/dashboard")
+                      setIsSubmitted(false)
                     }}
                     className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
                   >
-                    Обратно в админ панель
+                    Закрыть
                   </button>
                 </>
               }
@@ -1385,9 +1202,17 @@ export default function AdminJobSeekerForm() {
           <h1 className="text-3xl font-bold text-gray-800 mb-2">
             Профиль соискателя работы
           </h1>
-          <p className="text-gray-600">
-            Заполните все разделы для создания полного профиля
-          </p>
+
+          {/* Profile picture */}
+          {phoneNumber && (
+            <div className="flex justify-center mt-4">
+              <img
+                src={`/api/files/${phoneNumber}_image`}
+                alt="Profile"
+                className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-md"
+              />
+            </div>
+          )}
         </div>
 
         {/* Progress Steps */}
@@ -1396,18 +1221,14 @@ export default function AdminJobSeekerForm() {
             {steps.map((step) => {
               const Icon = step.icon;
               const isActive = currentStep === step.id;
-              const isAccessible = step.id <= currentStep;
 
               return (
                 <button
                   key={step.id}
                   onClick={() => handleTabClick(step.id)}
-                  disabled={!isAccessible}
                   className={`flex items-center px-4 py-3 rounded-xl font-medium transition-all duration-200 ${isActive
                     ? 'bg-gradient-to-r from-green-500 to-emerald-600 text-white shadow-lg shadow-green-200'
-                    : isAccessible
-                      ? 'bg-white text-gray-700 hover:bg-green-50 border border-gray-200'
-                      : 'bg-gray-100 text-gray-400 cursor-not-allowed opacity-50'
+                    : 'bg-white text-gray-700 hover:bg-green-50 border border-gray-200'
                     }`}
                 >
                   <Icon size={18} className="mr-2" />
@@ -1436,40 +1257,14 @@ export default function AdminJobSeekerForm() {
           {renderStepContent()}
 
           {/* Navigation Buttons */}
-          <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
+          <div className="flex justify-end mt-8 pt-6 border-t border-gray-200">
             <button
-              onClick={handlePrevStep}
-              disabled={currentStep === 1}
-              className={`flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${currentStep === 1
-                ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-                }`}
+              onClick={handleSubmit}
+              className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
             >
-              <ChevronLeft size={20} className="mr-2" />
-              Назад
+              <Save size={20} className="mr-2" />
+              Сохранить
             </button>
-
-            {currentStep === steps.length ? (
-              <button
-                onClick={handleSubmit}
-                disabled={!agreement}
-                className={agreement
-                  ? "flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
-                  : "flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-200 bg-gray-200 text-gray-700 hover:bg-gray-300"
-                }
-              >
-                <Save size={20} className="mr-2" />
-                Отправить заявку
-              </button>
-            ) : (
-              <button
-                onClick={handleNextStep}
-                className="flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
-              >
-                Далее
-                <ChevronRight size={20} className="ml-2" />
-              </button>
-            )}
           </div>
         </div>
       </div>

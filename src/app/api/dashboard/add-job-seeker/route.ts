@@ -1,4 +1,4 @@
-import { AdditionalContactInfromation, Education, JobSeeker, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
+import { AdditionalContactInfromation, Education, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
 import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import { promises as fs } from 'fs'

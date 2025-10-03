@@ -197,7 +197,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                     type="tel"
                     value={formatPhoneNumber(phoneNumber)}
                     onChange={handlePhoneChange}
-                    placeholder="+7 (999) 123-45-67"
+                    placeholder="+(992) 12-345-67-89"
                     className="w-full px-4 py-4 pl-12 border-2 border-gray-200 rounded-xl focus:border-green-400 focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none bg-gray-50 focus:bg-white text-lg"
                     required
                   />
