@@ -225,8 +225,8 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
 
       case 7:
         if (!photoFile) newErrors.photoFile = 'Загрузите фотографию';
-        if (!frontPassportFile) newErrors.frontPassportFile = 'Загрузите переднюю сторону паспорта';
-        if (!backPassportFile) newErrors.backPassportFile = 'Загрузите заднюю сторону паспорта';
+        // if (!frontPassportFile) newErrors.frontPassportFile = 'Загрузите переднюю сторону паспорта';
+        // if (!backPassportFile) newErrors.backPassportFile = 'Загрузите заднюю сторону паспорта';
         break;
     }
 
