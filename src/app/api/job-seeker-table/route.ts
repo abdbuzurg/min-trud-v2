@@ -11,96 +11,44 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ message: "invalid page indication" }, { status: 400 })
   }
 
-  const count = await prisma.jobSeeker.count()
+  const count = await prisma.jobSeeker.count({
+    where: {
+      createdAt: {
+        gte: dateStart ? new Date(dateStart) : undefined,
+        lte: dateEnd ? new Date(dateEnd) : undefined,
+      }
+    }
+  })
   const count1C = await prisma.jobSeeker.count({
     where: {
       syncedWith1C: true,
+      createdAt: {
+        gte: dateStart ? new Date(dateStart) : undefined,
+        lte: dateEnd ? new Date(dateEnd) : undefined,
+      }
     }
   })
   let result
-  if (!dateStart && !dateEnd) {
-    result = await prisma.jobSeeker.findMany({
-      skip: (+page - 1) * pageSize,
-      take: pageSize,
-      include: {
-        additionalContactInformation: true,
-        knowledgeOfLanguages: true,
-        WorkExperience: true,
-        education: true,
-      },
-      orderBy: {
-        id: 'desc',
+
+  result = await prisma.jobSeeker.findMany({
+    skip: (+page - 1) * pageSize,
+    take: pageSize,
+    include: {
+      additionalContactInformation: true,
+      knowledgeOfLanguages: true,
+      WorkExperience: true,
+      education: true,
+    },
+    where: {
+      createdAt: {
+        gte: dateStart ? new Date(dateStart) : undefined,
+        lte: dateEnd ? new Date(dateEnd) : undefined,
       }
-    })
-  }
-
-  if (!dateStart && dateEnd) {
-    result = await prisma.jobSeeker.findMany({
-      skip: (+page - 1) * pageSize,
-      take: pageSize,
-      include: {
-        additionalContactInformation: true,
-        knowledgeOfLanguages: true,
-        WorkExperience: true,
-        education: true,
-      },
-      where: {
-        createdAt: {
-          lte: new Date(dateEnd)
-        }
-      },
-      orderBy: {
-        id: 'desc',
-      }
-    })
-
-  }
-
-  if (dateStart && !dateEnd) {
-    result = await prisma.jobSeeker.findMany({
-      skip: (+page - 1) * pageSize,
-      take: pageSize,
-      include: {
-        additionalContactInformation: true,
-        knowledgeOfLanguages: true,
-        WorkExperience: true,
-        education: true,
-      },
-      where: {
-        createdAt: {
-          gte: new Date(dateStart)
-        }
-      },
-      orderBy: {
-        id: 'desc',
-      }
-
-    })
-
-  }
-
-  if (dateStart && dateEnd) {
-    result = await prisma.jobSeeker.findMany({
-      skip: (+page - 1) * pageSize,
-      take: pageSize,
-      include: {
-        additionalContactInformation: true,
-        knowledgeOfLanguages: true,
-        WorkExperience: true,
-        education: true,
-      },
-      where: {
-        createdAt: {
-          gte: new Date(dateStart),
-          lte: new Date(dateEnd)
-        }
-      },
-      orderBy: {
-        id: 'desc',
-      }
-
-    })
-  }
+    },
+    orderBy: {
+      id: 'desc',
+    }
+  })
 
 
   return NextResponse.json({ data: result, count: count, count1C: count1C }, { status: 200 })

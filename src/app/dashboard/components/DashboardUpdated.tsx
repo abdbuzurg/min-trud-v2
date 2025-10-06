@@ -39,6 +39,23 @@ export interface JobSeekerAPIResult extends JobSeeker {
     jobSeekerId: number;
   }[],
 }
+
+function modifyDate(dateString: string, daysToAdd: number): string {
+  // 1. Parse the string into a Date object
+  const date = new Date(dateString);
+
+  // 2. Add or subtract the specified number of days
+  date.setDate(date.getDate() + daysToAdd);
+
+  // 3. Format the new Date object back into a "YYYY-MM-DD" string
+  const year = date.getFullYear();
+  // getMonth() is zero-based, so add 1
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day}`;
+}
+
 export default function EmployeeListPage() {
   const router = useRouter()
   const [start, setStart] = useState("");
@@ -50,6 +67,8 @@ export default function EmployeeListPage() {
   const [synced, setSynced] = useState(0)
   const [tableData, setTableData] = useState<JobSeekerAPIResult[]>([])
   const [downloadModal, setDownloadModal] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
+  const [isDownloading, setIsDownloading] = useState(false)
 
   const clearFilters = () => {
     setStart("");
@@ -57,25 +76,62 @@ export default function EmployeeListPage() {
   };
 
   useEffect(() => {
+    setIsLoading(true)
     axios.get<{ data: JobSeekerAPIResult[], count: number, count1C: number }>('api/job-seeker-table', { params: { page: page } })
       .then(response => {
         setTableData(response.data.data)
         setTotal(response.data.count)
         setSynced(response.data.count1C)
+        setIsLoading(false)
       })
   }, [])
 
   useEffect(() => {
-    axios.get<{ data: JobSeekerAPIResult[], count: number }>('api/job-seeker-table', {
+    setIsLoading(true)
+    axios.get<{ data: JobSeekerAPIResult[], count: number, count1C: number }>('api/job-seeker-table', {
       params: {
         page: page,
-        dateStart: start,
-        dateEnd: end,
+        dateStart: start ? modifyDate(start, -1) : "",
+        dateEnd: end ? modifyDate(end, 1) : "",
       }
     }).then(response => {
       setTableData(response.data.data)
+      setTotal(response.data.count)
+      setSynced(response.data.count1C)
+      setIsLoading(false)
     })
   }, [page, end, start])
+
+  const handleDownload = async () => {
+    setIsDownloading(true)
+    try {
+      const response = await fetch("/api/download-dashboard", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          dateStart: start ? modifyDate(start, -1) : "",
+          dateEnd: end ? modifyDate(end, 1) : "",
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Ошибка при скачивании или данных с таким фильтрами отсутсвуют")
+      }
+
+      const blob = await response.blob()
+      const url = window.URL.createObjectURL(blob)
+      const link = document.createElement("a")
+      link.href = url
+      link.download = "jobseeker.zip"
+      document.body.appendChild(link)
+      link.click()
+      setIsDownloading(false)
+      link.remove()
+      window.URL.revokeObjectURL(url)
+    } catch (err: any) {
+      console.log(err)
+    }
+  }
 
   return (
     <div className="bg-[#F2FFF4]">
@@ -126,10 +182,24 @@ export default function EmployeeListPage() {
 
               <button
                 className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95"
-                onClick={() => setDownloadModal(true)}
+                onClick={() => handleDownload()}
               >
-                <Download className="h-4 w-4" />
-                Скачать
+                {isDownloading
+                  ?
+                  <div className="flex gap-x-2 items-center">
+                    <div className="flex items-center justify-center">
+                      <div
+                        className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
+                      ></div>
+                    </div>
+                    <p>Идет подготовка файлов...</p>
+                  </div>
+                  :
+                  <>
+                    <Download className="h-4 w-4" />
+                    Скачать
+                  </>
+                }
               </button>
             </div>
           </div>
@@ -159,47 +229,61 @@ export default function EmployeeListPage() {
                 </tr>
               </thead>
               <tbody>
-                {tableData.map((e, idx) => (
-                  <tr key={e.id} className="border-t border-gray-100">
-                    <td className="px-5 py-4 text-gray-800">{e.firstName}</td>
-                    <td className="px-5 py-4 text-gray-800">{e.lastName}</td>
-                    <td className="px-5 py-4 text-gray-800">{e.middleName}</td>
-                    <td className="px-5 py-4 text-gray-800">{formatDate(e.birthDate.toString())}</td>
-                    <td className="px-5 py-4 text-gray-800">{e.gender}</td>
-                    <td className="px-5 py-4 text-gray-800">{e.phoneNumber}</td>
-                    <td className="px-5 py-4">
-                      {e.syncedWith1C ? (
-                        <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 text-emerald-700 px-3 py-1 ring-1 ring-emerald-100">
-                          <span className="h-2 w-2 rounded-full bg-emerald-500" /> Включена
-                        </span>
-                      ) : (
-                        <span className="inline-flex items-center gap-2 rounded-full bg-gray-100 text-gray-700 px-3 py-1 ring-1 ring-gray-200">
-                          <span className="h-2 w-2 rounded-full bg-gray-400" /> Отключена
-                        </span>
-                      )}
-                    </td>
-                    <td className="px-5 py-4 flex gap-x-2">
-                      <button
-                        className="cursor-pointer inline-flex items-center gap-2 rounded-full bg-[#39B36E] text-white px-3 py-1.5 text-sm font-medium hover:opacity-95"
-                        onClick={() => {
-                          setOpen(true)
-                          setSelected(e)
-                        }}
-                      >
-                        <Eye className="h-4 w-4" />
-                        Подробнее
-                      </button>
-                      <Link
-                        href={`/dashboard/edit-job-seeker/${e.phoneNumber[0] == "+" ? e.phoneNumber.substring(1) : e.phoneNumber}`}
-                        target="_blank"
-                        className="inline-flex items-center gap-2 rounded-full bg-red-500 text-white px-3 py-1.5 text-sm font-medium hover:opacity-95"
-                      >
-                        <Pencil className="h-4 w-4" />
-                        Изменить
-                      </Link>
+                {isLoading
+                  ?
+                  <tr>
+                    <td colSpan={8} className="overflow-y-hidden">
+                      <div className="flex items-center justify-center py-10">
+                        <div
+                          className="w-24 h-24 border-8 border-green-500 border-t-transparent rounded-full animate-spin"
+                        ></div>
+                      </div>
                     </td>
                   </tr>
-                ))}
+                  :
+                  tableData.map((e, idx) => (
+                    <tr key={e.id} className="border-t border-gray-100">
+                      <td className="px-5 py-4 text-gray-800">{e.firstName}</td>
+                      <td className="px-5 py-4 text-gray-800">{e.lastName}</td>
+                      <td className="px-5 py-4 text-gray-800">{e.middleName}</td>
+                      <td className="px-5 py-4 text-gray-800">{formatDate(e.birthDate.toString())}</td>
+                      <td className="px-5 py-4 text-gray-800">{e.gender}</td>
+                      <td className="px-5 py-4 text-gray-800">{e.phoneNumber}</td>
+                      <td className="px-5 py-4">
+                        {e.syncedWith1C ? (
+                          <span className="inline-flex items-center gap-2 rounded-full bg-emerald-50 text-emerald-700 px-3 py-1 ring-1 ring-emerald-100">
+                            <span className="h-2 w-2 rounded-full bg-emerald-500" /> Включена
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-2 rounded-full bg-gray-100 text-gray-700 px-3 py-1 ring-1 ring-gray-200">
+                            <span className="h-2 w-2 rounded-full bg-gray-400" /> Отключена
+                          </span>
+                        )}
+                      </td>
+                      <td className="px-5 py-4 flex gap-x-2">
+                        <button
+                          className="cursor-pointer inline-flex items-center gap-2 rounded-full bg-[#39B36E] text-white px-3 py-1.5 text-sm font-medium hover:opacity-95"
+                          onClick={() => {
+                            setOpen(true)
+                            setSelected(e)
+                          }}
+                        >
+                          <Eye className="h-4 w-4" />
+                          Подробнее
+                        </button>
+                        <Link
+                          href={`/dashboard/edit-job-seeker/${e.phoneNumber[0] == "+" ? e.phoneNumber.substring(1) : e.phoneNumber}`}
+                          target="_blank"
+                          className="inline-flex items-center gap-2 rounded-full bg-red-500 text-white px-3 py-1.5 text-sm font-medium hover:opacity-95"
+                        >
+                          <Pencil className="h-4 w-4" />
+                          Изменить
+                        </Link>
+                      </td>
+                    </tr>
+                  ))
+                }
+                {}
               </tbody>
             </table>
           </div>
@@ -207,6 +291,9 @@ export default function EmployeeListPage() {
         </section>
         <div className="flex items-center justify-end bg-gradient-to-br from-green-50 to-emerald-50 px-6 py-4">
           <div className="flex gap-2">
+            <div className="flex items-center">
+              Страница {page} из {Math.floor(total / 10) + 1}
+            </div>
             <button
               className="cursor-pointer rounded-lg border bg-white px-4 py-2 text-sm font-medium text-gray-600 hover:bg-gray-50"
               onClick={() => {

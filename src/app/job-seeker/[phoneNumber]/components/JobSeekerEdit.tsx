@@ -19,6 +19,7 @@ import { ru } from 'date-fns/locale';
 import axios from 'axios';
 import { Education, JobSeekerFromData } from '../../../../../types/jobSeeker';
 import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from '../../../../../jobseeker';
+import { useRouter } from 'next/navigation';
 
 registerLocale('ru', ru)
 
@@ -29,6 +30,7 @@ interface Props {
 }
 
 const JobSeekerEditForm = ({ phoneNumber }: Props) => {
+  const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -224,7 +226,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         break;
 
       case 7:
-        if (!photoFile) newErrors.photoFile = 'Загрузите фотографию';
+        // if (!photoFile) newErrors.photoFile = 'Загрузите фотографию';
         // if (!frontPassportFile) newErrors.frontPassportFile = 'Загрузите переднюю сторону паспорта';
         // if (!backPassportFile) newErrors.backPassportFile = 'Загрузите заднюю сторону паспорта';
         break;
@@ -386,7 +388,8 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
       const response = await fetch(`/api/files/${filename}`);
 
       if (!response.ok) {
-        throw new Error('File not found');
+        alert("Файл не существует")
+        return
       }
 
       const blob = await response.blob();
@@ -1284,7 +1287,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
       <div className="flex gap-x-2 w-full">
         <div className="flex-1">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Фронтальная сторона паспорта (скан/фото) *
+            Фронтальная сторона паспорта (скан/фото)
           </label>
           <div className="flex gap-x-2">
             <input
@@ -1314,7 +1317,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         </div>
         <div className="flex-1">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Задняя сторона паспорта (скан/фото) *
+            Задняя сторона паспорта (скан/фото)
           </label>
           <div className="flex gap-x-2">
             <input
@@ -1349,20 +1352,28 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Диплом
         </label>
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={(e) => setDiplomaFile(e.target.files?.[0] || null)}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.diplomaFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-        />
+        <div className="flex gap-x-2">
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={(e) => setDiplomaFile(e.target.files?.[0] || null)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.diplomaFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+          />
+          <button
+            onClick={() => handleDownload(`${phoneNumber}_diploma`)}
+            className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+          >
+            <Download size={20} className="mr-2" />
+          </button>
+        </div>
         {errors.diplomaFile && <p className="text-red-500 text-sm mt-1">{errors.diplomaFile}</p>}
         {diplomaFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {diplomaFile.name}</p>}
       </div>
 
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Рекомендательное письмо *
+          Рекомендательное письмо
         </label>
         <div className="flex gap-x-2">
           <input
@@ -1450,14 +1461,24 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
                   <p className="text-gray-600 mb-6">
                     Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.
                   </p>
-                  <button
-                    onClick={() => {
-                      setIsSubmitted(false)
-                    }}
-                    className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
-                  >
-                    Закрыть
-                  </button>
+                  <div className="flex gap-x-2 justify-center">
+                    <button
+                      onClick={() => {
+                        setIsSubmitted(false)
+                      }}
+                      className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
+                    >
+                      Закрыть
+                    </button>
+                    <button
+                      onClick={() => {
+                        router.push("/seeker")
+                      }}
+                      className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
+                    >
+                      Выход
+                    </button>
+                  </div>
                 </>
               }
             </div>

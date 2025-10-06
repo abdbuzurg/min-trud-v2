@@ -18,15 +18,15 @@ function formatDate(iso: string) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { date, sync1c, gender, country } = await req.json();
+    const { dateStart, dateEnd } = await req.json();
 
     // 1. Query DB with filters
     const seekers = await prisma.jobSeeker.findMany({
       where: {
-        ...(date ? { submittedAt: { gte: new Date(date) } } : {}),
-        ...(sync1c ? { syncedWith1C: true } : {}),
-        ...(gender && gender !== "all" ? { gender } : {}),
-        ...(country ? { country: { contains: country } } : {}),
+        createdAt: {
+          gte: dateStart ? new Date(dateStart) : undefined,
+          lte: dateEnd ? new Date(dateEnd) : undefined,
+        }
       },
       include: {
         additionalContactInformation: true,

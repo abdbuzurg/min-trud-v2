@@ -3,11 +3,12 @@
 import { useEffect, useState } from "react";
 import { Education, JobSeekerFromData } from "../../../../../../types/jobSeeker";
 import axios from "axios";
-import { Briefcase, Globe, GraduationCap, Languages, Phone, Plus, Save, Trash2, User } from "lucide-react";
+import { Briefcase, FileText, Globe, GraduationCap, Languages, Phone, Plus, Save, Trash2, User } from "lucide-react";
 import { ru } from 'date-fns/locale';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from "../../../../../../jobseeker";
+import { useRouter } from "next/navigation";
 
 registerLocale('ru', ru)
 
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export default function AdminEditJobSeeker({ phoneNumber }: Props) {
+  const router = useRouter()
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -26,6 +28,16 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
 
   const [selectedCountries, setSelectedCountries] = useState<string[]>([])
   const [countryQuery, setCountryQuery] = useState('')
+
+  const [photoFile, setPhotoFile] = useState<File | null>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null)
+  const [frontPassportFile, setFrontPassportFile] = useState<File | null>(null);
+  const [frontPassportPreview, setFrontPassportPreview] = useState<string | null>(null)
+  const [backPassportFile, setBackPassportFile] = useState<File | null>(null)
+  const [backPassportPreview, setBackPassportPreview] = useState<string | null>(null)
+  const [diplomaFile, setDiplomaFile] = useState<File | null>(null)
+  const [recommendationLetterFile, setRecommendationLetterFile] = useState<File | null>(null);
+  const [certificates, setCertificates] = useState<File[] | null>(null)
 
   const [isSavingData, setIsSavingData] = useState(true)
 
@@ -135,6 +147,7 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
     { id: 4, title: 'Языки', icon: Languages },
     { id: 5, title: 'Опыт работы', icon: Briefcase },
     { id: 6, title: 'Предпочтения', icon: Globe },
+    { id: 7, title: 'Документы', icon: FileText }
   ];
 
   const validateStep = (step: number): boolean => {
@@ -194,6 +207,11 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
         if (!(formData.desiredCity ?? '').trim()) newErrors.desiredCity = 'Обязательное поле';
         if (!(formData.dateOfReadiness ?? '').trim()) newErrors.dateOfReadiness = 'Обязательное поле';
         if (!(formData.expectedSalary ?? '').trim()) newErrors.expectedSalary = 'Обязательное поле';
+        break;
+      case 7:
+        // if (!photoFile) newErrors.photoFile = 'Загрузите фотографию';
+        // if (!frontPassportFile) newErrors.frontPassportFile = 'Загрузите переднюю сторону паспорта';
+        // if (!backPassportFile) newErrors.backPassportFile = 'Загрузите заднюю сторону паспорта';
         break;
     }
 
@@ -365,6 +383,18 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
 
     const data = new FormData()
 
+    if (photoFile) data.set('photo', photoFile);
+    if (frontPassportFile) data.set('frontPassport', frontPassportFile);
+    if (backPassportFile) data.set('backPassport', backPassportFile);
+    if (diplomaFile) data.set('diploma', diplomaFile);
+    if (recommendationLetterFile) data.set('recommendationLetter', recommendationLetterFile);
+    if (certificates && certificates.length > 0) {
+      certificates.forEach((file) => {
+        data.append("certificates", file);
+        // formData.append(`certificates[${index}]`, file);
+      });
+    }
+
     data.set("name", formData.firstName)
     data.set("surname", formData.lastName)
     data.set("middlename", formData.middleName)
@@ -416,6 +446,42 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
 
     await updateForm(data)
   };
+
+  const handleImageFileChange = (file: File | null, name: string) => {
+    const changeState = (name: string, url: string | null, file: File | null) => {
+      console.log(name)
+      switch (name) {
+        case 'photo':
+          setPhotoFile(file)
+          setPhotoPreview(url)
+          break
+        case 'front':
+          setFrontPassportFile(file)
+          setFrontPassportPreview(url)
+          break
+        case 'back':
+          setBackPassportFile(file)
+          setBackPassportPreview(url)
+          break
+
+        default:
+          console.log("ERROR")
+      }
+    }
+
+    if (file && ["image/jpeg", "image/jpg", "image/png"].includes(file.type)) {
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        changeState(name, reader.result as string, file)
+      }
+      reader.readAsDataURL(file)
+    } else {
+      changeState(name, null, null)
+      if (file) {
+        alert("Только фотографии формата JPG, JPEG, и PNG принимаются")
+      }
+    }
+  }
 
   const renderPersonalInfo = () => (
     <div className="space-y-6">
@@ -1141,6 +1207,136 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
     </div>
   );
 
+  const renderDocument = () => (
+    <div className="space-y-6">
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Фотография (изображение) *
+        </label>
+        <input
+          type="file"
+          accept=".jpg, .jpeg, .png"
+          onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, 'photo')}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.photoFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            }`}
+        />
+        {errors.photoFile && <p className="text-red-500 text-sm mt-1">{errors.photoFile}</p>}
+        {photoFile && photoPreview && (
+          <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
+            <img
+              src={photoPreview}
+              alt="Превью фотографии"
+              className="max-w-full max-h-64 object-contain mx-auto"
+            />
+          </div>
+        )}
+      </div>
+
+      <div className="flex gap-x-2 w-full">
+        <div className="flex-1">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Фронтальная сторона паспорта (скан/фото)
+          </label>
+          <input
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, "front")}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.frontPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+          />
+          {errors.frontPassportFile && <p className="text-red-500 text-sm mt-1">{errors.frontPassportFile}</p>}
+          {frontPassportFile && frontPassportPreview && (
+            <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
+              <img
+                src={frontPassportPreview}
+                alt="Превью передняй части паспорта"
+                className="max-w-full max-h-64 object-contain mx-auto"
+              />
+            </div>
+          )}
+        </div>
+        <div className="flex-1">
+          <label className="block text-sm font-semibold text-gray-700 mb-2">
+            Задняя сторона паспорта (скан/фото)
+          </label>
+          <input
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, "back")}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.backPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+          />
+          {errors.backPassportFile && <p className="text-red-500 text-sm mt-1">{errors.backPassportFile}</p>}
+          {backPassportFile && backPassportPreview && (
+            <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
+              <img
+                src={backPassportPreview}
+                alt="Превью задней части паспорта"
+                className="max-w-full max-h-64 object-contain mx-auto"
+              />
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Диплом
+        </label>
+        <input
+          type="file"
+          accept="application/pdf"
+          onChange={(e) => setDiplomaFile(e.target.files?.[0] || null)}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.diplomaFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            }`}
+        />
+        {errors.diplomaFile && <p className="text-red-500 text-sm mt-1">{errors.diplomaFile}</p>}
+        {diplomaFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {diplomaFile.name}</p>}
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Рекомендательное письмо
+        </label>
+        <input
+          type="file"
+          accept="application/pdf,image/*"
+          onChange={(e) => setRecommendationLetterFile(e.target.files?.[0] || null)}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.recommendationLetterFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            }`}
+        />
+        {errors.recommendationLetterFile && <p className="text-red-500 text-sm mt-1">{errors.recommendationLetterFile}</p>}
+        {recommendationLetterFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {recommendationLetterFile.name}</p>}
+      </div>
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-2">
+          Сертификаты
+        </label>
+        <input
+          type="file"
+          accept="application/pdf"
+          multiple
+          onChange={(e) => setCertificates(Array.from(e.target.files || []))}
+          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.certificates ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+            }`}
+        />
+        {errors.certificates && <p className="text-red-500 text-sm mt-1">{errors.certificates}</p>}
+        {certificates && certificates?.length > 0 && (
+          <ul className="mt-2 text-sm text-gray-600 list-disc pl-4">
+            {certificates.map((file, idx) => (
+              <li key={idx}>{file.name}</li>
+            ))}
+          </ul>
+        )}
+      </div>
+
+      <span className="text-center font-bold">
+        Предупреждение! Заполнение анкеты не дает сто процентную гарантию того что вас могут выбрать и вы поедете на миграцию в другую страну
+      </span>
+    </div>
+  );
+
   const renderStepContent = () => {
     switch (currentStep) {
       case 1: return renderPersonalInfo();
@@ -1149,6 +1345,7 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
       case 4: return renderLanguages();
       case 5: return renderWorkExperience();
       case 6: return renderPreferences();
+      case 7: return renderDocument();
       default: return null;
     }
   };
@@ -1183,14 +1380,24 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
                   <p className="text-gray-600 mb-6">
                     Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.
                   </p>
-                  <button
-                    onClick={() => {
-                      setIsSubmitted(false)
-                    }}
-                    className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
-                  >
-                    Закрыть
-                  </button>
+                  <div className="flex gap-x-2 justify-center">
+                    <button
+                      onClick={() => {
+                        setIsSubmitted(false)
+                      }}
+                      className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
+                    >
+                      Закрыть
+                    </button>
+                    <button
+                      onClick={() => {
+                        router.push("/seeker")
+                      }}
+                      className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
+                    >
+                      Выход
+                    </button>
+                  </div>
                 </>
               }
             </div>

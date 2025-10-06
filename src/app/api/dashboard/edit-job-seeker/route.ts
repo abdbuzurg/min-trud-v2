@@ -2,6 +2,90 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../../lib/prisma";
 import { JobSeekerFromData } from "../../../../../types/jobSeeker";
 import { AdditionalContactInfromation, Education, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
+import path from "path";
+import { promises as fs } from 'fs';
+
+const uploadsDir = path.join(process.cwd(), 'uploads', 'jobseekers');
+
+async function handleFileUpload(
+  formData: FormData,
+  key: string,
+  suffix: string,
+  phoneNumber: string
+): Promise<string | null> {
+  // 1. Get the file from FormData and validate it
+  const file = formData.get(key);
+
+  // If no file is associated with the key, or if it's not a File object, return null.
+  if (!file || !(file instanceof File)) {
+    console.log(`No file found for key: '${key}'`);
+    return null;
+  }
+
+  const filenameWithoutExt = `${phoneNumber}_${suffix}`;
+
+  // 2. Ensure the target directory exists
+  try {
+    await fs.mkdir(uploadsDir, { recursive: true });
+  } catch (error) {
+    console.error('Failed to create upload directory:', error);
+    throw new Error('Could not create storage directory.');
+  }
+
+  // 3. Delete any existing file with the same base name
+  try {
+    const existingFiles = await fs.readdir(uploadsDir);
+    for (const existingFile of existingFiles) {
+      if (path.parse(existingFile).name === filenameWithoutExt) {
+        await fs.unlink(path.join(uploadsDir, existingFile));
+        console.log(`Deleted existing file: ${existingFile}`);
+        break; // Assume only one match and stop searching
+      }
+    }
+  } catch (error) {
+    // Log the error but don't stop the process. The main goal is to save the new file.
+    console.error('Error during deletion of existing file (continuing with upload):', error);
+  }
+
+  // 4. Save the new file
+  const fileExtension = path.extname(file.name);
+  const newFilename = `${filenameWithoutExt}${fileExtension}`;
+  const newFilePath = path.join(uploadsDir, newFilename);
+
+  // Convert the File object to a Node.js Buffer
+  const buffer = Buffer.from(await file.arrayBuffer());
+
+  try {
+    await fs.writeFile(newFilePath, buffer);
+    console.log(`Successfully saved new file: ${newFilename}`);
+    return newFilename; // Return the name of the created file
+  } catch (error) {
+    console.error('Failed to write new file to disk:', error);
+    throw new Error('Could not save the new file.');
+  }
+}
+
+const deleteOldCertificates = async (phoneForName: string) => {
+  const files = await fs.readdir(uploadsDir);
+
+  const certFiles = files.filter(f => f.startsWith(`${phoneForName}_certificate_`));
+  for (const file of certFiles) {
+    await fs.unlink(path.join(uploadsDir, file));
+  }
+};
+
+const saveCertificates = async (phoneForName: string, certs: File[]) => {
+  for (let i = 0; i < certs.length; i++) {
+    const file = certs[i];
+    // @ts-ignore (Next.js File has arrayBuffer)
+    const buf = Buffer.from(await file.arrayBuffer());
+    const ext = file.type === "application/pdf" ? "pdf" : "bin"; // adjust if needed
+    const filename = `${phoneForName}_certificate_${i + 1}.${ext}`;
+    const fullPath = path.join(uploadsDir, filename);
+
+    await fs.writeFile(fullPath, buf);
+  }
+};
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url)
@@ -9,6 +93,7 @@ export async function GET(req: NextRequest) {
   if (!phoneNumber) {
     return NextResponse.json({ valid: false, error: "Не указан номер телефона" }, { status: 404 })
   }
+
 
   const user = await prisma.user.findFirst({
     where: {
@@ -114,6 +199,17 @@ export async function POST(req: NextRequest) {
     const phoneNumber = formData.get("phoneNumber") as string
     let phoneForName = (phoneNumber || '').replace(/[^\d+]/g, '') || 'unknown';
     phoneForName = phoneForName.substring(1)
+
+    await handleFileUpload(formData, 'photo', 'image', phoneForName)
+    await handleFileUpload(formData, 'frontPassport', 'frontPassport', phoneForName)
+    await handleFileUpload(formData, 'backPassport', 'backPassport', phoneForName)
+    await handleFileUpload(formData, 'diploma', 'diploma', phoneForName)
+    await handleFileUpload(formData, 'recommendationLetter', 'recommendation', phoneForName)
+    const certificates = formData.getAll("certificates") as File[];
+    if (certificates.length > 0) {
+      await deleteOldCertificates(phoneForName);
+      const savedCertificates = await saveCertificates(phoneForName, certificates);
+    }
 
     const user = await prisma.user.findFirst({
       where: {

@@ -1212,7 +1212,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
       <div className="flex gap-x-2 w-full">
         <div className="flex-1">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Фронтальная сторона паспорта (скан/фото) *
+            Фронтальная сторона паспорта (скан/фото)
           </label>
           <input
             type="file"
@@ -1234,7 +1234,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         </div>
         <div className="flex-1">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Задняя сторона паспорта (скан/фото) *
+            Задняя сторона паспорта (скан/фото)
           </label>
           <input
             type="file"
