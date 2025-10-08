@@ -60,6 +60,8 @@ export default function EmployeeListPage() {
   const router = useRouter()
   const [start, setStart] = useState("");
   const [end, setEnd] = useState("");
+  const [firstName, setFirstName] = useState("")
+  const [lastName, setLastName] = useState("")
   const [selected, setSelected] = useState<JobSeekerAPIResult | null>(null)
   const [open, setOpen] = useState(false)
   const [page, setPage] = useState(1)
@@ -73,6 +75,8 @@ export default function EmployeeListPage() {
   const clearFilters = () => {
     setStart("");
     setEnd("");
+    setFirstName("")
+    setLastName("")
   };
 
   useEffect(() => {
@@ -91,8 +95,10 @@ export default function EmployeeListPage() {
     axios.get<{ data: JobSeekerAPIResult[], count: number, count1C: number }>('api/job-seeker-table', {
       params: {
         page: page,
-        dateStart: start ? modifyDate(start, -1) : "",
+        dateStart: start ? modifyDate(start, 0) : "",
         dateEnd: end ? modifyDate(end, 1) : "",
+        firstName: firstName,
+        lastName: lastName,
       }
     }).then(response => {
       setTableData(response.data.data)
@@ -100,7 +106,7 @@ export default function EmployeeListPage() {
       setSynced(response.data.count1C)
       setIsLoading(false)
     })
-  }, [page, end, start])
+  }, [page, end, start, firstName, lastName])
 
   const handleDownload = async () => {
     setIsDownloading(true)
@@ -109,8 +115,10 @@ export default function EmployeeListPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          dateStart: start ? modifyDate(start, -1) : "",
+          dateStart: start ? modifyDate(start, 0) : "",
           dateEnd: end ? modifyDate(end, 1) : "",
+          firstName: firstName,
+          lastName: lastName,
         })
       });
 
@@ -143,64 +151,73 @@ export default function EmployeeListPage() {
       <main className="p-6">
         {/* Filters Card (no search by request) */}
         <section className="bg-white/90 backdrop-blur rounded-2xl shadow-sm ring-1 ring-black/5 p-4 md:p-5 mb-5">
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-            <div className="flex flex-wrap items-center gap-6 text-sm text-gray-700">
-              <span className="inline-flex items-center gap-2">
-                <Users className="h-4 w-4 text-[#39B36E]" />
-                Всего соискателей: <b className="ml-1">{total}</b>
-              </span>
-              <span className="inline-flex items-center gap-2">
-                <CloudSun className="h-4 w-4 text-[#39B36E]" />
-                Синхронизировано с 1С: <b className="ml-1">{synced}</b>
-              </span>
+          <div className="flex flex-col md:items-left md:justify-between gap-3">
+            <div className="flex items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-6 text-sm text-gray-700">
+                <span className="inline-flex items-center gap-2">
+                  <Users className="h-4 w-4 text-[#39B36E]" />
+                  Всего соискателей: <b className="ml-1">{total}</b>
+                </span>
+                <span className="inline-flex items-center gap-2">
+                  <CloudSun className="h-4 w-4 text-[#39B36E]" />
+                  Синхронизировано с 1С: <b className="ml-1">{synced}</b>
+                </span>
+              </div>
+
+              <div className="flex flex-wrap items-center gap-3">
+
+                <button className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95">
+                  <CloudSun className="h-4 w-4" />
+                  Синхронизация с 1С
+                </button>
+
+                <button
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95"
+                  onClick={() => router.push("/dashboard/add-job-seeker")}
+                >
+                  <BadgePlus className="h-4 w-4" />
+                  Добавить соискателя работы
+                </button>
+              </div>
             </div>
+            <div className="flex justify-between items-end gap-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <Input label="Имя" value={firstName} onChange={setFirstName} />
+                <Input label="Фамилия" value={lastName} onChange={setLastName} />
+                <DateInput label="Начало" value={start} onChange={setStart} />
+                <DateInput label="Конец" value={end} onChange={setEnd} />
+              </div>
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  onClick={clearFilters}
+                  className="inline-flex items-center gap-2 rounded-xl bg-rose-500 text-white px-4 py-2 font-medium hover:opacity-95"
+                >
+                  <X className="h-4 w-4" />
+                  Очистить
+                </button>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <DateInput label="Начало" value={start} onChange={setStart} />
-              <DateInput label="Конец" value={end} onChange={setEnd} />
-
-              <button
-                onClick={clearFilters}
-                className="inline-flex items-center gap-2 rounded-xl bg-rose-500 text-white px-4 py-2 font-medium hover:opacity-95"
-              >
-                <X className="h-4 w-4" />
-                Очистить
-              </button>
-
-              <button className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95">
-                <CloudSun className="h-4 w-4" />
-                Синхронизация с 1С
-              </button>
-
-              <button
-                className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95"
-                onClick={() => router.push("/dashboard/add-job-seeker")}
-              >
-                <BadgePlus className="h-4 w-4" />
-                Добавить соискателя работы
-              </button>
-
-              <button
-                className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95"
-                onClick={() => handleDownload()}
-              >
-                {isDownloading
-                  ?
-                  <div className="flex gap-x-2 items-center">
-                    <div className="flex items-center justify-center">
-                      <div
-                        className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
-                      ></div>
+                <button
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95"
+                  onClick={() => handleDownload()}
+                >
+                  {isDownloading
+                    ?
+                    <div className="flex gap-x-2 items-center">
+                      <div className="flex items-center justify-center">
+                        <div
+                          className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
+                        ></div>
+                      </div>
+                      <p>Идет подготовка файлов...</p>
                     </div>
-                    <p>Идет подготовка файлов...</p>
-                  </div>
-                  :
-                  <>
-                    <Download className="h-4 w-4" />
-                    Скачать
-                  </>
-                }
-              </button>
+                    :
+                    <>
+                      <Download className="h-4 w-4" />
+                      Скачать
+                    </>
+                  }
+                </button>
+              </div>
             </div>
           </div>
         </section>
@@ -213,6 +230,7 @@ export default function EmployeeListPage() {
               <thead>
                 <tr className="bg-[#EAF7ED] text-gray-700">
                   {[
+                    "дата регистрации",
                     "имя",
                     "фамилия",
                     "отчество",
@@ -243,6 +261,7 @@ export default function EmployeeListPage() {
                   :
                   tableData.map((e, idx) => (
                     <tr key={e.id} className="border-t border-gray-100">
+                      <td className="px-5 py-4 text-center text-gray-800">{formatDate(e.createdAt.toString())}</td>
                       <td className="px-5 py-4 text-gray-800">{e.firstName}</td>
                       <td className="px-5 py-4 text-gray-800">{e.lastName}</td>
                       <td className="px-5 py-4 text-gray-800">{e.middleName}</td>
@@ -322,9 +341,37 @@ export default function EmployeeListPage() {
   );
 }
 
+function Input({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
+
+  const [inputValue, setInputValue] = useState(value)
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      onChange(inputValue)
+    }, 500)
+
+    return () => {
+      clearTimeout(handler)
+    }
+  }, [inputValue])
+
+  return (
+    <label className="flex flex-col items-left gap-2 text-sm text-gray-700">
+      <span className="hidden md:block">{label}</span>
+      <div className="relative">
+        <input
+          type="text"
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
+          className="appearance-none w-[160px] md:w-[170px] rounded-xl border border-gray-200 px-3 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#39B36E]/30 focus:border-[#39B36E]"
+        />
+      </div>
+    </label>
+  );
+}
+
 function DateInput({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
-    <label className="flex items-center gap-2 text-sm text-gray-700">
+    <label className="flex flex-col items-left gap-2 text-sm text-gray-700">
       <span className="hidden md:block">{label}</span>
       <div className="relative">
         <Calendar className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />

@@ -1,5 +1,7 @@
-import React from "react";
-import { X, UserRound, Phone, MapPin, Briefcase, GraduationCap, Plane, Pencil } from "lucide-react";
+"use client"
+
+import React, { useState } from "react";
+import { X, UserRound, Phone, MapPin, Briefcase, GraduationCap, Plane, Pencil, ArrowLeft, ArrowRight } from "lucide-react";
 import { JobSeekerAPIResult } from "./DashboardUpdated";
 import Link from "next/link";
 
@@ -73,7 +75,6 @@ export default function SeekerModal({
                 {employee.address}
               </div>
 
-              <SectionTitle icon={<Briefcase className="h-4 w-4" />}>Трудовая информация</SectionTitle>
               {WorkExperienceInfoRow(employee.WorkExperience)}
             </div>
 
@@ -161,19 +162,43 @@ function WorkExperienceInfoRow(
     jobSeekerId: number;
   }[]
 ) {
+  const [page, setPage] = useState(0)
   return (
     <div>
-      {workExperience.map((v, i) => (
-        <div key={i} className="grid grid-cols-2 gap-3 text-sm py-1.5 border-b-gray-700">
-          <div className="text-gray-500">Компания</div>
-          <div className="text-gray-900">{v.workplace}</div>
-          <div className="text-gray-500">Позиция</div>
-          <div className="text-gray-900">{v.jobTitle}</div>
-          <div className="text-gray-500">Период</div>
-          <div className="text-gray-900">{formatDate(v.dateStart.toString())} - {!v.dateEnd ? "текущее время" : formatDate(v.dateEnd.toString())}</div>
+      <SectionTitle icon={<Briefcase className="h-4 w-4" />}>
+        <div className="flex justify-between items-center w-full">
+          Трудовая информация
+          <div className="flex gap-x-1">
+            <button
+              className={`inline-flex items-center gap-2 rounded-full ${page - 1 >= 0 ? "bg-[#39B36E] text-white cursor-pointer" : "bg-gray-100 text-gray-700"} px-3 py-1.5 text-sm font-medium hover:opacity-95`}
+              type="button"
+              onClick={() => {
+                if (page - 1 >= 0) setPage(page - 1)
+              }}
+            >
+              <ArrowLeft className="h-4 w-4" />
+            </button>
+            <button
+              className={`inline-flex items-center gap-2 rounded-full ${page + 1 != workExperience.length ? "bg-[#39B36E] text-white cursor-pointer" : "bg-gray-100 text-gray-700"} px-3 py-1.5 text-sm font-medium hover:opacity-95`}
+              type="button"
+              onClick={() => {
+                if (page + 1 != workExperience.length) setPage(page + 1)
+              }}
+            >
+              <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
         </div>
-      ))}
-    </div>
+      </SectionTitle >
+      <div className="grid grid-cols-2 gap-3 text-sm py-1.5 border-b-gray-700">
+        <div className="text-gray-500">Компания</div>
+        <div className="text-gray-900">{workExperience[page].workplace}</div>
+        <div className="text-gray-500">Позиция</div>
+        <div className="text-gray-900">{workExperience[page].jobTitle}</div>
+        <div className="text-gray-500">Период</div>
+        <div className="text-gray-900">{formatDate(workExperience[page].dateStart.toString())} - {!workExperience[page].dateEnd ? "текущее время" : formatDate(workExperience[page].dateEnd.toString())}</div>
+      </div>
+    </div >
   )
 }
 

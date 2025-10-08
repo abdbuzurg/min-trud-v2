@@ -18,7 +18,7 @@ function formatDate(iso: string) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { dateStart, dateEnd } = await req.json();
+    const { dateStart, dateEnd, firstName, lastName } = await req.json();
 
     // 1. Query DB with filters
     const seekers = await prisma.jobSeeker.findMany({
@@ -26,7 +26,15 @@ export async function POST(req: NextRequest) {
         createdAt: {
           gte: dateStart ? new Date(dateStart) : undefined,
           lte: dateEnd ? new Date(dateEnd) : undefined,
-        }
+        },
+        firstName: {
+          contains: firstName ? firstName : undefined,
+          mode: 'insensitive'
+        },
+        lastName: {
+          contains: lastName ? lastName : undefined,
+          mode: 'insensitive'
+        },
       },
       include: {
         additionalContactInformation: true,

@@ -198,7 +198,7 @@ export async function POST(req: NextRequest) {
     const formData = await req.formData()
     const phoneNumber = formData.get("phoneNumber") as string
     let phoneForName = (phoneNumber || '').replace(/[^\d+]/g, '') || 'unknown';
-    phoneForName = phoneForName.substring(1)
+    if (phoneForName[0] == "+") phoneForName = phoneForName.substring(1)
 
     await handleFileUpload(formData, 'photo', 'image', phoneForName)
     await handleFileUpload(formData, 'frontPassport', 'frontPassport', phoneForName)

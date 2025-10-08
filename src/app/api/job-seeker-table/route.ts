@@ -7,16 +7,28 @@ export async function GET(request: NextRequest) {
   const dateStart = searchParams.get("dateStart")
   const dateEnd = searchParams.get("dateEnd")
   const page = searchParams.get("page")
+  const firstName = searchParams.get("firstName")
+  const lastName = searchParams.get("lastName")
   if (!page) {
     return NextResponse.json({ message: "invalid page indication" }, { status: 400 })
   }
+
+  console.log(dateStart, dateEnd)
 
   const count = await prisma.jobSeeker.count({
     where: {
       createdAt: {
         gte: dateStart ? new Date(dateStart) : undefined,
         lte: dateEnd ? new Date(dateEnd) : undefined,
-      }
+      },
+      firstName: {
+        contains: firstName ? firstName : undefined,
+        mode: 'insensitive'
+      },
+      lastName: {
+        contains: lastName ? lastName : undefined,
+        mode: 'insensitive'
+      },
     }
   })
   const count1C = await prisma.jobSeeker.count({
@@ -25,7 +37,15 @@ export async function GET(request: NextRequest) {
       createdAt: {
         gte: dateStart ? new Date(dateStart) : undefined,
         lte: dateEnd ? new Date(dateEnd) : undefined,
-      }
+      },
+      firstName: {
+        contains: firstName ? firstName : undefined,
+        mode: 'insensitive'
+      },
+      lastName: {
+        contains: lastName ? lastName : undefined,
+        mode: 'insensitive'
+      },
     }
   })
   let result
@@ -43,7 +63,15 @@ export async function GET(request: NextRequest) {
       createdAt: {
         gte: dateStart ? new Date(dateStart) : undefined,
         lte: dateEnd ? new Date(dateEnd) : undefined,
-      }
+      },
+      firstName: {
+        contains: firstName ? firstName : undefined,
+        mode: 'insensitive'
+      },
+      lastName: {
+        contains: lastName ? lastName : undefined,
+        mode: 'insensitive'
+      },
     },
     orderBy: {
       id: 'desc',
