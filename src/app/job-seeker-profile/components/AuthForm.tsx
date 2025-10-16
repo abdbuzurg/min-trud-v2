@@ -60,18 +60,20 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
     e.preventDefault();
     setError('');
 
-    if (!phoneNumber || phoneNumber.length < 12) {
+    if (!phoneNumber || phoneNumber.length < 9) {
       setError('Введите корректный номер телефона');
       return;
     }
 
     setIsLoading(true);
+    const correctPhoneNumber = "992" + phoneNumber
     try {
       const response = await axios.post(`api/send-sms`, {
-        phoneNumber: phoneNumber,
+        phoneNumber: correctPhoneNumber,
       });
       if (response.status == 200 && response.data.message == "Успех") {
         setStep('code')
+        setPhoneNumber(correctPhoneNumber)
       }
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -95,7 +97,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
     }
 
     setIsLoading(true);
-
+    console.log(phoneNumber)
     try {
       const response = await axios.post('/api/sms-verification', {
         phoneNumber: phoneNumber,
@@ -115,16 +117,16 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
 
   const formatPhoneNumber = (value: string) => {
     const cleaned = value.replace(/\D/g, '');
-    const match = cleaned.match(/^(\d{3})(\d{2})(\d{3})(\d{2})(\d{2})$/);
+    const match = cleaned.match(/^(\d{2})(\d{3})(\d{2})(\d{2})$/);
     if (match) {
-      return `+(${match[1]}) ${match[2]}-${match[3]}-${match[4]}-${match[5]}`;
+      return `${match[1]}-${match[2]}-${match[3]}-${match[4]}`;
     }
     return value;
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, '');
-    if (value.length <= 12) {
+    if (value.length <= 9) {
       setPhoneNumber(value);
     }
   };
@@ -197,7 +199,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                     type="tel"
                     value={formatPhoneNumber(phoneNumber)}
                     onChange={handlePhoneChange}
-                    placeholder="+(992) 12-345-67-89"
+                    placeholder="12-345-67-89"
                     className="w-full px-4 py-4 pl-12 border-2 border-gray-200 rounded-xl focus:border-green-400 focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none bg-gray-50 focus:bg-white text-lg"
                     required
                   />

@@ -82,12 +82,7 @@ export default function AdminJobSeekerForm() {
       languageOther: '',
       level: ''
     }],
-    workExperience: [{
-      company: '',
-      position: '',
-      startDate: '',
-      endDate: '',
-    }],
+    workExperience: [],
     desiredCountry: '',
     desiredCity: '',
     expectedSalary: '',
