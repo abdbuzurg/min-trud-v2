@@ -75,7 +75,7 @@ export default function SeekerModal({
                 {employee.address}
               </div>
 
-              {WorkExperienceInfoRow(employee.WorkExperience)}
+              {employee.WorkExperience.length && WorkExperienceInfoRow(employee.WorkExperience)}
             </div>
 
             {/* Right column */}
@@ -162,7 +162,6 @@ function WorkExperienceInfoRow(
     jobSeekerId: number;
   }[]
 ) {
-  if (!!workExperience || !workExperience) return null
   const [page, setPage] = useState(0)
   return (
     <div>
