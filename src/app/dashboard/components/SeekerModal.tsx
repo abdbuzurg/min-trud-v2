@@ -162,8 +162,7 @@ function WorkExperienceInfoRow(
     jobSeekerId: number;
   }[]
 ) {
-  console.log(workExperience)
-  if (!!workExperience) return null
+  if (!!workExperience || !workExperience) return null
   const [page, setPage] = useState(0)
   return (
     <div>
