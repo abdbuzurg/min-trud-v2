@@ -13,8 +13,8 @@ export default function SeekerModal({
   onClose: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
-      <div className="w-full max-w-4xl rounded-2xl bg-white shadow-xl ring-1 ring-black/5">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 overflow-y-auto">
+      <div className="w-full max-w-4xl rounded-2xl bg-white shadow-xl ring-1 ring-black/5 max-h-[calc(100svh-2rem)] max-h-[calc(100dvh-2rem)] overflow-y-auto">
         {/* Header */}
         <div className="flex items-start justify-between p-6 border-b border-gray-100">
           <div className="flex items-start gap-3">
