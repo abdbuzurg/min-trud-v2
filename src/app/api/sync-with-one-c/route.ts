@@ -66,9 +66,8 @@ export async function GET(request: NextRequest) {
         level: val.level
       }))
     }
-
-    if (await sendTo1C(profileFor1C)) {
-      try {
+    try {
+      if (await sendTo1C(profileFor1C)) {
         await prisma.jobSeeker.updateMany({
           where: {
             id: seeker.id,
@@ -77,10 +76,11 @@ export async function GET(request: NextRequest) {
             syncedWith1C: true,
           }
         })
-      } catch (err) {
-        console.log(err)
       }
+    } catch (err) {
+      console.log(err)
     }
   }
 
+  return NextResponse.json({ status: "Успешно" }, { status: 200 })
 }
