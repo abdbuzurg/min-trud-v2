@@ -40,8 +40,8 @@ export async function GET(request: NextRequest) {
         desiredCity: seeker.desiredCity,
         criminalRecord: seeker.criminalRecord,
         additionalInformation: seeker.additionalInformation ?? "",
-        createdAt: seeker.createdAt,
-        updatedAt: seeker.updatedAt,
+        createdAt: formatDateTo1C(seeker.createdAt.toDateString()),
+        updatedAt: formatDateTo1C(seeker.updatedAt.toDateString()),
         additionalContactInformation: seeker.additionalContactInformation.map(
           (c) => ({
             fullname: c.fullname,
