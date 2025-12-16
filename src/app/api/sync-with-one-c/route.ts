@@ -56,8 +56,8 @@ export async function GET(request: NextRequest) {
         WorkExperience: seeker.WorkExperience.map((w) => ({
           company: w.workplace,
           position: w.jobTitle,
-          startDate: w.dateStart,
-          endDate: w.dateEnd,
+          startDate: formatDateTo1C(w.dateStart.toDateString()),
+          endDate: formatDateTo1C(w.dateEnd?.toDateString() ?? ""),
         })),
         education: seeker.education.map((e) => ({
           education: e.education,
