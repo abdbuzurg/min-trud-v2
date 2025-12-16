@@ -141,6 +141,20 @@ export default function EmployeeListPage() {
     }
   }
 
+  const handleOneCSync = async () => {
+    try {
+      const response = await fetch("/api/sync-with-one-c", {
+        method: "GET"
+      })
+
+      if (!response.ok) {
+        throw new Error("Ошибка при скачивании или данных с таким фильтрами отсутсвуют")
+      }
+    } catch (err: any) {
+      console.log(err)
+    }
+  }
+
   return (
     <div className="bg-[#F2FFF4]">
       {/* Top bar */}
@@ -166,7 +180,10 @@ export default function EmployeeListPage() {
 
               <div className="flex flex-wrap items-center gap-3">
 
-                <button className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95">
+                <button
+                  className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95"
+                  onClick={() => handleOneCSync()}
+                >
                   <CloudSun className="h-4 w-4" />
                   Синхронизация с 1С
                 </button>

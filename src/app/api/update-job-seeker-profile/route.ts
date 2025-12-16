@@ -205,6 +205,7 @@ export async function POST(request: NextRequest) {
     await prisma.jobSeeker.updateMany({
       data: {
         ...jobSeekerInfo,
+        syncedWith1C: false,
       },
       where: {
         id: jobSeeker.id,
