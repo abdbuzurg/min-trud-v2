@@ -97,7 +97,7 @@ export async function sendTo1C(payload: Candidate1CPayload): Promise<boolean> {
     console.log("Response status code:", response.status);
     console.log("Response headers:", response.headers);
 
-    let data = response.data;
+    let data: any = response.data;
 
     if (typeof data === "string") {
       const text = data.replace(/^\uFEFF/, ""); // strip BOM
@@ -108,15 +108,18 @@ export async function sendTo1C(payload: Candidate1CPayload): Promise<boolean> {
 
         if (parsed.result === 1) {
           console.log("✅ 1C says success:", parsed.message);
-          return true
+          return true;
         } else {
-          console.log("⚠️ 1C returned non-success result:", parsed);
-          return false
+          console.error(
+            "❌ 1C returned non-success result:",
+            `result=${parsed.result}, message=${parsed.message}`
+          );
+          return false;
         }
       } catch (e) {
-        console.log("Response text (not valid JSON or not parsed):");
-        console.log(text);
-        return false
+        console.error("Response text (not valid JSON or not parsed):");
+        console.error(text);
+        return false;
       }
     } else {
       console.log("Response JSON (parsed by axios):");
@@ -124,24 +127,53 @@ export async function sendTo1C(payload: Candidate1CPayload): Promise<boolean> {
 
       if (data.result === 1) {
         console.log("✅ 1C says success:", data.message);
-        return true
+        return true;
       } else {
-        console.log("⚠️ 1C returned non-success result:", data);
-        return false
+        // вот здесь твой кейс: { result: 0, message: "Неуспешно" }
+        console.error(
+          "❌ 1C returned non-success result:",
+          `result=${data.result}, message=${data.message}`
+        );
+        return false;
       }
     }
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
-      // Now TypeScript knows it's an AxiosError
       console.error("Request failed with status:", err.response?.status);
       console.error("Headers:", err.response?.headers);
-      console.error("Body:", err.response?.data);
+
+      const body = err.response?.data;
+      console.error("Body:", body);
+
+      // Попробуем достать message/result из тела, если сервер 1С всё-таки что-то вернул
+      if (typeof body === "string") {
+        const text = body.replace(/^\uFEFF/, "");
+        try {
+          const parsed = JSON.parse(text);
+          if (parsed && typeof parsed === "object") {
+            console.error(
+              "❌ 1C error payload:",
+              `result=${parsed.result}, message=${parsed.message}`
+            );
+          }
+        } catch {
+          // просто текст, оставляем как есть
+        }
+      } else if (body && typeof body === "object") {
+        const anyBody = body as any;
+        if ("result" in anyBody || "message" in anyBody) {
+          console.error(
+            "❌ 1C error payload:",
+            `result=${anyBody.result}, message=${anyBody.message}`
+          );
+        }
+      }
     } else if (err instanceof Error) {
       console.error("Request error:", err.message);
     } else {
       console.error("Unknown error:", err);
     }
 
-    return false
+    return false;
   }
 }
