@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { Education, JobSeekerFromData } from "../../../../../../types/jobSeeker";
 import axios from "axios";
-import { Briefcase, FileText, Globe, GraduationCap, Languages, Phone, Plus, Save, Trash2, User } from "lucide-react";
+import { Briefcase, Download, FileText, Globe, GraduationCap, Languages, Phone, Plus, Save, Trash2, User } from "lucide-react";
 import { ru } from 'date-fns/locale';
 import DatePicker, { registerLocale } from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
@@ -480,6 +480,31 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
       if (file) {
         alert("Только фотографии формата JPG, JPEG, и PNG принимаются")
       }
+    }
+  }
+
+  const handleDownload = async (filename: string) => {
+    try {
+      const response = await fetch(`/api/files/${filename}`);
+
+      if (!response.ok) {
+        alert("Файл не существует")
+        return
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      // The backend doesn't tell us the extension, so you might need a more robust way
+      // to determine the filename, or the backend could provide it in a header.
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error('Error downloading the file:', error);
     }
   }
 
@@ -1220,6 +1245,12 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.photoFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
         />
+        <button
+          onClick={() => handleDownload(`${phoneNumber}_image`)}
+          className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+        >
+          <Download size={20} className="mr-2" />
+        </button>
         {errors.photoFile && <p className="text-red-500 text-sm mt-1">{errors.photoFile}</p>}
         {photoFile && photoPreview && (
           <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
@@ -1244,6 +1275,12 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.frontPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
           />
+          <button
+            onClick={() => handleDownload(`${phoneNumber}_frontPassport`)}
+            className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+          >
+            <Download size={20} className="mr-2" />
+          </button>
           {errors.frontPassportFile && <p className="text-red-500 text-sm mt-1">{errors.frontPassportFile}</p>}
           {frontPassportFile && frontPassportPreview && (
             <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
@@ -1266,6 +1303,12 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.backPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
           />
+          <button
+            onClick={() => handleDownload(`${phoneNumber}_backPassport`)}
+            className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+          >
+            <Download size={20} className="mr-2" />
+          </button>
           {errors.backPassportFile && <p className="text-red-500 text-sm mt-1">{errors.backPassportFile}</p>}
           {backPassportFile && backPassportPreview && (
             <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
@@ -1290,6 +1333,13 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.diplomaFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
         />
+        <button
+          onClick={() => handleDownload(`${phoneNumber}_diploma`)}
+          className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+        >
+          <Download size={20} className="mr-2" />
+        </button>
+
         {errors.diplomaFile && <p className="text-red-500 text-sm mt-1">{errors.diplomaFile}</p>}
         {diplomaFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {diplomaFile.name}</p>}
       </div>
@@ -1305,6 +1355,13 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.recommendationLetterFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
         />
+        <button
+          onClick={() => handleDownload(`${phoneNumber}_recommendation`)}
+          className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+        >
+          <Download size={20} className="mr-2" />
+        </button>
+
         {errors.recommendationLetterFile && <p className="text-red-500 text-sm mt-1">{errors.recommendationLetterFile}</p>}
         {recommendationLetterFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {recommendationLetterFile.name}</p>}
       </div>

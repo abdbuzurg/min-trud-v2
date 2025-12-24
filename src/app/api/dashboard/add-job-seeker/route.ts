@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import path from "path";
 import { promises as fs } from 'fs'
 import prisma from "../../../../../lib/prisma";
+import { AdditionalContactInformation, Candidate1CPayload, EducationItem, formatDateTo1C, LanguageKnowledge, sendTo1C, WorkExperienceItem } from "../../1c";
 
 export async function POST(req: NextRequest) {
   try {
@@ -183,6 +184,76 @@ export async function POST(req: NextRequest) {
     await prisma.workExperience.createMany({
       data: workExperience.map(v => ({ ...v, jobSeekerId: jobSeekerResult.id }))
     })
+
+    const fullUserInfo = await prisma.jobSeeker.findFirst({
+      where: {
+        userId: user.id,
+      },
+      include: {
+        WorkExperience: true,
+        additionalContactInformation: true,
+        education: true,
+        knowledgeOfLanguages: true,
+      }
+    })
+    if (!fullUserInfo) {
+      return NextResponse.json({ 'message': 'Success' }, { status: 200 })
+    }
+
+    const profileFor1C: Candidate1CPayload = {
+      lastName: fullUserInfo.lastName,
+      firstName: fullUserInfo.firstName,
+      middleName: fullUserInfo.middleName,
+      birthDate: formatDateTo1C(fullUserInfo.birthDate.toDateString()),
+      tin: fullUserInfo.tin,
+      gender: fullUserInfo.gender,
+      email: fullUserInfo.email,
+      maritalStatus: fullUserInfo.maritalStatus,
+      passportCode: fullUserInfo.passportCode,
+      phoneNumber: fullUserInfo.phoneNumber,
+      messengerNumber: fullUserInfo.messengerNumber,
+      address: fullUserInfo.address,
+      addressOfBirth: fullUserInfo.addressOfBirth,
+      desiredSalary: fullUserInfo.desiredSalary,
+      dateOfReadiness: formatDateTo1C(fullUserInfo.dateOfReadiness.toDateString()),
+      desiredCountry: fullUserInfo.desiredCountry,
+      desiredCity: fullUserInfo.desiredCity,
+      criminalRecord: fullUserInfo.criminalRecord,
+      additionalInformation: fullUserInfo.additionalInformation ?? "",
+      createdAt: formatDateTo1C(fullUserInfo.createdAt.toDateString()),
+      updatedAt: formatDateTo1C(fullUserInfo.updatedAt.toDateString()),
+      additionalContactInformation: fullUserInfo.additionalContactInformation.map<AdditionalContactInformation>((val) => ({
+        fullname: val.fullname,
+        phone_number: val.phoneNumber,
+        status: val.status,
+      })),
+      WorkExperience: fullUserInfo.WorkExperience.map<WorkExperienceItem>((val) => ({
+        company: val.workplace,
+        position: val.jobTitle,
+        startDate: formatDateTo1C(val.dateStart.toDateString()),
+        endDate: formatDateTo1C(val.dateEnd?.toDateString() ?? "")
+      })),
+      education: fullUserInfo.education.map<EducationItem>(val => ({
+        education: val.education,
+        institution: val.institution,
+        specialty: val.specialty,
+      })),
+      knowledgeOfLanguages: fullUserInfo.knowledgeOfLanguages.map<LanguageKnowledge>(val => ({
+        language: val.language,
+        level: val.level
+      }))
+    }
+
+    if (await sendTo1C(profileFor1C)) {
+      await prisma.jobSeeker.updateMany({
+        where: {
+          userId: user.id,
+        },
+        data: {
+          syncedWith1C: true,
+        }
+      })
+    }
 
     return NextResponse.json({ 'message': 'Success' }, { status: 200 })
   } catch (error) {
