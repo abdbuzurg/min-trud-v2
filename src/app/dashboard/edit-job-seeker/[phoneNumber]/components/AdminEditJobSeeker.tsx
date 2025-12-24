@@ -1238,19 +1238,21 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Фотография (изображение) *
         </label>
-        <input
-          type="file"
-          accept=".jpg, .jpeg, .png"
-          onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, 'photo')}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.photoFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-        />
-        <button
-          onClick={() => handleDownload(`${phoneNumber}_image`)}
-          className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
-        >
-          <Download size={20} className="mr-2" />
-        </button>
+        <div className="flex gap-x-2">
+          <input
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, 'photo')}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.photoFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+          />
+          <button
+            onClick={() => handleDownload(`${phoneNumber}_image`)}
+            className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+          >
+            <Download size={20} className="mr-2" />
+          </button>
+        </div>
         {errors.photoFile && <p className="text-red-500 text-sm mt-1">{errors.photoFile}</p>}
         {photoFile && photoPreview && (
           <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
@@ -1268,19 +1270,22 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Фронтальная сторона паспорта (скан/фото)
           </label>
-          <input
-            type="file"
-            accept=".jpg, .jpeg, .png"
-            onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, "front")}
-            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.frontPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-              }`}
-          />
-          <button
-            onClick={() => handleDownload(`${phoneNumber}_frontPassport`)}
-            className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
-          >
-            <Download size={20} className="mr-2" />
-          </button>
+
+          <div className="flex gap-x-2">
+            <input
+              type="file"
+              accept=".jpg, .jpeg, .png"
+              onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, "front")}
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.frontPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+                }`}
+            />
+            <button
+              onClick={() => handleDownload(`${phoneNumber}_frontPassport`)}
+              className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+            >
+              <Download size={20} className="mr-2" />
+            </button>
+          </div>
           {errors.frontPassportFile && <p className="text-red-500 text-sm mt-1">{errors.frontPassportFile}</p>}
           {frontPassportFile && frontPassportPreview && (
             <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
@@ -1296,19 +1301,22 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Задняя сторона паспорта (скан/фото)
           </label>
-          <input
-            type="file"
-            accept=".jpg, .jpeg, .png"
-            onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, "back")}
-            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.backPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-              }`}
-          />
-          <button
-            onClick={() => handleDownload(`${phoneNumber}_backPassport`)}
-            className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
-          >
-            <Download size={20} className="mr-2" />
-          </button>
+
+          <div className="flex gap-x-2">
+            <input
+              type="file"
+              accept=".jpg, .jpeg, .png"
+              onChange={(e) => handleImageFileChange(e.target.files?.[0] || null, "back")}
+              className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.backPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+                }`}
+            />
+            <button
+              onClick={() => handleDownload(`${phoneNumber}_backPassport`)}
+              className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+            >
+              <Download size={20} className="mr-2" />
+            </button>
+          </div>
           {errors.backPassportFile && <p className="text-red-500 text-sm mt-1">{errors.backPassportFile}</p>}
           {backPassportFile && backPassportPreview && (
             <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
@@ -1326,19 +1334,22 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Диплом
         </label>
-        <input
-          type="file"
-          accept="application/pdf"
-          onChange={(e) => setDiplomaFile(e.target.files?.[0] || null)}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.diplomaFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-        />
-        <button
-          onClick={() => handleDownload(`${phoneNumber}_diploma`)}
-          className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
-        >
-          <Download size={20} className="mr-2" />
-        </button>
+
+        <div className="flex gap-x-2">
+          <input
+            type="file"
+            accept="application/pdf"
+            onChange={(e) => setDiplomaFile(e.target.files?.[0] || null)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.diplomaFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+          />
+          <button
+            onClick={() => handleDownload(`${phoneNumber}_diploma`)}
+            className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+          >
+            <Download size={20} className="mr-2" />
+          </button>
+        </div>
 
         {errors.diplomaFile && <p className="text-red-500 text-sm mt-1">{errors.diplomaFile}</p>}
         {diplomaFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {diplomaFile.name}</p>}
@@ -1348,20 +1359,22 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Рекомендательное письмо
         </label>
-        <input
-          type="file"
-          accept="application/pdf,image/*"
-          onChange={(e) => setRecommendationLetterFile(e.target.files?.[0] || null)}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.recommendationLetterFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-        />
-        <button
-          onClick={() => handleDownload(`${phoneNumber}_recommendation`)}
-          className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
-        >
-          <Download size={20} className="mr-2" />
-        </button>
 
+        <div className="flex gap-x-2">
+          <input
+            type="file"
+            accept="application/pdf,image/*"
+            onChange={(e) => setRecommendationLetterFile(e.target.files?.[0] || null)}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.recommendationLetterFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+          />
+          <button
+            onClick={() => handleDownload(`${phoneNumber}_recommendation`)}
+            className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+          >
+            <Download size={20} className="mr-2" />
+          </button>
+        </div>
         {errors.recommendationLetterFile && <p className="text-red-500 text-sm mt-1">{errors.recommendationLetterFile}</p>}
         {recommendationLetterFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {recommendationLetterFile.name}</p>}
       </div>
@@ -1370,14 +1383,17 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           Сертификаты
         </label>
-        <input
-          type="file"
-          accept="application/pdf"
-          multiple
-          onChange={(e) => setCertificates(Array.from(e.target.files || []))}
-          className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.certificates ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
-            }`}
-        />
+
+        <div className="flex gap-x-2">
+          <input
+            type="file"
+            accept="application/pdf"
+            multiple
+            onChange={(e) => setCertificates(Array.from(e.target.files || []))}
+            className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.certificates ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
+              }`}
+          />
+        </div>
         {errors.certificates && <p className="text-red-500 text-sm mt-1">{errors.certificates}</p>}
         {certificates && certificates?.length > 0 && (
           <ul className="mt-2 text-sm text-gray-600 list-disc pl-4">
