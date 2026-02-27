@@ -502,19 +502,27 @@ export default function AdminJobSeekerForm() {
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             <span className="inline-flex items-center gap-2">
-              ИНН *
-              <span
-                className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-gray-300 text-[10px] font-bold text-gray-500 cursor-help"
-                title="ИНН — это идентификационный номер налогоплательщика. Его можно найти на свидетельстве ИНН, в личном кабинете налоговой, а также в некоторых банковских приложениях/документах."
-                aria-label="Подсказка об ИНН"
-              >
-                ?
+              Идентификационный номер налогоплательщика (ИНН)
+              <span className="text-red-500">*</span>
+              <span className="relative inline-flex items-center group">
+                <button
+                  type="button"
+                  className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-gray-300 text-[10px] font-bold text-gray-500 cursor-help"
+                  aria-label="Что такое ИНН?"
+                  aria-describedby="tin-tooltip-admin-add-form"
+                >
+                  ?
+                </button>
+                <span
+                  id="tin-tooltip-admin-add-form"
+                  role="tooltip"
+                  className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-80 -translate-x-1/2 rounded-lg border border-gray-200 bg-white p-2 text-xs font-normal text-gray-600 opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
+                >
+                  ИНН — это идентификационный номер налогоплательщика. Его можно найти на свидетельстве ИНН, в личном кабинете налоговой, а также в некоторых банковских приложениях или документах.
+                </span>
               </span>
             </span>
           </label>
-          <p className="text-xs text-gray-500 mb-2">
-            ИНН — это идентификационный номер налогоплательщика. Его можно найти на свидетельстве ИНН, в личном кабинете налоговой, а также в некоторых банковских приложениях/документах.
-          </p>
           <input
             type="text"
             value={(formData.tin ?? '')}
