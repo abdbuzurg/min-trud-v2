@@ -1,6 +1,7 @@
 "user client"
 
 import { useState } from "react";
+import NewDatePicker from "@/components/ui/NewDatePicker";
 
 interface Props {
   setDownloadModal: (value: boolean) => void
@@ -56,11 +57,12 @@ export default function DownloadData({ setDownloadModal }: Props) {
           {/* Date input */}
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">Дата подачи</label>
-            <input
-              type="date"
+            <NewDatePicker
               value={date}
-              onChange={(e) => setDate(e.target.value)}
-              className="w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 border-gray-200 focus:border-green-400"
+              onChange={(nextValue) => setDate(typeof nextValue === "string" ? nextValue : "")}
+              storageKind="date-only-iso"
+              placeholder="Выберите дату"
+              className="w-full border-gray-200 focus:border-green-400"
             />
           </div>
 

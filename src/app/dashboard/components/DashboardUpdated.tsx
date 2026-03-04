@@ -1,13 +1,14 @@
 "use client"
 
 import React, { useEffect, useMemo, useState } from "react";
-import { Users, Calendar, X, CloudSun, Eye, Download, BadgePlus, Pencil } from "lucide-react";
+import { Users, X, CloudSun, Eye, Download, BadgePlus, Pencil } from "lucide-react";
 import SeekerModal from "./SeekerModal";
 import axios from "axios";
 import { JobSeeker } from "@/generated/prisma";
 import DownloadData from "./DownloadData";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import NewDatePicker from "@/components/ui/NewDatePicker";
 
 export interface JobSeekerAPIResult extends JobSeeker {
   knowledgeOfLanguages: {
@@ -390,15 +391,13 @@ function DateInput({ label, value, onChange }: { label: string; value: string; o
   return (
     <label className="flex flex-col items-left gap-2 text-sm text-gray-700">
       <span className="hidden md:block">{label}</span>
-      <div className="relative">
-        <Calendar className="h-4 w-4 absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none" />
-        <input
-          type="date"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-          className="appearance-none w-[160px] md:w-[170px] rounded-xl border border-gray-200 pl-9 pr-3 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#39B36E]/30 focus:border-[#39B36E]"
-        />
-      </div>
+      <NewDatePicker
+        value={value}
+        onChange={(nextValue) => onChange(typeof nextValue === "string" ? nextValue : "")}
+        storageKind="date-only-iso"
+        placeholder="Выберите дату"
+        className="w-[160px] md:w-[170px] border border-gray-200 py-2.5 focus:ring-2 focus:ring-[#39B36E]/30 focus:border-[#39B36E]"
+      />
     </label>
   );
 }
@@ -410,4 +409,3 @@ function formatDate(iso: string) {
   const yyyy = d.getFullYear();
   return `${dd}.${mm}.${yyyy}`;
 }
-

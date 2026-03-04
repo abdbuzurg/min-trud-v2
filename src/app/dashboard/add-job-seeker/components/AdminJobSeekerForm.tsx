@@ -14,15 +14,11 @@ import {
   ChevronLeft,
   Save, FileText
 } from 'lucide-react';
-import DatePicker, { registerLocale } from 'react-datepicker';
-import "react-datepicker/dist/react-datepicker.css";
-import { ru } from 'date-fns/locale';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { Education, JobSeekerFromData } from '../../../../../types/jobSeeker';
 import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from '../../../../../jobseeker';
-
-registerLocale('ru', ru)
+import NewDatePicker from '@/components/ui/NewDatePicker';
 
 
 const countries = ["Афганистан", "Албания", "Алжир", "Андорра", "Ангола", "Антигуа и Барбуда", "Аргентина", "Армения", "Австралия", "Австрия", "Азербайджан", "Багамы", "Бахрейн", "Бангладеш", "Барбадос", "Беларусь", "Бельгия", "Белиз", "Бенин", "Бутан", "Боливия", "Босния и Герцеговина", "Ботсвана", "Бразилия", "Бруней", "Болгария", "Буркина-Фасо", "Бурунди", "Кабо-Верде", "Камбоджа", "Камерун", "Канада", "Центральноафриканская Республика", "Чад", "Чили", "Китай", "Колумбия", "Коморы", "Конго", "Коста-Рика", "Хорватия", "Куба", "Кипр", "Чехия", "Демократическая Республика Конго", "Дания", "Джибути", "Доминика", "Доминиканская Республика", "Эквадор", "Египет", "Сальвадор", "Экваториальная Гвинея", "Эритрея", "Эстония", "Эсватини", "Эфиопия", "Фиджи", "Финляндия", "Франция", "Габон", "Гамбия", "Грузия", "Германия", "Гана", "Греция", "Гренада", "Гватемала", "Гвинея", "Гвинея-Бисау", "Гайана", "Гаити", "Ватикан", "Гондурас", "Венгрия", "Исландия", "Индия", "Индонезия", "Иран", "Ирак", "Ирландия", "Израиль", "Италия", "Ямайка", "Япония", "Иордания", "Казахстан", "Кения", "Кирибати", "Кувейт", "Киргизия", "Лаос", "Латвия", "Ливан", "Лесото", "Либерия", "Ливия", "Лихтенштейн", "Литва", "Люксембург", "Мадагаскар", "Малави", "Малайзия", "Мальдивы", "Мали", "Мальта", "Маршалловы Острова", "Мавритания", "Маврикий", "Мексика", "Микронезия", "Молдова", "Монако", "Монголия", "Черногория", "Марокко", "Мозамбик", "Мьянма", "Намибия", "Науру", "Непал", "Нидерланды", "Новая Зеландия", "Никарагуа", "Нигер", "Нигерия", "КНДР", "Северная Македония", "Норвегия", "Оман", "Пакистан", "Палау", "Палестина", "Панама", "Папуа — Новая Гвинея", "Парагвай", "Перу", "Филиппины", "Польша", "Португалия", "Катар", "Румыния", "Россия", "Руанда", "Сент-Китс и Невис", "Сент-Люсия", "Сент-Винсент и Гренадины", "Самоа", "Сан-Марино", "Сан-Томе и Принсипи", "Саудовская Аравия", "Сенегал", "Сербия", "Сейшельские Острова", "Сьерра-Леоне", "Сингапур", "Словакия", "Словения", "Соломоновы Острова", "Сомали", "Южная Африка", "Южная Корея", "Южный Судан", "Испания", "Шри-Ланка", "Судан", "Суринам", "Швеция", "Швейцария", "Сирия", "Таджикистан", "Танзания", "Таиланд", "Восточный Тимор", "Того", "Тонга", "Тринидад и Тобаго", "Тунис", "Турция", "Туркмения", "Тувалу", "Уганда", "Украина", "ОАЭ", "Великобритания", "Англия", "Шотландия", "Уэльс", "Северная Ирландия", "США", "Уругвай", "Узбекистан", "Вануату", "Венесуэла", "Вьетнам", "Йемен", "Замбия", "Зимбабве"];
@@ -541,15 +537,14 @@ export default function AdminJobSeekerForm() {
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Дата рождения *
           </label>
-          <DatePicker
-            locale="ru"
+          <NewDatePicker
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.birthDate ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
-            placeholderText='мм/дд/гггг'
-            wrapperClassName='w-full'
-
-            selected={formData.birthDate == '' ? null : new Date(formData.birthDate)}
-            onChange={(date) => setFormData({ ...formData, birthDate: date?.toString() ?? '' })}
+            placeholder='Выберите дату'
+            required
+            storageKind="js-date-string"
+            value={formData.birthDate}
+            onChange={(date) => setFormData({ ...formData, birthDate: typeof date === "string" ? date : '' })}
           />
           {errors.birthDate && <p className="text-red-500 text-sm mt-1">{errors.birthDate}</p>}
         </div>
@@ -1019,14 +1014,14 @@ export default function AdminJobSeekerForm() {
                   Дата начала работы *
                 </label>
 
-                <DatePicker
-                  locale="ru"
+                <NewDatePicker
                   className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.birthDate ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                     }`}
-                  placeholderText='мм/дд/гггг'
-                  wrapperClassName='w-full'
-                  selected={experience.startDate == '' ? null : new Date(experience.startDate)}
-                  onChange={(date) => handleWorkExperienceChange(index, 'startDate', date?.toString() ?? '')}
+                  placeholder='Выберите дату'
+                  required
+                  storageKind="js-date-string"
+                  value={experience.startDate}
+                  onChange={(date) => handleWorkExperienceChange(index, 'startDate', typeof date === "string" ? date : '')}
                 />
 
                 {errors[`startDate_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`startDate_${index}`]}</p>}
@@ -1036,14 +1031,13 @@ export default function AdminJobSeekerForm() {
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
                   Дата окончания работы *
                 </label>
-                <DatePicker
-                  locale="ru"
+                <NewDatePicker
                   className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.birthDate ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                     }`}
-                  placeholderText='мм/дд/гггг'
-                  wrapperClassName='w-full'
-                  selected={experience.endDate == '' ? null : new Date(experience.endDate)}
-                  onChange={(date) => handleWorkExperienceChange(index, 'endDate', date?.toString() ?? '')}
+                  placeholder='Выберите дату'
+                  storageKind="js-date-string"
+                  value={experience.endDate}
+                  onChange={(date) => handleWorkExperienceChange(index, 'endDate', typeof date === "string" ? date : '')}
                 />
                 <p className="text-sm italic text-gray-400 mt-1">Оставьте пустым если до сих пор работаете</p>
               </div>
@@ -1140,14 +1134,14 @@ export default function AdminJobSeekerForm() {
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Дата готовности к выезду
           </label>
-          <DatePicker
-            locale="ru"
+          <NewDatePicker
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.dateOfReadiness ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
-            placeholderText='мм/дд/гггг'
-            wrapperClassName='w-full'
-            selected={formData.dateOfReadiness == '' ? null : new Date(formData.dateOfReadiness)}
-            onChange={(date) => handleInputChange('dateOfReadiness', date?.toString() ?? '')}
+            placeholder='Выберите дату'
+            required
+            storageKind="js-date-string"
+            value={formData.dateOfReadiness}
+            onChange={(date) => handleInputChange('dateOfReadiness', typeof date === "string" ? date : '')}
           />
           {errors.dateOfReadiness && <p className="text-red-500 text-sm mt-1">{errors.dateOfReadiness}</p>}
         </div>
@@ -1207,7 +1201,27 @@ export default function AdminJobSeekerForm() {
     <div className="space-y-6">
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Фотография (изображение) *
+          <span className="inline-flex items-center gap-2">
+            Фотография (изображение)
+            <span className="text-red-500">*</span>
+            <span className="relative inline-flex items-center group">
+              <button
+                type="button"
+                className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-gray-300 text-[10px] font-bold text-gray-500 cursor-help"
+                aria-label="Требования к фотографии?"
+                aria-describedby="photo-tooltip-admin-add-form"
+              >
+                ?
+              </button>
+              <span
+                id="photo-tooltip-admin-add-form"
+                role="tooltip"
+                className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-80 -translate-x-1/2 rounded-lg border border-gray-200 bg-white p-2 text-xs font-normal text-gray-600 opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
+              >
+                Загрузите фото размером 3х4 см, фото должно быть официальным: деловая одежда, белый или голубой фон, лицо четко видно, без головных уборов и солнцезащитных очков
+              </span>
+            </span>
+          </span>
         </label>
         <input
           type="file"

@@ -24,10 +24,12 @@ export default function JobSeekerProfile() {
 
   return (
     <>
-      {!isAuthenticated
-        ? <AuthForm onAuthSuccess={handleAuthSuccess} />
-        : <JobSeekerForm phoneNumber={phoneNumber} />
-      }
+      {/* {!isAuthenticated */}
+        {/* // ?  */}
+          {/* <AuthForm onAuthSuccess={handleAuthSuccess} /> */}
+        {/* // :  */}
+          <JobSeekerForm phoneNumber={phoneNumber} />
+      {/* } */}
     </>
   )
 }
