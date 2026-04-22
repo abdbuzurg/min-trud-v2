@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
     })
 
     const smsCount = await prisma.sendSMS.count()
-    const txn_id: number = 2730 + smsCount
+    const txn_id: number = 5000 + smsCount
     const from = "MuhojiratTj"
     const msg = `Код - ${code}`
     const login = "mehnattj"
