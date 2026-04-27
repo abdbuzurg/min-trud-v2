@@ -4,6 +4,7 @@ import { JobSeekerFromData } from "../../../../../types/jobSeeker";
 import { AdditionalContactInfromation, Education, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
 import path from "path";
 import { promises as fs } from 'fs';
+import { withApiLogging } from "@/lib/withApiLogging";
 
 const uploadsDir = path.join(process.cwd(), 'uploads', 'jobseekers');
 
@@ -87,7 +88,7 @@ const saveCertificates = async (phoneForName: string, certs: File[]) => {
   }
 };
 
-export async function GET(req: NextRequest) {
+async function getDashboardEditJobSeeker(req: NextRequest) {
   const { searchParams } = new URL(req.url)
   const phoneNumber = searchParams.get("phoneNumber")
   if (!phoneNumber) {
@@ -193,7 +194,7 @@ export async function GET(req: NextRequest) {
   return NextResponse.json({ profile: result, status: "Успех" }, { status: 200 })
 }
 
-export async function POST(req: NextRequest) {
+async function postDashboardEditJobSeeker(req: NextRequest) {
   try {
     const formData = await req.formData()
     const phoneNumber = formData.get("phoneNumber") as string
@@ -384,3 +385,6 @@ export async function POST(req: NextRequest) {
     )
   }
 }
+
+export const GET = withApiLogging("api.dashboard.edit-job-seeker.get", getDashboardEditJobSeeker);
+export const POST = withApiLogging("api.dashboard.edit-job-seeker.post", postDashboardEditJobSeeker);

@@ -5,14 +5,20 @@ import path from "path";
 import { promises as fs } from 'fs'
 import { JobSeekerFromData } from "../../../../types/jobSeeker";
 import { AdditionalContactInformation, Candidate1CPayload, EducationItem, formatDateTo1C, LanguageKnowledge, sendTo1C, WorkExperienceItem } from "../1c";
+import { withApiLogging } from "@/lib/withApiLogging";
 
-export async function POST(req: NextRequest) {
+async function postJobSeeker(req: NextRequest) {
   try {
     const formData = await req.formData()
-    const phoneNumber = formData.get("verificationPhoneNumber") as string
-    const phoneForName = (phoneNumber || '').replace(/[^\d+]/g, '') || 'unknown';
+    const rawVerificationPhoneNumber = (formData.get("verificationPhoneNumber") as string) || ""
+    const verificationPhoneNumber = rawVerificationPhoneNumber.replace(/\D/g, "")
+    const phoneForName = verificationPhoneNumber || "unknown"
+    if (!verificationPhoneNumber) {
+      return NextResponse.json({ message: "invalid verification phone number" }, { status: 400 })
+    }
 
     const uploadRoot = path.join(process.cwd(), "uploads", "jobseekers")
+    await fs.mkdir(uploadRoot, { recursive: true })
 
     const extFromType = (type: string | undefined | null): string => {
       switch (type) {
@@ -68,7 +74,7 @@ export async function POST(req: NextRequest) {
 
     const user = await prisma.user.findFirst({
       where: {
-        phoneNumber: phoneNumber,
+        phoneNumber: verificationPhoneNumber,
       }
     })
     if (!user) {
@@ -110,6 +116,9 @@ export async function POST(req: NextRequest) {
       additionalContacts = JSON.parse(additionalContactsFormData)
     } catch (error) {
       return NextResponse.json({ message: "Invalid JSON for additional information" }, { status: 400 })
+    }
+    if (!additionalContacts.length) {
+      return NextResponse.json({ message: "At least one additional contact is required" }, { status: 400 })
     }
 
     const educationFormData = formData.get("education") as string | null
@@ -264,3 +273,5 @@ export async function POST(req: NextRequest) {
     )
   }
 }
+
+export const POST = withApiLogging("api.job-seeker.post", postJobSeeker);

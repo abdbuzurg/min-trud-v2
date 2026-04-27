@@ -46,7 +46,9 @@ export default function AdminJobSeekerForm() {
 
   const [agreement, setAgreement] = useState(false)
 
-  const [isSavingData, setIsSavingData] = useState(true)
+  const [isSavingData, setIsSavingData] = useState(false)
+  const [isSaveSuccessful, setIsSaveSuccessful] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const [formData, setFormData] = useState<JobSeekerFromData>({
     lastName: '',
@@ -331,11 +333,22 @@ export default function AdminJobSeekerForm() {
 
   const sendForm = async (formData: globalThis.FormData): Promise<boolean> => {
     setIsSubmitted(true)
+    setIsSavingData(true)
+    setIsSaveSuccessful(false)
+    setSubmitError(null)
     try {
-      await axios.post(`/api/dashboard/add-job-seeker`, formData).then(res => res.data).finally(() => setIsSavingData(false))
+      await axios.post(`/api/dashboard/add-job-seeker`, formData)
+      setIsSaveSuccessful(true)
       return true
-    } catch {
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setSubmitError(error.response?.data?.message ?? "Не удалось сохранить анкету. Попробуйте позже.")
+      } else {
+        setSubmitError("Не удалось сохранить анкету. Попробуйте позже.")
+      }
       return false
+    } finally {
+      setIsSavingData(false)
     }
   }
 
@@ -1391,7 +1404,7 @@ export default function AdminJobSeekerForm() {
                     Идет создание соискателя....
                   </h2>
                 </>
-                :
+                : isSaveSuccessful ? (
                 <>
                   <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mb-4">
                     <Save className="w-8 h-8 text-white" />
@@ -1411,7 +1424,24 @@ export default function AdminJobSeekerForm() {
                     Обратно в админ панель
                   </button>
                 </>
-              }
+              ) : (
+                <>
+                  <h2 className="text-2xl font-bold text-red-600 mb-2">
+                    Ошибка сохранения
+                  </h2>
+                  <p className="text-gray-700 mb-6">
+                    {submitError ?? "Не удалось сохранить данные соискателя. Проверьте сервер и повторите попытку."}
+                  </p>
+                  <button
+                    onClick={() => {
+                      setIsSubmitted(false)
+                    }}
+                    className="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl font-semibold hover:from-gray-800 hover:to-gray-900 transition-all duration-200"
+                  >
+                    Вернуться к форме
+                  </button>
+                </>
+              )}
             </div>
           </div>
         )}

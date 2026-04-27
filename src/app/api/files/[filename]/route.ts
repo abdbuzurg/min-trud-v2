@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs/promises';
 import path from 'path';
+import { withApiLogging } from '@/lib/withApiLogging';
 
-export async function GET(
+async function getFileByFilename(
   request: NextRequest,
   { params }: { params: Promise<{ filename: string }> }
 ) {
@@ -72,3 +73,5 @@ export async function GET(
     );
   }
 }
+
+export const GET = withApiLogging("api.files.filename.get", getFileByFilename);

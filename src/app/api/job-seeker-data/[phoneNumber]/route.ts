@@ -3,12 +3,13 @@ import jwt, { JwtPayload } from "jsonwebtoken"
 import { JWT_SECRET } from "@/app/secret";
 import prisma from "../../../../../lib/prisma";
 import { JobSeekerFromData } from "../../../../../types/jobSeeker";
+import { withApiLogging } from "@/lib/withApiLogging";
 
 type TokenPayload = JwtPayload & {
   phoneNumber: string;
 };
 
-export async function GET(
+async function getJobSeekerData(
   request: NextRequest,
   { params }: { params: Promise<{ phoneNumber: string }> }
 ) {
@@ -157,3 +158,5 @@ export async function GET(
 
   return NextResponse.json({ profile: result, status: "Успех" }, { status: 200 })
 }
+
+export const GET = withApiLogging("api.job-seeker-data.phone.get", getJobSeekerData);

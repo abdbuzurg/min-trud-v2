@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server"
 import prisma from "../../../../lib/prisma"
 import { JobSeekerFromData } from "../../../../types/jobSeeker"
 import { createToken } from "@/app/secret"
+import { withApiLogging } from "@/lib/withApiLogging"
 
-export async function POST(request: NextRequest) {
+async function postSmsVerification(request: NextRequest) {
 
   try {
     const body = await request.json()
@@ -51,3 +52,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "Ошибка проверки кода" }, { status: 501 })
   }
 }
+
+export const POST = withApiLogging("api.sms-verification.post", postSmsVerification)

@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
 import { AdditionalContactInformation, Candidate1CPayload, EducationItem, formatDateTo1C, LanguageKnowledge, sendTo1C, WorkExperienceItem } from "../1c";
+import { withApiLogging } from "@/lib/withApiLogging";
 
-export async function GET(request: NextRequest) {
+async function getSyncWithOneC(request: NextRequest) {
   const seekers = await prisma.jobSeeker.findMany({
     where: { syncedWith1C: false },
     include: {
@@ -107,3 +108,5 @@ export async function GET(request: NextRequest) {
     }
   );
 }
+
+export const GET = withApiLogging("api.sync-with-one-c.get", getSyncWithOneC);

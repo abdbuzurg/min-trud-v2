@@ -1,11 +1,12 @@
 import { cookies } from "next/headers"
 import { NextRequest, NextResponse } from "next/server"
+import { withApiLogging } from "@/lib/withApiLogging"
 
 
 const adminEmail = "superadmin@mintrud.tj"
 const adminPassword = "mintrud2025"
 
-export async function POST(request: NextRequest) {
+async function postLogin(request: NextRequest) {
   try {
     const { email, password } = await request.json()
 
@@ -27,3 +28,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "Error while logging in" }, { status: 500 })
   }
 }
+
+export const POST = withApiLogging("api.login.post", postLogin)

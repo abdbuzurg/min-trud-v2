@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
 import crypto from 'crypto'
 import axios from "axios";
+import { withApiLogging } from "@/lib/withApiLogging";
 
 function generateVerificationCode(): string {
   // The minimum value is 100000 (a 6-digit number).
@@ -22,7 +23,7 @@ function generateSha256Hash(content: string): string {
   return crypto.createHash('sha256').update(content).digest('hex')
 }
 
-export async function POST(request: NextRequest) {
+async function postSendSms(request: NextRequest) {
   try {
     const body = await request.json()
 
@@ -78,3 +79,5 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ message: "Ошибка сервера" }, { status: 500 })
   }
 }
+
+export const POST = withApiLogging("api.send-sms.post", postSendSms);

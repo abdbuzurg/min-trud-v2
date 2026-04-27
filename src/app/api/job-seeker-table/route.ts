@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
+import { withApiLogging } from "@/lib/withApiLogging";
 
 const pageSize = 10
-export async function GET(request: NextRequest) {
+async function getJobSeekerTable(request: NextRequest) {
   const { searchParams } = new URL(request.url)
   const dateStart = searchParams.get("dateStart")
   const dateEnd = searchParams.get("dateEnd")
@@ -81,3 +82,5 @@ export async function GET(request: NextRequest) {
 
   return NextResponse.json({ data: result, count: count, count1C: count1C }, { status: 200 })
 } 
+
+export const GET = withApiLogging("api.job-seeker-table.get", getJobSeekerTable);

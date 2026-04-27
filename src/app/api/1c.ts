@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { JobSeekerFromData } from '../../../types/jobSeeker';
+import { structuredLogger } from "@/lib/structuredLogger";
 
 //URL
 const URL = "http://10.10.10.6/vm/hs/base/get_doc";
@@ -84,9 +85,12 @@ export async function sendTo1C(payload: Candidate1CPayload): Promise<boolean> {
     Authorization: authHeader,
   };
 
-  console.log("Sending POST request to 1C");
-  console.log("URL:", URL);
-  console.log("Request payload:", JSON.stringify(payload, null, 2));
+  structuredLogger.info("integration.1c.request.start", {
+    integration: "1c",
+    url: URL,
+    method: "POST",
+    candidatePhoneNumber: payload.phoneNumber,
+  });
 
   try {
     const response = await axios.post(URL, payload, {
@@ -94,8 +98,11 @@ export async function sendTo1C(payload: Candidate1CPayload): Promise<boolean> {
       timeout: 10000,
     });
 
-    console.log("Response status code:", response.status);
-    console.log("Response headers:", response.headers);
+    structuredLogger.info("integration.1c.response", {
+      integration: "1c",
+      status: response.status,
+      candidatePhoneNumber: payload.phoneNumber,
+    });
 
     let data: any = response.data;
 
@@ -103,47 +110,61 @@ export async function sendTo1C(payload: Candidate1CPayload): Promise<boolean> {
       const text = data.replace(/^\uFEFF/, ""); // strip BOM
       try {
         const parsed = JSON.parse(text);
-        console.log("Response JSON:");
-        console.log(JSON.stringify(parsed, null, 2));
-
         if (parsed.result === 1) {
-          console.log("✅ 1C says success:", parsed.message);
+          structuredLogger.info("integration.1c.result", {
+            integration: "1c",
+            result: parsed.result,
+            message: parsed.message,
+            candidatePhoneNumber: payload.phoneNumber,
+          });
           return true;
         } else {
-          console.error(
-            "❌ 1C returned non-success result:",
-            `result=${parsed.result}, message=${parsed.message}`
-          );
+          structuredLogger.warn("integration.1c.result", {
+            integration: "1c",
+            result: parsed.result,
+            message: parsed.message,
+            candidatePhoneNumber: payload.phoneNumber,
+          });
           return false;
         }
       } catch (e) {
-        console.error("Response text (not valid JSON or not parsed):");
-        console.error(text);
+        structuredLogger.error("integration.1c.parse_error", {
+          integration: "1c",
+          candidatePhoneNumber: payload.phoneNumber,
+          responseSnippet: text.slice(0, 500),
+          error: structuredLogger.errorDetails(e),
+        });
         return false;
       }
     } else {
-      console.log("Response JSON (parsed by axios):");
-      console.log(JSON.stringify(data, null, 2));
-
       if (data.result === 1) {
-        console.log("✅ 1C says success:", data.message);
+        structuredLogger.info("integration.1c.result", {
+          integration: "1c",
+          result: data.result,
+          message: data.message,
+          candidatePhoneNumber: payload.phoneNumber,
+        });
         return true;
       } else {
-        // вот здесь твой кейс: { result: 0, message: "Неуспешно" }
-        console.error(
-          "❌ 1C returned non-success result:",
-          `result=${data.result}, message=${data.message}`
-        );
+        structuredLogger.warn("integration.1c.result", {
+          integration: "1c",
+          result: data.result,
+          message: data.message,
+          candidatePhoneNumber: payload.phoneNumber,
+        });
         return false;
       }
     }
   } catch (err: unknown) {
     if (axios.isAxiosError(err)) {
-      console.error("Request failed with status:", err.response?.status);
-      console.error("Headers:", err.response?.headers);
-
       const body = err.response?.data;
-      console.error("Body:", body);
+      structuredLogger.error("integration.1c.request_error", {
+        integration: "1c",
+        status: err.response?.status,
+        candidatePhoneNumber: payload.phoneNumber,
+        body: typeof body === "string" ? body.slice(0, 500) : body,
+        error: structuredLogger.errorDetails(err),
+      });
 
       // Попробуем достать message/result из тела, если сервер 1С всё-таки что-то вернул
       if (typeof body === "string") {
@@ -151,10 +172,12 @@ export async function sendTo1C(payload: Candidate1CPayload): Promise<boolean> {
         try {
           const parsed = JSON.parse(text);
           if (parsed && typeof parsed === "object") {
-            console.error(
-              "❌ 1C error payload:",
-              `result=${parsed.result}, message=${parsed.message}`
-            );
+            structuredLogger.error("integration.1c.error_payload", {
+              integration: "1c",
+              result: parsed.result,
+              message: parsed.message,
+              candidatePhoneNumber: payload.phoneNumber,
+            });
           }
         } catch {
           // просто текст, оставляем как есть
@@ -162,16 +185,26 @@ export async function sendTo1C(payload: Candidate1CPayload): Promise<boolean> {
       } else if (body && typeof body === "object") {
         const anyBody = body as any;
         if ("result" in anyBody || "message" in anyBody) {
-          console.error(
-            "❌ 1C error payload:",
-            `result=${anyBody.result}, message=${anyBody.message}`
-          );
+          structuredLogger.error("integration.1c.error_payload", {
+            integration: "1c",
+            result: anyBody.result,
+            message: anyBody.message,
+            candidatePhoneNumber: payload.phoneNumber,
+          });
         }
       }
     } else if (err instanceof Error) {
-      console.error("Request error:", err.message);
+      structuredLogger.error("integration.1c.request_error", {
+        integration: "1c",
+        candidatePhoneNumber: payload.phoneNumber,
+        error: structuredLogger.errorDetails(err),
+      });
     } else {
-      console.error("Unknown error:", err);
+      structuredLogger.error("integration.1c.request_error", {
+        integration: "1c",
+        candidatePhoneNumber: payload.phoneNumber,
+        error: structuredLogger.errorDetails(err),
+      });
     }
 
     return false;

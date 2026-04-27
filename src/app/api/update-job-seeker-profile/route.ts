@@ -3,6 +3,7 @@ import prisma from "../../../../lib/prisma";
 import { AdditionalContactInfromation, Education, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
 import { promises as fs } from 'fs';
 import path from 'path';
+import { withApiLogging } from "@/lib/withApiLogging";
 
 const uploadsDir = path.join(process.cwd(), 'uploads', 'jobseekers');
 
@@ -86,7 +87,7 @@ const saveCertificates = async (phoneForName: string, certs: File[]) => {
   }
 };
 
-export async function POST(request: NextRequest) {
+async function postUpdateJobSeekerProfile(request: NextRequest) {
   try {
     const formData = await request.formData()
     const phoneNumber = formData.get("verificationPhoneNumber") as string
@@ -277,3 +278,5 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+
+export const POST = withApiLogging("api.update-job-seeker-profile.post", postUpdateJobSeekerProfile);

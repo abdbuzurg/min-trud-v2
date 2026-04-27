@@ -5,6 +5,7 @@ import archiver from "archiver"; // npm i archiver
 import ExcelJS from "exceljs";   // npm i exceljs
 import { PassThrough } from "stream";
 import prisma from "../../../../lib/prisma";
+import { withApiLogging } from "@/lib/withApiLogging";
 
 const uploadDir = path.join(process.cwd(), "uploads", "jobseekers");
 
@@ -16,7 +17,7 @@ function formatDate(iso: string) {
   return `${dd}.${mm}.${yyyy}`;
 }
 
-export async function POST(req: NextRequest) {
+async function postDownloadDashboard(req: NextRequest) {
   try {
     const { dateStart, dateEnd, firstName, lastName } = await req.json();
 
@@ -171,3 +172,4 @@ export async function POST(req: NextRequest) {
   }
 }
 
+export const POST = withApiLogging("api.download-dashboard.post", postDownloadDashboard);

@@ -4,15 +4,20 @@ import path from "path";
 import { promises as fs } from 'fs'
 import prisma from "../../../../../lib/prisma";
 import { AdditionalContactInformation, Candidate1CPayload, EducationItem, formatDateTo1C, LanguageKnowledge, sendTo1C, WorkExperienceItem } from "../../1c";
+import { withApiLogging } from "@/lib/withApiLogging";
 
-export async function POST(req: NextRequest) {
+async function postAddJobSeeker(req: NextRequest) {
   try {
     const formData = await req.formData()
-    const phoneNumber = formData.get("phoneNumber") as string
-    let phoneForName = (phoneNumber || '').replace(/[^\d+]/g, '') || 'unknown';
-    phoneForName = phoneForName.substring(1)
+    const rawPhoneNumber = (formData.get("phoneNumber") as string) || ""
+    const normalizedPhoneNumber = rawPhoneNumber.replace(/\D/g, "")
+    if (!normalizedPhoneNumber) {
+      return NextResponse.json({ message: "invalid phone number" }, { status: 400 })
+    }
+    const phoneForName = normalizedPhoneNumber
 
     const uploadRoot = path.join(process.cwd(), "uploads", "jobseekers")
+    await fs.mkdir(uploadRoot, { recursive: true })
 
     const extFromType = (type: string | undefined | null): string => {
       switch (type) {
@@ -66,11 +71,18 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "invalid date of readiness" }, { status: 400 })
     }
 
-    const user = await prisma.user.create({
-      data: {
-        phoneNumber: phoneForName,
+    let user = await prisma.user.findFirst({
+      where: {
+        phoneNumber: normalizedPhoneNumber,
       }
     })
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          phoneNumber: normalizedPhoneNumber,
+        }
+      })
+    }
     if (!user) {
       return NextResponse.json({ message: "Указанный номер телефона не совпадает с изначальным номером" }, { status: 400 })
     }
@@ -110,6 +122,9 @@ export async function POST(req: NextRequest) {
       additionalContacts = JSON.parse(additionalContactsFormData)
     } catch (error) {
       return NextResponse.json({ message: "Invalid JSON for additional information" }, { status: 400 })
+    }
+    if (!additionalContacts.length) {
+      return NextResponse.json({ message: "At least one additional contact is required" }, { status: 400 })
     }
 
     const educationFormData = formData.get("education") as string | null
@@ -264,3 +279,5 @@ export async function POST(req: NextRequest) {
     )
   }
 }
+
+export const POST = withApiLogging("api.dashboard.add-job-seeker.post", postAddJobSeeker);
