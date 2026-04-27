@@ -1,5 +1,5 @@
 // lib/prisma.ts
-import { PrismaClient } from '@/generated/prisma';
+import { PrismaClient } from "@prisma/client";
 
 // This prevents hot-reloading in development from creating a new PrismaClient instance on every change.
 const globalForPrisma = global as unknown as { prisma: PrismaClient };

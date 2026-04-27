@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
-import { AdditionalContactInfromation, Education, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
+import { AdditionalContactInfromation, Education, KnowledgeOfLanguages, WorkExperience } from "@prisma/client";
 import { promises as fs } from 'fs';
 import path from 'path';
 import { withApiLogging } from "@/lib/withApiLogging";

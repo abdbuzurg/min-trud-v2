@@ -1,4 +1,4 @@
-import { AdditionalContactInfromation, Education, JobSeeker, KnowledgeOfLanguages, WorkExperience } from "@/generated/prisma";
+import { AdditionalContactInfromation, Education, JobSeeker, KnowledgeOfLanguages, WorkExperience } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "../../../../lib/prisma";
 import path from "path";

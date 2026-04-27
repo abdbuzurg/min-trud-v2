@@ -4,7 +4,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Users, X, CloudSun, Eye, Download, BadgePlus, Pencil } from "lucide-react";
 import SeekerModal from "./SeekerModal";
 import axios from "axios";
-import { JobSeeker } from "@/generated/prisma";
+import { JobSeeker } from "@prisma/client";
 import DownloadData from "./DownloadData";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
