@@ -4,6 +4,7 @@ import { structuredLogger } from "@/lib/structuredLogger";
 
 //URL
 const URL = "http://10.10.10.6/vm/hs/base/get_doc";
+const ONE_C_TIMEOUT_MS = 60_000;
 
 // Basic Auth credentials
 const USERNAME = "Админ"
@@ -89,13 +90,14 @@ export async function sendTo1C(payload: Candidate1CPayload): Promise<boolean> {
     integration: "1c",
     url: URL,
     method: "POST",
+    timeoutMs: ONE_C_TIMEOUT_MS,
     candidatePhoneNumber: payload.phoneNumber,
   });
 
   try {
     const response = await axios.post(URL, payload, {
       headers,
-      timeout: 10000,
+      timeout: ONE_C_TIMEOUT_MS,
     });
 
     structuredLogger.info("integration.1c.response", {

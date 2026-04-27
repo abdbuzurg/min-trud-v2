@@ -72,6 +72,7 @@ export default function EmployeeListPage() {
   const [downloadModal, setDownloadModal] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [isDownloading, setIsDownloading] = useState(false)
+  const [isSyncing1C, setIsSyncing1C] = useState(false)
 
   const clearFilters = () => {
     setStart("");
@@ -143,6 +144,9 @@ export default function EmployeeListPage() {
   }
 
   const handleOneCSync = async () => {
+    if (isSyncing1C) return;
+    setIsSyncing1C(true);
+
     try {
       const response = await fetch("/api/sync-with-one-c", {
         method: "GET"
@@ -151,8 +155,24 @@ export default function EmployeeListPage() {
       if (!response.ok) {
         throw new Error("Ошибка при скачивании или данных с таким фильтрами отсутсвуют")
       }
+
+      const refreshed = await axios.get<{ data: JobSeekerAPIResult[], count: number, count1C: number }>("api/job-seeker-table", {
+        params: {
+          page: page,
+          dateStart: start ? modifyDate(start, 0) : "",
+          dateEnd: end ? modifyDate(end, 1) : "",
+          firstName: firstName,
+          lastName: lastName,
+        }
+      });
+
+      setTableData(refreshed.data.data);
+      setTotal(refreshed.data.count);
+      setSynced(refreshed.data.count1C);
     } catch (err: any) {
       console.log(err)
+    } finally {
+      setIsSyncing1C(false);
     }
   }
 
@@ -182,11 +202,25 @@ export default function EmployeeListPage() {
               <div className="flex flex-wrap items-center gap-3">
 
                 <button
+                  disabled={isSyncing1C}
                   className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95"
-                  onClick={() => handleOneCSync()}
+                  onClick={handleOneCSync}
                 >
-                  <CloudSun className="h-4 w-4" />
-                  Синхронизация с 1С
+                  {isSyncing1C ? (
+                    <div className="flex gap-x-2 items-center">
+                      <div className="flex items-center justify-center">
+                        <div
+                          className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"
+                        ></div>
+                      </div>
+                      <p>Синхронизация...</p>
+                    </div>
+                  ) : (
+                    <>
+                      <CloudSun className="h-4 w-4" />
+                      Синхронизация с 1С
+                    </>
+                  )}
                 </button>
 
                 <button

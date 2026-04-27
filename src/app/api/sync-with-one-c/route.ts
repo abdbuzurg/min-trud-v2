@@ -6,6 +6,7 @@ import { withApiLogging } from "@/lib/withApiLogging";
 async function getSyncWithOneC(request: NextRequest) {
   const seekers = await prisma.jobSeeker.findMany({
     where: { syncedWith1C: false },
+    orderBy: { id: "asc" },
     include: {
       WorkExperience: true,
       additionalContactInformation: true,
