@@ -5,6 +5,14 @@ import { AdditionalContactInfromation, Education, KnowledgeOfLanguages, WorkExpe
 import path from "path";
 import { promises as fs } from 'fs';
 import { withApiLogging } from "@/lib/withApiLogging";
+import { structuredLogger } from "@/lib/structuredLogger";
+import {
+  collectRequiredFieldErrors,
+  getRequiredStringField,
+  hasValidationErrors,
+  parseJsonFormField,
+  validationErrorResponse,
+} from "@/lib/jobSeekerApiForm";
 
 const uploadsDir = path.join(process.cwd(), 'uploads', 'jobseekers');
 
@@ -19,7 +27,6 @@ async function handleFileUpload(
 
   // If no file is associated with the key, or if it's not a File object, return null.
   if (!file || !(file instanceof File)) {
-    console.log(`No file found for key: '${key}'`);
     return null;
   }
 
@@ -29,7 +36,11 @@ async function handleFileUpload(
   try {
     await fs.mkdir(uploadsDir, { recursive: true });
   } catch (error) {
-    console.error('Failed to create upload directory:', error);
+    structuredLogger.error("api.dashboard.edit-job-seeker.upload_dir_failed", {
+      tag: "INTERNAL",
+      key,
+      error: structuredLogger.errorDetails(error),
+    });
     throw new Error('Could not create storage directory.');
   }
 
@@ -39,13 +50,16 @@ async function handleFileUpload(
     for (const existingFile of existingFiles) {
       if (path.parse(existingFile).name === filenameWithoutExt) {
         await fs.unlink(path.join(uploadsDir, existingFile));
-        console.log(`Deleted existing file: ${existingFile}`);
         break; // Assume only one match and stop searching
       }
     }
   } catch (error) {
-    // Log the error but don't stop the process. The main goal is to save the new file.
-    console.error('Error during deletion of existing file (continuing with upload):', error);
+    structuredLogger.error("api.dashboard.edit-job-seeker.delete_existing_file_failed", {
+      tag: "INTERNAL",
+      key,
+      filenameWithoutExt,
+      error: structuredLogger.errorDetails(error),
+    });
   }
 
   // 4. Save the new file
@@ -58,10 +72,14 @@ async function handleFileUpload(
 
   try {
     await fs.writeFile(newFilePath, buffer);
-    console.log(`Successfully saved new file: ${newFilename}`);
     return newFilename; // Return the name of the created file
   } catch (error) {
-    console.error('Failed to write new file to disk:', error);
+    structuredLogger.error("api.dashboard.edit-job-seeker.write_file_failed", {
+      tag: "INTERNAL",
+      key,
+      filename: newFilename,
+      error: structuredLogger.errorDetails(error),
+    });
     throw new Error('Could not save the new file.');
   }
 }
@@ -201,6 +219,12 @@ async function postDashboardEditJobSeeker(req: NextRequest) {
     let phoneForName = (phoneNumber || '').replace(/[^\d+]/g, '') || 'unknown';
     if (phoneForName[0] == "+") phoneForName = phoneForName.substring(1)
 
+    const fieldErrors = collectRequiredFieldErrors(formData)
+
+    if (hasValidationErrors(fieldErrors)) {
+      return validationErrorResponse("Проверьте заполнение формы", fieldErrors)
+    }
+
     await handleFileUpload(formData, 'photo', 'image', phoneForName)
     await handleFileUpload(formData, 'frontPassport', 'frontPassport', phoneForName)
     await handleFileUpload(formData, 'backPassport', 'backPassport', phoneForName)
@@ -218,17 +242,23 @@ async function postDashboardEditJobSeeker(req: NextRequest) {
       }
     })
     if (!user) {
-      return NextResponse.json({ message: "Указанный номер телефона не совпадает с изначальным номером" }, { status: 400 })
+      return validationErrorResponse("Указанный номер телефона не совпадает с изначальным номером", {
+        phone: "Проверьте номер телефона",
+      })
     }
 
-    const dateOfBirth = formData.get("dateOfBirth") as string
+    const dateOfBirth = getRequiredStringField(formData, "dateOfBirth")
     if (!dateOfBirth) {
-      return NextResponse.json({ message: "invalid date of birth" }, { status: 400 })
+      return validationErrorResponse("Некорректная дата рождения", {
+        birthDate: "Обязательное поле",
+      })
     }
 
-    const dateOfReadiness = formData.get("dateOfReadiness") as string
+    const dateOfReadiness = getRequiredStringField(formData, "dateOfReadiness")
     if (!dateOfReadiness) {
-      return NextResponse.json({ message: "invalid date of readiness" }, { status: 400 })
+      return validationErrorResponse("Некорректная дата готовности", {
+        dateOfReadiness: "Обязательное поле",
+      })
     }
 
     const jobSeekerInfo = {
@@ -255,53 +285,76 @@ async function postDashboardEditJobSeeker(req: NextRequest) {
       createdAt: new Date(),
     }
 
-    const additionalContactsFormData = formData.get("additionalContacts") as string | null
-    if (!additionalContactsFormData) {
-      return NextResponse.json({ message: "Additional contacts missing" }, { status: 400 })
+    const additionalContactsResult = parseJsonFormField<AdditionalContactInfromation[]>(
+      formData,
+      {
+        formKey: "additionalContacts",
+        missingMessage: "Отсутствуют контактные данные",
+        missingErrors: {
+          contactName: "Обязательное поле",
+          contactPhone: "Обязательное поле",
+          contactRelation: "Обязательное поле",
+        },
+        invalidMessage: "Некорректные контактные данные",
+        invalidErrors: {
+          contactName: "Проверьте значение",
+          contactPhone: "Проверьте значение",
+          contactRelation: "Проверьте значение",
+        },
+      }
+    )
+    if (additionalContactsResult.response) {
+      return additionalContactsResult.response
     }
+    const additionalContacts = additionalContactsResult.data
 
-    let additionalContacts: AdditionalContactInfromation[] = []
-    try {
-      additionalContacts = JSON.parse(additionalContactsFormData)
-    } catch (error) {
-      return NextResponse.json({ message: "Invalid JSON for additional information" }, { status: 400 })
+    const educationResult = parseJsonFormField<Education[]>(formData, {
+      formKey: "education",
+      missingMessage: "Отсутствуют данные об образовании",
+      missingErrors: {
+        education_0: "Обязательное поле",
+      },
+      invalidMessage: "Некорректные данные об образовании",
+      invalidErrors: {
+        education_0: "Проверьте значение",
+      },
+    })
+    if (educationResult.response) {
+      return educationResult.response
     }
+    const education = educationResult.data
 
-    const educationFormData = formData.get("education") as string | null
-    if (!educationFormData) {
-      return NextResponse.json({ message: "Education missing" }, { status: 400 })
+    const knowledgeOfLanguagesResult = parseJsonFormField<KnowledgeOfLanguages[]>(formData, {
+      formKey: "knowledgeOfLanguages",
+      missingMessage: "Отсутствуют данные о языках",
+      missingErrors: {
+        language_0: "Обязательное поле",
+      },
+      invalidMessage: "Некорректные данные о языках",
+      invalidErrors: {
+        language_0: "Проверьте значение",
+      },
+    })
+    if (knowledgeOfLanguagesResult.response) {
+      return knowledgeOfLanguagesResult.response
     }
+    let knowledgeOfLanguages = knowledgeOfLanguagesResult.data
 
-    let education: Education[] = []
-    try {
-      education = JSON.parse(educationFormData)
-    } catch (error) {
-      return NextResponse.json({ message: "Invalid JSON for education" }, { status: 400 })
+    const workExperienceResult = parseJsonFormField<WorkExperience[]>(formData, {
+      formKey: "workExperience",
+      missingMessage: "Отсутствуют данные об опыте работы",
+      missingErrors: {
+        company_0: "Обязательное поле",
+      },
+      invalidMessage: "Некорректные данные об опыте работы",
+      invalidErrors: {
+        company_0: "Проверьте значение",
+      },
+    })
+    if (workExperienceResult.response) {
+      return workExperienceResult.response
     }
-
-    const knowledgeOfLanguagesFormData = formData.get("knowledgeOfLanguages") as string | null
-    if (!knowledgeOfLanguagesFormData) {
-      return NextResponse.json({ message: "Knowledge of languages missing" }, { status: 400 })
-    }
-
-    let knowledgeOfLanguages: KnowledgeOfLanguages[] = []
-    try {
-      knowledgeOfLanguages = JSON.parse(knowledgeOfLanguagesFormData)
-    } catch (error) {
-      return NextResponse.json({ message: "Invalid JSON for knowledge of languages" }, { status: 400 })
-    }
-
-    const workExperienceFormData = formData.get("workExperience") as string | null
-    if (!workExperienceFormData) {
-      return NextResponse.json({ message: "Work experience missing" }, { status: 400 })
-    }
-
-    let workExperience: WorkExperience[] = []
-    try {
-      workExperience = JSON.parse(workExperienceFormData)
-    } catch (error) {
-      return NextResponse.json({ message: "Invalid JSON for work experience" }, { status: 400 })
-    }
+    let workExperience = workExperienceResult.data
 
     const jobSeeker = await prisma.jobSeeker.findFirst({
       where: {
@@ -309,7 +362,9 @@ async function postDashboardEditJobSeeker(req: NextRequest) {
       }
     })
     if (!jobSeeker) {
-      return NextResponse.json({ message: "No job seeker profile with given user" }, { status: 400 })
+      return validationErrorResponse("Профиль соискателя не найден", {
+        phone: "Профиль не найден",
+      })
     }
     await prisma.jobSeeker.updateMany({
       data: {
@@ -378,9 +433,12 @@ async function postDashboardEditJobSeeker(req: NextRequest) {
 
     return NextResponse.json({ 'message': 'Success' }, { status: 200 })
   } catch (error) {
-    console.log(error)
+    structuredLogger.error("api.dashboard.edit-job-seeker.post.internal_error", {
+      tag: "INTERNAL",
+      error: structuredLogger.errorDetails(error),
+    })
     return NextResponse.json(
-      { message: "Failed to save profile" },
+      { tag: "INTERNAL", message: "Failed to save profile" },
       { status: 500 }
     )
   }

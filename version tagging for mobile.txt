@@ -1,0 +1,1113 @@
+Apr 28 09:25:01 jobapp01 CRON[2792352]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:26:01 jobapp01 CRON[2793999]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:26:01 jobapp01 CRON[2793999]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:27:01 jobapp01 CRON[2795623]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:27:01 jobapp01 CRON[2795623]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:28:01 jobapp01 CRON[2797285]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:28:01 jobapp01 CRON[2797285]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:29:01 jobapp01 CRON[2798913]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:29:01 jobapp01 CRON[2798913]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:30:01 jobapp01 CRON[2800552]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:30:01 jobapp01 CRON[2800552]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:31:01 jobapp01 CRON[2802195]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:31:01 jobapp01 CRON[2802195]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:32:01 jobapp01 CRON[2803827]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:32:01 jobapp01 CRON[2803827]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:33:01 jobapp01 CRON[2805481]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:33:01 jobapp01 CRON[2805481]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:34:01 jobapp01 CRON[2807124]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:34:01 jobapp01 CRON[2807124]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:35:01 jobapp01 CRON[2808749]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 09:35:01 jobapp01 CRON[2808750]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:35:01 jobapp01 CRON[2808749]: pam_unix(cron:session): session closed for user root
+Apr 28 09:35:02 jobapp01 CRON[2808750]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:36:01 jobapp01 CRON[2810358]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:36:01 jobapp01 CRON[2810358]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:37:01 jobapp01 CRON[2812020]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:37:01 jobapp01 CRON[2812020]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:38:01 jobapp01 CRON[2813652]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:38:01 jobapp01 CRON[2813652]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:39:01 jobapp01 CRON[2815286]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:39:01 jobapp01 CRON[2815286]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:40:01 jobapp01 CRON[2816929]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:40:01 jobapp01 CRON[2816929]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:41:01 jobapp01 CRON[2818562]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:41:01 jobapp01 CRON[2818562]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:42:01 jobapp01 CRON[2820216]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:42:01 jobapp01 CRON[2820216]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:43:01 jobapp01 CRON[2821840]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:43:01 jobapp01 CRON[2821840]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:44:01 jobapp01 CRON[2823483]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:44:01 jobapp01 CRON[2823483]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:45:01 jobapp01 CRON[2825127]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 09:45:01 jobapp01 CRON[2825128]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:45:01 jobapp01 CRON[2825127]: pam_unix(cron:session): session closed for user root
+Apr 28 09:45:01 jobapp01 CRON[2825128]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:46:01 jobapp01 CRON[2826755]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:46:02 jobapp01 CRON[2826755]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:47:01 jobapp01 CRON[2828379]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:47:01 jobapp01 CRON[2828379]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:48:01 jobapp01 CRON[2830022]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:48:01 jobapp01 CRON[2830022]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:49:01 jobapp01 CRON[2831664]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:49:01 jobapp01 CRON[2831664]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:50:01 jobapp01 CRON[2833295]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:50:01 jobapp01 CRON[2833295]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:51:01 jobapp01 CRON[2834950]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:51:01 jobapp01 CRON[2834950]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:52:01 jobapp01 CRON[2836594]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:52:01 jobapp01 CRON[2836594]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:53:01 jobapp01 CRON[2838219]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:53:01 jobapp01 CRON[2838219]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:54:01 jobapp01 CRON[2839881]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:54:01 jobapp01 CRON[2839881]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:55:01 jobapp01 CRON[2841505]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 09:55:01 jobapp01 CRON[2841506]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:55:01 jobapp01 CRON[2841505]: pam_unix(cron:session): session closed for user root
+Apr 28 09:55:01 jobapp01 CRON[2841506]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:56:01 jobapp01 CRON[2843152]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:56:01 jobapp01 CRON[2843152]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:57:01 jobapp01 CRON[2844796]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:57:02 jobapp01 CRON[2844796]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:58:01 jobapp01 CRON[2846420]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:58:01 jobapp01 CRON[2846420]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:59:01 jobapp01 CRON[2848045]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:59:01 jobapp01 CRON[2848045]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:00:01 jobapp01 CRON[2849688]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:00:01 jobapp01 CRON[2849688]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:00:24 jobapp01 sshd[2850322]: Accepted password for jobadmin from 10.10.10.1 port 11541 ssh2
+Apr 28 10:00:24 jobapp01 sshd[2850322]: pam_unix(sshd:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:00:24 jobapp01 systemd-logind[943]: New session 4824 of user jobadmin.
+Apr 28 10:00:25 jobapp01 sshd[2850445]: Accepted password for jobadmin from 10.10.10.1 port 11544 ssh2
+Apr 28 10:00:25 jobapp01 sshd[2850445]: pam_unix(sshd:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:00:25 jobapp01 systemd-logind[943]: New session 4825 of user jobadmin.
+Apr 28 10:01:01 jobapp01 CRON[2851772]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:01:01 jobapp01 CRON[2851772]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:02:01 jobapp01 CRON[2853869]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:02:01 jobapp01 CRON[2853869]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:03:01 jobapp01 CRON[2856000]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:03:01 jobapp01 CRON[2856000]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:04:01 jobapp01 CRON[2858103]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:04:01 jobapp01 CRON[2858103]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:04:10 jobapp01 sshd[2858242]: Accepted password for jobadmin from 10.10.10.1 port 44364 ssh2
+Apr 28 10:04:10 jobapp01 sshd[2858242]: pam_unix(sshd:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:04:10 jobapp01 systemd-logind[943]: New session 4830 of user jobadmin.
+Apr 28 10:05:01 jobapp01 CRON[2860294]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 10:05:01 jobapp01 CRON[2860295]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:05:01 jobapp01 CRON[2860294]: pam_unix(cron:session): session closed for user root
+Apr 28 10:05:01 jobapp01 CRON[2860295]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:06:01 jobapp01 CRON[2862418]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:06:01 jobapp01 CRON[2862418]: pam_unix(cron:session): session closed for user jobadmin
+jobadmin@jobapp01:/var/log$ tail  auth.log
+Apr 28 10:04:10 jobapp01 sshd[2858242]: pam_unix(sshd:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:04:10 jobapp01 systemd-logind[943]: New session 4830 of user jobadmin.
+Apr 28 10:05:01 jobapp01 CRON[2860294]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 10:05:01 jobapp01 CRON[2860295]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:05:01 jobapp01 CRON[2860294]: pam_unix(cron:session): session closed for user root
+Apr 28 10:05:01 jobapp01 CRON[2860295]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:06:01 jobapp01 CRON[2862418]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:06:01 jobapp01 CRON[2862418]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:07:01 jobapp01 CRON[2864546]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:07:01 jobapp01 CRON[2864546]: pam_unix(cron:session): session closed for user jobadmin
+jobadmin@jobapp01:/var/log$ tail -1000 auth.log
+Apr 28 03:29:01 jobapp01 CRON[2208635]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:30:01 jobapp01 CRON[2210280]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:30:01 jobapp01 CRON[2210280]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:31:01 jobapp01 CRON[2211923]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:31:01 jobapp01 CRON[2211923]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:32:01 jobapp01 CRON[2213548]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:32:01 jobapp01 CRON[2213548]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:33:01 jobapp01 CRON[2215210]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:33:01 jobapp01 CRON[2215210]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:34:01 jobapp01 CRON[2216854]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:34:01 jobapp01 CRON[2216854]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:35:01 jobapp01 CRON[2218478]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 03:35:01 jobapp01 CRON[2218479]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:35:01 jobapp01 CRON[2218478]: pam_unix(cron:session): session closed for user root
+Apr 28 03:35:02 jobapp01 CRON[2218479]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:36:01 jobapp01 CRON[2220106]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:36:01 jobapp01 CRON[2220106]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:37:01 jobapp01 CRON[2221749]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:37:01 jobapp01 CRON[2221749]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:38:01 jobapp01 CRON[2223393]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:38:01 jobapp01 CRON[2223393]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:39:01 jobapp01 CRON[2225017]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:39:01 jobapp01 CRON[2225017]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:40:01 jobapp01 CRON[2226679]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:40:01 jobapp01 CRON[2226679]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:41:01 jobapp01 CRON[2228322]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:41:01 jobapp01 CRON[2228322]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:42:01 jobapp01 CRON[2229946]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:42:01 jobapp01 CRON[2229946]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:43:01 jobapp01 CRON[2231609]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:43:01 jobapp01 CRON[2231609]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:44:01 jobapp01 CRON[2233252]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:44:01 jobapp01 CRON[2233252]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:45:01 jobapp01 CRON[2234876]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 03:45:01 jobapp01 CRON[2234877]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:45:01 jobapp01 CRON[2234876]: pam_unix(cron:session): session closed for user root
+Apr 28 03:45:01 jobapp01 CRON[2234877]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:46:01 jobapp01 CRON[2236542]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:46:02 jobapp01 CRON[2236542]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:47:01 jobapp01 CRON[2238147]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:47:01 jobapp01 CRON[2238147]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:48:01 jobapp01 CRON[2239790]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:48:01 jobapp01 CRON[2239790]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:49:01 jobapp01 CRON[2241419]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:49:01 jobapp01 CRON[2241419]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:50:01 jobapp01 CRON[2243077]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:50:01 jobapp01 CRON[2243077]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:51:01 jobapp01 CRON[2244720]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:51:01 jobapp01 CRON[2244720]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:52:01 jobapp01 CRON[2246344]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:52:01 jobapp01 CRON[2246344]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:53:01 jobapp01 CRON[2248006]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:53:01 jobapp01 CRON[2248006]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:54:01 jobapp01 CRON[2249650]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:54:01 jobapp01 CRON[2249650]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:55:01 jobapp01 CRON[2251274]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 03:55:01 jobapp01 CRON[2251275]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:55:01 jobapp01 CRON[2251274]: pam_unix(cron:session): session closed for user root
+Apr 28 03:55:01 jobapp01 CRON[2251275]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:56:01 jobapp01 CRON[2252940]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:56:01 jobapp01 CRON[2252940]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:57:01 jobapp01 CRON[2254583]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:57:02 jobapp01 CRON[2254583]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:58:01 jobapp01 CRON[2256189]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:58:01 jobapp01 CRON[2256189]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 03:59:01 jobapp01 CRON[2257824]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 03:59:01 jobapp01 CRON[2257824]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:00:01 jobapp01 CRON[2259476]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:00:01 jobapp01 CRON[2259476]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:01:01 jobapp01 CRON[2261119]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:01:01 jobapp01 CRON[2261119]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:02:01 jobapp01 CRON[2262743]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:02:01 jobapp01 CRON[2262743]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:03:01 jobapp01 CRON[2264405]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:03:01 jobapp01 CRON[2264405]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:04:01 jobapp01 CRON[2266048]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:04:01 jobapp01 CRON[2266048]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:05:01 jobapp01 CRON[2267674]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 04:05:01 jobapp01 CRON[2267675]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:05:01 jobapp01 CRON[2267674]: pam_unix(cron:session): session closed for user root
+Apr 28 04:05:01 jobapp01 CRON[2267675]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:06:01 jobapp01 CRON[2269340]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:06:01 jobapp01 CRON[2269340]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:07:01 jobapp01 CRON[2270964]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:07:01 jobapp01 CRON[2270964]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:08:01 jobapp01 CRON[2272607]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:08:02 jobapp01 CRON[2272607]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:09:01 jobapp01 CRON[2274212]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:09:01 jobapp01 CRON[2274212]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:10:01 jobapp01 CRON[2275874]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:10:01 jobapp01 CRON[2275874]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:11:01 jobapp01 CRON[2277518]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:11:01 jobapp01 CRON[2277518]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:12:01 jobapp01 CRON[2279142]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:12:01 jobapp01 CRON[2279142]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:13:01 jobapp01 CRON[2280804]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:13:01 jobapp01 CRON[2280804]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:14:01 jobapp01 CRON[2282447]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:14:01 jobapp01 CRON[2282447]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:15:01 jobapp01 CRON[2284071]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 04:15:01 jobapp01 CRON[2284072]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:15:01 jobapp01 CRON[2284071]: pam_unix(cron:session): session closed for user root
+Apr 28 04:15:01 jobapp01 CRON[2284072]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:16:01 jobapp01 CRON[2285738]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:16:01 jobapp01 CRON[2285738]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:17:01 jobapp01 CRON[2287367]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 04:17:01 jobapp01 CRON[2287368]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:17:01 jobapp01 CRON[2287367]: pam_unix(cron:session): session closed for user root
+Apr 28 04:17:01 jobapp01 CRON[2287368]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:18:01 jobapp01 CRON[2289009]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:18:01 jobapp01 CRON[2289009]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:19:01 jobapp01 CRON[2290671]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:19:02 jobapp01 CRON[2290671]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:20:01 jobapp01 CRON[2292275]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:20:01 jobapp01 CRON[2292275]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:21:01 jobapp01 CRON[2293918]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:21:01 jobapp01 CRON[2293918]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:22:01 jobapp01 CRON[2295543]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:22:01 jobapp01 CRON[2295543]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:23:01 jobapp01 CRON[2297206]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:23:01 jobapp01 CRON[2297206]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:24:01 jobapp01 CRON[2298850]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:24:01 jobapp01 CRON[2298850]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:25:01 jobapp01 CRON[2300474]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 04:25:01 jobapp01 CRON[2300475]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:25:01 jobapp01 CRON[2300474]: pam_unix(cron:session): session closed for user root
+Apr 28 04:25:01 jobapp01 CRON[2300475]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:26:01 jobapp01 CRON[2302139]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:26:01 jobapp01 CRON[2302139]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:27:01 jobapp01 CRON[2303783]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:27:01 jobapp01 CRON[2303783]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:28:01 jobapp01 CRON[2305407]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:28:01 jobapp01 CRON[2305407]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:29:01 jobapp01 CRON[2307069]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:29:01 jobapp01 CRON[2307069]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:30:01 jobapp01 CRON[2308703]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:30:02 jobapp01 CRON[2308703]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:31:01 jobapp01 CRON[2310318]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:31:01 jobapp01 CRON[2310318]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:32:01 jobapp01 CRON[2311960]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:32:01 jobapp01 CRON[2311960]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:33:01 jobapp01 CRON[2313604]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:33:01 jobapp01 CRON[2313604]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:34:01 jobapp01 CRON[2315247]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:34:01 jobapp01 CRON[2315247]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:35:01 jobapp01 CRON[2316872]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 04:35:01 jobapp01 CRON[2316873]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:35:01 jobapp01 CRON[2316872]: pam_unix(cron:session): session closed for user root
+Apr 28 04:35:01 jobapp01 CRON[2316873]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:36:01 jobapp01 CRON[2318537]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:36:01 jobapp01 CRON[2318537]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:37:01 jobapp01 CRON[2320180]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:37:01 jobapp01 CRON[2320180]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:38:01 jobapp01 CRON[2321805]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:38:01 jobapp01 CRON[2321805]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:39:01 jobapp01 CRON[2323467]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:39:01 jobapp01 CRON[2323467]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:40:01 jobapp01 CRON[2325110]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:40:01 jobapp01 CRON[2325110]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:41:02 jobapp01 CRON[2326734]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:41:02 jobapp01 CRON[2326734]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:42:01 jobapp01 CRON[2328359]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:42:01 jobapp01 CRON[2328359]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:43:01 jobapp01 CRON[2330002]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:43:01 jobapp01 CRON[2330002]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:44:01 jobapp01 CRON[2331646]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:44:01 jobapp01 CRON[2331646]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:45:01 jobapp01 CRON[2333289]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 04:45:01 jobapp01 CRON[2333290]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:45:01 jobapp01 CRON[2333289]: pam_unix(cron:session): session closed for user root
+Apr 28 04:45:01 jobapp01 CRON[2333290]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:46:01 jobapp01 CRON[2334936]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:46:01 jobapp01 CRON[2334936]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:47:01 jobapp01 CRON[2336579]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:47:01 jobapp01 CRON[2336579]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:48:01 jobapp01 CRON[2338203]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:48:01 jobapp01 CRON[2338203]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:49:01 jobapp01 CRON[2339867]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:49:01 jobapp01 CRON[2339867]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:50:01 jobapp01 CRON[2341497]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:50:01 jobapp01 CRON[2341497]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:51:01 jobapp01 CRON[2343134]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:51:02 jobapp01 CRON[2343134]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:52:01 jobapp01 CRON[2344758]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:52:01 jobapp01 CRON[2344758]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:53:01 jobapp01 CRON[2346401]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:53:01 jobapp01 CRON[2346401]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:54:01 jobapp01 CRON[2348044]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:54:01 jobapp01 CRON[2348044]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:55:01 jobapp01 CRON[2349688]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 04:55:01 jobapp01 CRON[2349689]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:55:01 jobapp01 CRON[2349688]: pam_unix(cron:session): session closed for user root
+Apr 28 04:55:01 jobapp01 CRON[2349689]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:56:01 jobapp01 CRON[2351335]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:56:01 jobapp01 CRON[2351335]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:57:01 jobapp01 CRON[2352978]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:57:01 jobapp01 CRON[2352978]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:58:01 jobapp01 CRON[2354602]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:58:01 jobapp01 CRON[2354602]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 04:59:01 jobapp01 CRON[2356263]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 04:59:01 jobapp01 CRON[2356263]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:00:01 jobapp01 CRON[2357888]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:00:01 jobapp01 CRON[2357888]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:01:01 jobapp01 CRON[2359531]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:01:01 jobapp01 CRON[2359531]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:02:01 jobapp01 CRON[2361193]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:02:02 jobapp01 CRON[2361193]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:03:01 jobapp01 CRON[2362798]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:03:01 jobapp01 CRON[2362798]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:04:01 jobapp01 CRON[2364442]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:04:01 jobapp01 CRON[2364442]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:05:01 jobapp01 CRON[2366085]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 05:05:01 jobapp01 CRON[2366086]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:05:01 jobapp01 CRON[2366085]: pam_unix(cron:session): session closed for user root
+Apr 28 05:05:01 jobapp01 CRON[2366086]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:06:01 jobapp01 CRON[2367733]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:06:01 jobapp01 CRON[2367733]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:07:01 jobapp01 CRON[2369357]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:07:01 jobapp01 CRON[2369357]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:08:01 jobapp01 CRON[2371000]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:08:01 jobapp01 CRON[2371000]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:09:01 jobapp01 CRON[2372662]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:09:01 jobapp01 CRON[2372662]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:10:01 jobapp01 CRON[2374286]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:10:01 jobapp01 CRON[2374286]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:11:01 jobapp01 CRON[2375930]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:11:01 jobapp01 CRON[2375930]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:12:01 jobapp01 CRON[2377592]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:12:01 jobapp01 CRON[2377592]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:13:01 jobapp01 CRON[2379217]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:13:02 jobapp01 CRON[2379217]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:14:01 jobapp01 CRON[2380831]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:14:01 jobapp01 CRON[2380831]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:15:01 jobapp01 CRON[2382478]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 05:15:01 jobapp01 CRON[2382479]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:15:01 jobapp01 CRON[2382478]: pam_unix(cron:session): session closed for user root
+Apr 28 05:15:01 jobapp01 CRON[2382479]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:16:01 jobapp01 CRON[2384132]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:16:01 jobapp01 CRON[2384132]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:17:01 jobapp01 CRON[2385757]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 05:17:01 jobapp01 CRON[2385758]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:17:01 jobapp01 CRON[2385757]: pam_unix(cron:session): session closed for user root
+Apr 28 05:17:01 jobapp01 CRON[2385758]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:18:01 jobapp01 CRON[2387403]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:18:01 jobapp01 CRON[2387403]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:19:01 jobapp01 CRON[2389065]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:19:01 jobapp01 CRON[2389065]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:20:01 jobapp01 CRON[2390689]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:20:01 jobapp01 CRON[2390689]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:21:01 jobapp01 CRON[2392333]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:21:01 jobapp01 CRON[2392333]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:22:01 jobapp01 CRON[2393979]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:22:01 jobapp01 CRON[2393979]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:23:01 jobapp01 CRON[2395620]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:23:01 jobapp01 CRON[2395620]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:24:01 jobapp01 CRON[2397263]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:24:02 jobapp01 CRON[2397263]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:25:01 jobapp01 CRON[2398868]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 05:25:01 jobapp01 CRON[2398869]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:25:01 jobapp01 CRON[2398868]: pam_unix(cron:session): session closed for user root
+Apr 28 05:25:01 jobapp01 CRON[2398869]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:26:01 jobapp01 CRON[2400534]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:26:01 jobapp01 CRON[2400534]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:27:01 jobapp01 CRON[2402158]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:27:01 jobapp01 CRON[2402158]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:28:01 jobapp01 CRON[2403801]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:28:01 jobapp01 CRON[2403801]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:29:01 jobapp01 CRON[2405451]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:29:01 jobapp01 CRON[2405451]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:30:01 jobapp01 CRON[2407087]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:30:01 jobapp01 CRON[2407087]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:31:01 jobapp01 CRON[2408730]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:31:01 jobapp01 CRON[2408730]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:32:01 jobapp01 CRON[2410373]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:32:01 jobapp01 CRON[2410373]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:33:01 jobapp01 CRON[2412017]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:33:01 jobapp01 CRON[2412017]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:34:01 jobapp01 CRON[2413661]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:34:01 jobapp01 CRON[2413661]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:35:01 jobapp01 CRON[2415305]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 05:35:01 jobapp01 CRON[2415306]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:35:01 jobapp01 CRON[2415305]: pam_unix(cron:session): session closed for user root
+Apr 28 05:35:02 jobapp01 CRON[2415306]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:36:01 jobapp01 CRON[2416933]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:36:01 jobapp01 CRON[2416933]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:37:01 jobapp01 CRON[2418557]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:37:01 jobapp01 CRON[2418557]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:38:01 jobapp01 CRON[2420200]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:38:01 jobapp01 CRON[2420200]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:39:01 jobapp01 CRON[2421844]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:39:01 jobapp01 CRON[2421844]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:40:01 jobapp01 CRON[2423487]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:40:01 jobapp01 CRON[2423487]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:41:01 jobapp01 CRON[2425131]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:41:01 jobapp01 CRON[2425131]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:42:01 jobapp01 CRON[2426774]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:42:01 jobapp01 CRON[2426774]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:43:01 jobapp01 CRON[2428418]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:43:01 jobapp01 CRON[2428418]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:44:01 jobapp01 CRON[2430062]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:44:01 jobapp01 CRON[2430062]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:45:01 jobapp01 CRON[2431702]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 05:45:01 jobapp01 CRON[2431703]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:45:01 jobapp01 CRON[2431702]: pam_unix(cron:session): session closed for user root
+Apr 28 05:45:01 jobapp01 CRON[2431703]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:46:01 jobapp01 CRON[2433333]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:46:02 jobapp01 CRON[2433333]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:47:01 jobapp01 CRON[2434957]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:47:01 jobapp01 CRON[2434957]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:48:01 jobapp01 CRON[2436600]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:48:01 jobapp01 CRON[2436600]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:49:01 jobapp01 CRON[2438243]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:49:01 jobapp01 CRON[2438243]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:50:01 jobapp01 CRON[2439879]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:50:01 jobapp01 CRON[2439879]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:51:01 jobapp01 CRON[2441530]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:51:01 jobapp01 CRON[2441530]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:52:01 jobapp01 CRON[2443155]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:52:01 jobapp01 CRON[2443155]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:52:31 jobapp01 sshd[2443998]: Invalid user jobappadmin from 10.10.10.1 port 51173
+Apr 28 05:52:31 jobapp01 sshd[2443999]: Invalid user jobappadmin from 10.10.10.1 port 35529
+Apr 28 05:52:31 jobapp01 sshd[2443998]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:52:31 jobapp01 sshd[2443998]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:52:31 jobapp01 sshd[2443999]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:52:31 jobapp01 sshd[2443999]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:52:33 jobapp01 sshd[2443998]: Failed password for invalid user jobappadmin from 10.10.10.1 port 51173 ssh2
+Apr 28 05:52:33 jobapp01 sshd[2443999]: Failed password for invalid user jobappadmin from 10.10.10.1 port 35529 ssh2
+Apr 28 05:52:35 jobapp01 sshd[2443998]: Connection closed by invalid user jobappadmin 10.10.10.1 port 51173 [preauth]
+Apr 28 05:52:35 jobapp01 sshd[2443999]: Connection closed by invalid user jobappadmin 10.10.10.1 port 35529 [preauth]
+Apr 28 05:52:40 jobapp01 sshd[2444238]: Invalid user jobappadmin from 10.10.10.1 port 60249
+Apr 28 05:52:40 jobapp01 sshd[2444239]: Invalid user jobappadmin from 10.10.10.1 port 46189
+Apr 28 05:52:40 jobapp01 sshd[2444238]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:52:40 jobapp01 sshd[2444238]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:52:40 jobapp01 sshd[2444239]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:52:40 jobapp01 sshd[2444239]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:52:42 jobapp01 sshd[2444238]: Failed password for invalid user jobappadmin from 10.10.10.1 port 60249 ssh2
+Apr 28 05:52:42 jobapp01 sshd[2444239]: Failed password for invalid user jobappadmin from 10.10.10.1 port 46189 ssh2
+Apr 28 05:52:43 jobapp01 sshd[2444238]: Connection closed by invalid user jobappadmin 10.10.10.1 port 60249 [preauth]
+Apr 28 05:52:43 jobapp01 sshd[2444239]: Connection closed by invalid user jobappadmin 10.10.10.1 port 46189 [preauth]
+Apr 28 05:52:48 jobapp01 sshd[2444470]: Invalid user jobappadmin from 10.10.10.1 port 35295
+Apr 28 05:52:48 jobapp01 sshd[2444471]: Invalid user jobappadmin from 10.10.10.1 port 42639
+Apr 28 05:52:48 jobapp01 sshd[2444470]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:52:48 jobapp01 sshd[2444470]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:52:48 jobapp01 sshd[2444471]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:52:48 jobapp01 sshd[2444471]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:52:51 jobapp01 sshd[2444470]: Failed password for invalid user jobappadmin from 10.10.10.1 port 35295 ssh2
+Apr 28 05:52:51 jobapp01 sshd[2444471]: Failed password for invalid user jobappadmin from 10.10.10.1 port 42639 ssh2
+Apr 28 05:52:52 jobapp01 sshd[2444471]: Connection closed by invalid user jobappadmin 10.10.10.1 port 42639 [preauth]
+Apr 28 05:52:52 jobapp01 sshd[2444470]: Connection closed by invalid user jobappadmin 10.10.10.1 port 35295 [preauth]
+Apr 28 05:52:52 jobapp01 sshd[2444571]: Invalid user jobappadmin from 10.10.10.1 port 40545
+Apr 28 05:52:52 jobapp01 sshd[2444574]: Invalid user jobappadmin from 10.10.10.1 port 41017
+Apr 28 05:52:52 jobapp01 sshd[2444571]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:52:52 jobapp01 sshd[2444571]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:52:52 jobapp01 sshd[2444574]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:52:52 jobapp01 sshd[2444574]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:52:54 jobapp01 sshd[2444571]: Failed password for invalid user jobappadmin from 10.10.10.1 port 40545 ssh2
+Apr 28 05:52:54 jobapp01 sshd[2444574]: Failed password for invalid user jobappadmin from 10.10.10.1 port 41017 ssh2
+Apr 28 05:52:55 jobapp01 sshd[2444571]: Connection closed by invalid user jobappadmin 10.10.10.1 port 40545 [preauth]
+Apr 28 05:52:55 jobapp01 sshd[2444574]: Connection closed by invalid user jobappadmin 10.10.10.1 port 41017 [preauth]
+Apr 28 05:52:56 jobapp01 sshd[2444670]: Invalid user jobappadmin from 10.10.10.1 port 59927
+Apr 28 05:52:56 jobapp01 sshd[2444671]: Invalid user jobappadmin from 10.10.10.1 port 48493
+Apr 28 05:52:56 jobapp01 sshd[2444670]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:52:56 jobapp01 sshd[2444670]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:52:56 jobapp01 sshd[2444671]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:52:56 jobapp01 sshd[2444671]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:52:58 jobapp01 sshd[2444670]: Failed password for invalid user jobappadmin from 10.10.10.1 port 59927 ssh2
+Apr 28 05:52:58 jobapp01 sshd[2444671]: Failed password for invalid user jobappadmin from 10.10.10.1 port 48493 ssh2
+Apr 28 05:52:59 jobapp01 sshd[2444670]: Connection closed by invalid user jobappadmin 10.10.10.1 port 59927 [preauth]
+Apr 28 05:52:59 jobapp01 sshd[2444671]: Connection closed by invalid user jobappadmin 10.10.10.1 port 48493 [preauth]
+Apr 28 05:52:59 jobapp01 sshd[2444770]: Invalid user jobappadmin from 10.10.10.1 port 40515
+Apr 28 05:52:59 jobapp01 sshd[2444769]: Invalid user jobappadmin from 10.10.10.1 port 36843
+Apr 28 05:52:59 jobapp01 sshd[2444770]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:52:59 jobapp01 sshd[2444770]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:52:59 jobapp01 sshd[2444769]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:52:59 jobapp01 sshd[2444769]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:53:01 jobapp01 sshd[2444769]: Failed password for invalid user jobappadmin from 10.10.10.1 port 36843 ssh2
+Apr 28 05:53:01 jobapp01 sshd[2444770]: Failed password for invalid user jobappadmin from 10.10.10.1 port 40515 ssh2
+Apr 28 05:53:01 jobapp01 CRON[2444830]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:53:01 jobapp01 CRON[2444830]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:53:03 jobapp01 sshd[2444769]: Connection closed by invalid user jobappadmin 10.10.10.1 port 36843 [preauth]
+Apr 28 05:53:03 jobapp01 sshd[2444770]: Connection closed by invalid user jobappadmin 10.10.10.1 port 40515 [preauth]
+Apr 28 05:53:03 jobapp01 sshd[2444895]: Invalid user jobappadmin from 10.10.10.1 port 44669
+Apr 28 05:53:03 jobapp01 sshd[2444894]: Invalid user jobappadmin from 10.10.10.1 port 39751
+Apr 28 05:53:03 jobapp01 sshd[2444894]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:53:03 jobapp01 sshd[2444894]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:53:03 jobapp01 sshd[2444895]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:53:03 jobapp01 sshd[2444895]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:53:04 jobapp01 sshd[2444894]: Failed password for invalid user jobappadmin from 10.10.10.1 port 39751 ssh2
+Apr 28 05:53:04 jobapp01 sshd[2444895]: Failed password for invalid user jobappadmin from 10.10.10.1 port 44669 ssh2
+Apr 28 05:53:05 jobapp01 sshd[2444895]: Connection closed by invalid user jobappadmin 10.10.10.1 port 44669 [preauth]
+Apr 28 05:53:05 jobapp01 sshd[2444894]: Connection closed by invalid user jobappadmin 10.10.10.1 port 39751 [preauth]
+Apr 28 05:53:05 jobapp01 sshd[2444955]: Invalid user jobappadmin from 10.10.10.1 port 38211
+Apr 28 05:53:05 jobapp01 sshd[2444956]: Invalid user jobappadmin from 10.10.10.1 port 60331
+Apr 28 05:53:05 jobapp01 sshd[2444956]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:53:05 jobapp01 sshd[2444956]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:53:05 jobapp01 sshd[2444955]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:53:05 jobapp01 sshd[2444955]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:53:07 jobapp01 sshd[2444956]: Failed password for invalid user jobappadmin from 10.10.10.1 port 60331 ssh2
+Apr 28 05:53:07 jobapp01 sshd[2444955]: Failed password for invalid user jobappadmin from 10.10.10.1 port 38211 ssh2
+Apr 28 05:53:09 jobapp01 sshd[2444955]: Connection closed by invalid user jobappadmin 10.10.10.1 port 38211 [preauth]
+Apr 28 05:53:09 jobapp01 sshd[2444956]: Connection closed by invalid user jobappadmin 10.10.10.1 port 60331 [preauth]
+Apr 28 05:53:10 jobapp01 sshd[2445092]: Invalid user jobappadmin from 10.10.10.1 port 40365
+Apr 28 05:53:10 jobapp01 sshd[2445093]: Invalid user jobappadmin from 10.10.10.1 port 60599
+Apr 28 05:53:10 jobapp01 sshd[2445092]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:53:10 jobapp01 sshd[2445092]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:53:10 jobapp01 sshd[2445093]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:53:10 jobapp01 sshd[2445093]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:53:12 jobapp01 sshd[2445092]: Failed password for invalid user jobappadmin from 10.10.10.1 port 40365 ssh2
+Apr 28 05:53:12 jobapp01 sshd[2445093]: Failed password for invalid user jobappadmin from 10.10.10.1 port 60599 ssh2
+Apr 28 05:53:13 jobapp01 sshd[2445092]: Connection closed by invalid user jobappadmin 10.10.10.1 port 40365 [preauth]
+Apr 28 05:53:13 jobapp01 sshd[2445093]: Connection closed by invalid user jobappadmin 10.10.10.1 port 60599 [preauth]
+Apr 28 05:53:14 jobapp01 sshd[2445192]: Invalid user jobappadmin from 10.10.10.1 port 57429
+Apr 28 05:53:14 jobapp01 sshd[2445191]: Invalid user jobappadmin from 10.10.10.1 port 48305
+Apr 28 05:53:14 jobapp01 sshd[2445192]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:53:14 jobapp01 sshd[2445192]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:53:14 jobapp01 sshd[2445191]: pam_unix(sshd:auth): check pass; user unknown
+Apr 28 05:53:14 jobapp01 sshd[2445191]: pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=10.10.10.1 
+Apr 28 05:53:15 jobapp01 sshd[2445192]: Failed password for invalid user jobappadmin from 10.10.10.1 port 57429 ssh2
+Apr 28 05:53:15 jobapp01 sshd[2445191]: Failed password for invalid user jobappadmin from 10.10.10.1 port 48305 ssh2
+Apr 28 05:53:17 jobapp01 sshd[2445192]: Connection closed by invalid user jobappadmin 10.10.10.1 port 57429 [preauth]
+Apr 28 05:53:17 jobapp01 sshd[2445191]: Connection closed by invalid user jobappadmin 10.10.10.1 port 48305 [preauth]
+Apr 28 05:54:01 jobapp01 CRON[2446508]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:54:01 jobapp01 CRON[2446508]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:55:01 jobapp01 CRON[2448133]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 05:55:01 jobapp01 CRON[2448134]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:55:01 jobapp01 CRON[2448133]: pam_unix(cron:session): session closed for user root
+Apr 28 05:55:01 jobapp01 CRON[2448134]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:56:01 jobapp01 CRON[2449780]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:56:01 jobapp01 CRON[2449780]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:57:01 jobapp01 CRON[2451423]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:57:02 jobapp01 CRON[2451423]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:58:01 jobapp01 CRON[2453047]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:58:01 jobapp01 CRON[2453047]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 05:59:01 jobapp01 CRON[2454672]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 05:59:01 jobapp01 CRON[2454672]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:00:01 jobapp01 CRON[2456315]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:00:01 jobapp01 CRON[2456315]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:01:01 jobapp01 CRON[2457959]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:01:01 jobapp01 CRON[2457959]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:02:01 jobapp01 CRON[2459595]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:02:01 jobapp01 CRON[2459595]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:03:01 jobapp01 CRON[2461245]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:03:01 jobapp01 CRON[2461245]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:04:01 jobapp01 CRON[2462870]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:04:01 jobapp01 CRON[2462870]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:05:01 jobapp01 CRON[2464513]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 06:05:01 jobapp01 CRON[2464514]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:05:01 jobapp01 CRON[2464513]: pam_unix(cron:session): session closed for user root
+Apr 28 06:05:01 jobapp01 CRON[2464514]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:06:01 jobapp01 CRON[2466161]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:06:01 jobapp01 CRON[2466161]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:07:01 jobapp01 CRON[2467804]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:07:01 jobapp01 CRON[2467804]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:08:01 jobapp01 CRON[2469447]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:08:02 jobapp01 CRON[2469447]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:09:01 jobapp01 CRON[2471052]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:09:01 jobapp01 CRON[2471052]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:10:01 jobapp01 CRON[2472695]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:10:01 jobapp01 CRON[2472695]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:11:01 jobapp01 CRON[2474338]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:11:01 jobapp01 CRON[2474338]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:12:01 jobapp01 CRON[2476060]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:12:01 jobapp01 CRON[2476060]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:13:01 jobapp01 CRON[2477704]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:13:01 jobapp01 CRON[2477704]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:14:01 jobapp01 CRON[2479328]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:14:01 jobapp01 CRON[2479328]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:15:01 jobapp01 CRON[2480974]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 06:15:01 jobapp01 CRON[2480975]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:15:01 jobapp01 CRON[2480974]: pam_unix(cron:session): session closed for user root
+Apr 28 06:15:01 jobapp01 CRON[2480975]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:16:01 jobapp01 CRON[2482618]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:16:01 jobapp01 CRON[2482618]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:17:01 jobapp01 CRON[2484261]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 06:17:01 jobapp01 CRON[2484262]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:17:01 jobapp01 CRON[2484261]: pam_unix(cron:session): session closed for user root
+Apr 28 06:17:01 jobapp01 CRON[2484262]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:18:01 jobapp01 CRON[2485907]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:18:01 jobapp01 CRON[2485907]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:19:01 jobapp01 CRON[2487550]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:19:02 jobapp01 CRON[2487550]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:20:01 jobapp01 CRON[2489154]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:20:01 jobapp01 CRON[2489154]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:21:01 jobapp01 CRON[2490797]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:21:01 jobapp01 CRON[2490797]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:22:01 jobapp01 CRON[2492440]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:22:01 jobapp01 CRON[2492440]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:23:01 jobapp01 CRON[2494084]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:23:01 jobapp01 CRON[2494084]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:24:01 jobapp01 CRON[2495727]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:24:01 jobapp01 CRON[2495727]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:25:01 jobapp01 CRON[2497355]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 06:25:01 jobapp01 CRON[2497356]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 06:25:01 jobapp01 CRON[2497357]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:25:01 jobapp01 CRON[2497356]: pam_unix(cron:session): session closed for user root
+Apr 28 06:25:01 jobapp01 CRON[2497355]: pam_unix(cron:session): session closed for user root
+Apr 28 06:25:01 jobapp01 CRON[2497357]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:26:01 jobapp01 CRON[2499010]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:26:01 jobapp01 CRON[2499010]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:27:01 jobapp01 CRON[2500672]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:27:01 jobapp01 CRON[2500672]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:28:01 jobapp01 CRON[2502297]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:28:01 jobapp01 CRON[2502297]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:29:01 jobapp01 CRON[2503940]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:29:01 jobapp01 CRON[2503940]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:30:01 jobapp01 CRON[2505583]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:30:02 jobapp01 CRON[2505583]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:31:01 jobapp01 CRON[2507208]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:31:01 jobapp01 CRON[2507208]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:32:01 jobapp01 CRON[2508834]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:32:01 jobapp01 CRON[2508834]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:33:01 jobapp01 CRON[2510475]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:33:01 jobapp01 CRON[2510475]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:34:01 jobapp01 CRON[2512119]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:34:01 jobapp01 CRON[2512119]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:35:01 jobapp01 CRON[2513762]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 06:35:01 jobapp01 CRON[2513763]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:35:01 jobapp01 CRON[2513762]: pam_unix(cron:session): session closed for user root
+Apr 28 06:35:01 jobapp01 CRON[2513763]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:36:01 jobapp01 CRON[2515409]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:36:01 jobapp01 CRON[2515409]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:37:01 jobapp01 CRON[2517052]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:37:01 jobapp01 CRON[2517052]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:38:01 jobapp01 CRON[2518696]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:38:01 jobapp01 CRON[2518696]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:39:01 jobapp01 CRON[2520340]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:39:01 jobapp01 CRON[2520340]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:40:01 jobapp01 CRON[2521965]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:40:01 jobapp01 CRON[2521965]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:41:01 jobapp01 CRON[2523609]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:41:02 jobapp01 CRON[2523609]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:42:01 jobapp01 CRON[2525234]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:42:01 jobapp01 CRON[2525234]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:43:01 jobapp01 CRON[2526877]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:43:01 jobapp01 CRON[2526877]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:44:01 jobapp01 CRON[2528520]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:44:01 jobapp01 CRON[2528520]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:45:01 jobapp01 CRON[2530145]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 06:45:01 jobapp01 CRON[2530146]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:45:01 jobapp01 CRON[2530145]: pam_unix(cron:session): session closed for user root
+Apr 28 06:45:01 jobapp01 CRON[2530146]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:46:01 jobapp01 CRON[2531804]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:46:01 jobapp01 CRON[2531804]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:47:01 jobapp01 CRON[2533435]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:47:01 jobapp01 CRON[2533435]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:48:01 jobapp01 CRON[2535078]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:48:01 jobapp01 CRON[2535078]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:49:01 jobapp01 CRON[2536721]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:49:01 jobapp01 CRON[2536721]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:50:01 jobapp01 CRON[2538365]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:50:01 jobapp01 CRON[2538365]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:51:01 jobapp01 CRON[2540008]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:51:01 jobapp01 CRON[2540008]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:52:02 jobapp01 CRON[2541639]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:52:02 jobapp01 CRON[2541639]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:53:01 jobapp01 CRON[2543255]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:53:01 jobapp01 CRON[2543255]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:54:01 jobapp01 CRON[2544898]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:54:01 jobapp01 CRON[2544898]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:55:01 jobapp01 CRON[2546541]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 06:55:01 jobapp01 CRON[2546542]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:55:01 jobapp01 CRON[2546541]: pam_unix(cron:session): session closed for user root
+Apr 28 06:55:01 jobapp01 CRON[2546542]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:56:01 jobapp01 CRON[2548180]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:56:01 jobapp01 CRON[2548180]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:57:01 jobapp01 CRON[2549816]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:57:01 jobapp01 CRON[2549816]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:58:01 jobapp01 CRON[2551474]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:58:01 jobapp01 CRON[2551474]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 06:59:01 jobapp01 CRON[2553098]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 06:59:01 jobapp01 CRON[2553098]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:00:01 jobapp01 CRON[2554741]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:00:01 jobapp01 CRON[2554741]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:01:01 jobapp01 CRON[2556391]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:01:01 jobapp01 CRON[2556391]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:02:01 jobapp01 CRON[2558028]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:02:02 jobapp01 CRON[2558028]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:03:01 jobapp01 CRON[2559633]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:03:01 jobapp01 CRON[2559633]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:04:01 jobapp01 CRON[2561277]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:04:01 jobapp01 CRON[2561277]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:05:01 jobapp01 CRON[2562929]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 07:05:01 jobapp01 CRON[2562930]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:05:01 jobapp01 CRON[2562929]: pam_unix(cron:session): session closed for user root
+Apr 28 07:05:01 jobapp01 CRON[2562930]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:06:01 jobapp01 CRON[2564567]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:06:01 jobapp01 CRON[2564567]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:07:01 jobapp01 CRON[2566211]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:07:01 jobapp01 CRON[2566211]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:08:01 jobapp01 CRON[2567854]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:08:01 jobapp01 CRON[2567854]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:09:01 jobapp01 CRON[2569497]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:09:01 jobapp01 CRON[2569497]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:10:01 jobapp01 CRON[2571140]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:10:01 jobapp01 CRON[2571140]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:11:01 jobapp01 CRON[2572765]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:11:01 jobapp01 CRON[2572765]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:12:01 jobapp01 CRON[2574410]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:12:01 jobapp01 CRON[2574410]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:13:01 jobapp01 CRON[2576067]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:13:02 jobapp01 CRON[2576067]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:14:01 jobapp01 CRON[2577677]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:14:01 jobapp01 CRON[2577677]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:15:01 jobapp01 CRON[2579320]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 07:15:01 jobapp01 CRON[2579321]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:15:01 jobapp01 CRON[2579320]: pam_unix(cron:session): session closed for user root
+Apr 28 07:15:01 jobapp01 CRON[2579321]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:16:01 jobapp01 CRON[2580948]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:16:01 jobapp01 CRON[2580948]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:17:01 jobapp01 CRON[2582610]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 07:17:01 jobapp01 CRON[2582611]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:17:01 jobapp01 CRON[2582610]: pam_unix(cron:session): session closed for user root
+Apr 28 07:17:01 jobapp01 CRON[2582611]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:18:01 jobapp01 CRON[2584238]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:18:01 jobapp01 CRON[2584238]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:19:01 jobapp01 CRON[2585881]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:19:01 jobapp01 CRON[2585881]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:20:01 jobapp01 CRON[2587525]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:20:01 jobapp01 CRON[2587525]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:21:01 jobapp01 CRON[2589149]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:21:01 jobapp01 CRON[2589149]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:22:01 jobapp01 CRON[2590811]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:22:01 jobapp01 CRON[2590811]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:23:01 jobapp01 CRON[2592436]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:23:01 jobapp01 CRON[2592436]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:24:01 jobapp01 CRON[2594079]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:24:02 jobapp01 CRON[2594079]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:25:01 jobapp01 CRON[2595684]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 07:25:01 jobapp01 CRON[2595685]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:25:01 jobapp01 CRON[2595684]: pam_unix(cron:session): session closed for user root
+Apr 28 07:25:01 jobapp01 CRON[2595685]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:26:01 jobapp01 CRON[2597348]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:26:01 jobapp01 CRON[2597348]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:27:01 jobapp01 CRON[2598974]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:27:01 jobapp01 CRON[2598974]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:28:01 jobapp01 CRON[2600618]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:28:01 jobapp01 CRON[2600618]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:29:01 jobapp01 CRON[2602262]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:29:01 jobapp01 CRON[2602262]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:30:01 jobapp01 CRON[2603905]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:30:01 jobapp01 CRON[2603905]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:31:01 jobapp01 CRON[2605548]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:31:01 jobapp01 CRON[2605548]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:32:01 jobapp01 CRON[2607181]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:32:01 jobapp01 CRON[2607181]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:33:01 jobapp01 CRON[2608815]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:33:01 jobapp01 CRON[2608815]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:34:01 jobapp01 CRON[2610460]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:34:01 jobapp01 CRON[2610460]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:35:01 jobapp01 CRON[2612103]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 07:35:01 jobapp01 CRON[2612104]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:35:01 jobapp01 CRON[2612103]: pam_unix(cron:session): session closed for user root
+Apr 28 07:35:02 jobapp01 CRON[2612104]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:36:01 jobapp01 CRON[2613731]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:36:01 jobapp01 CRON[2613731]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:37:01 jobapp01 CRON[2615355]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:37:01 jobapp01 CRON[2615355]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:38:01 jobapp01 CRON[2616998]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:38:01 jobapp01 CRON[2616998]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:39:01 jobapp01 CRON[2618641]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:39:01 jobapp01 CRON[2618641]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:40:01 jobapp01 CRON[2620285]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:40:01 jobapp01 CRON[2620285]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:41:01 jobapp01 CRON[2621928]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:41:01 jobapp01 CRON[2621928]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:42:01 jobapp01 CRON[2623571]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:42:01 jobapp01 CRON[2623571]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:43:01 jobapp01 CRON[2625214]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:43:01 jobapp01 CRON[2625214]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:44:01 jobapp01 CRON[2626857]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:44:01 jobapp01 CRON[2626857]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:45:01 jobapp01 CRON[2628482]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 07:45:01 jobapp01 CRON[2628483]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:45:01 jobapp01 CRON[2628482]: pam_unix(cron:session): session closed for user root
+Apr 28 07:45:01 jobapp01 CRON[2628483]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:46:01 jobapp01 CRON[2630136]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:46:02 jobapp01 CRON[2630136]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:47:01 jobapp01 CRON[2631753]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:47:01 jobapp01 CRON[2631753]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:48:01 jobapp01 CRON[2633396]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:48:01 jobapp01 CRON[2633396]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:49:01 jobapp01 CRON[2635021]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:49:01 jobapp01 CRON[2635021]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:50:01 jobapp01 CRON[2636664]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:50:01 jobapp01 CRON[2636664]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:51:01 jobapp01 CRON[2638307]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:51:01 jobapp01 CRON[2638307]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:52:01 jobapp01 CRON[2639949]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:52:01 jobapp01 CRON[2639949]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:53:01 jobapp01 CRON[2641592]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:53:01 jobapp01 CRON[2641592]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:54:01 jobapp01 CRON[2643235]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:54:01 jobapp01 CRON[2643235]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:55:01 jobapp01 CRON[2644878]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 07:55:01 jobapp01 CRON[2644879]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:55:01 jobapp01 CRON[2644878]: pam_unix(cron:session): session closed for user root
+Apr 28 07:55:01 jobapp01 CRON[2644879]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:56:01 jobapp01 CRON[2646526]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:56:01 jobapp01 CRON[2646526]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:57:01 jobapp01 CRON[2648150]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:57:02 jobapp01 CRON[2648150]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:58:01 jobapp01 CRON[2649774]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:58:01 jobapp01 CRON[2649774]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 07:59:01 jobapp01 CRON[2651416]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 07:59:01 jobapp01 CRON[2651416]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:00:01 jobapp01 CRON[2653059]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:00:01 jobapp01 CRON[2653059]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:01:01 jobapp01 CRON[2654683]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:01:01 jobapp01 CRON[2654683]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:02:01 jobapp01 CRON[2656341]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:02:01 jobapp01 CRON[2656341]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:03:01 jobapp01 CRON[2657983]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:03:01 jobapp01 CRON[2657983]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:04:01 jobapp01 CRON[2659614]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:04:01 jobapp01 CRON[2659614]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:05:01 jobapp01 CRON[2661257]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 08:05:01 jobapp01 CRON[2661258]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:05:01 jobapp01 CRON[2661257]: pam_unix(cron:session): session closed for user root
+Apr 28 08:05:01 jobapp01 CRON[2661258]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:06:01 jobapp01 CRON[2662904]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:06:01 jobapp01 CRON[2662904]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:07:01 jobapp01 CRON[2664548]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:07:02 jobapp01 CRON[2664548]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:08:01 jobapp01 CRON[2666153]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:08:01 jobapp01 CRON[2666153]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:09:01 jobapp01 CRON[2667796]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:09:01 jobapp01 CRON[2667796]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:10:01 jobapp01 CRON[2669439]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:10:01 jobapp01 CRON[2669439]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:11:01 jobapp01 CRON[2671083]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:11:01 jobapp01 CRON[2671083]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:12:01 jobapp01 CRON[2672726]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:12:01 jobapp01 CRON[2672726]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:13:01 jobapp01 CRON[2674370]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:13:01 jobapp01 CRON[2674370]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:14:01 jobapp01 CRON[2676013]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:14:01 jobapp01 CRON[2676013]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:15:01 jobapp01 CRON[2677656]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 08:15:01 jobapp01 CRON[2677657]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:15:01 jobapp01 CRON[2677656]: pam_unix(cron:session): session closed for user root
+Apr 28 08:15:01 jobapp01 CRON[2677657]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:16:01 jobapp01 CRON[2679286]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:16:01 jobapp01 CRON[2679286]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:17:01 jobapp01 CRON[2680926]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 08:17:01 jobapp01 CRON[2680927]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:17:01 jobapp01 CRON[2680926]: pam_unix(cron:session): session closed for user root
+Apr 28 08:17:01 jobapp01 CRON[2680927]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:18:01 jobapp01 CRON[2682573]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:18:02 jobapp01 CRON[2682573]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:19:01 jobapp01 CRON[2684197]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:19:01 jobapp01 CRON[2684197]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:20:01 jobapp01 CRON[2685823]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:20:01 jobapp01 CRON[2685823]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:21:01 jobapp01 CRON[2687463]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:21:01 jobapp01 CRON[2687463]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:22:01 jobapp01 CRON[2689106]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:22:01 jobapp01 CRON[2689106]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:23:01 jobapp01 CRON[2690749]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:23:01 jobapp01 CRON[2690749]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:24:01 jobapp01 CRON[2692393]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:24:01 jobapp01 CRON[2692393]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:25:01 jobapp01 CRON[2694036]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 08:25:01 jobapp01 CRON[2694037]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:25:01 jobapp01 CRON[2694036]: pam_unix(cron:session): session closed for user root
+Apr 28 08:25:01 jobapp01 CRON[2694037]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:26:01 jobapp01 CRON[2695683]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:26:01 jobapp01 CRON[2695683]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:27:01 jobapp01 CRON[2697326]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:27:01 jobapp01 CRON[2697326]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:28:01 jobapp01 CRON[2698950]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:28:01 jobapp01 CRON[2698950]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:29:01 jobapp01 CRON[2700594]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:29:02 jobapp01 CRON[2700594]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:30:01 jobapp01 CRON[2702218]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:30:01 jobapp01 CRON[2702218]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:31:01 jobapp01 CRON[2703861]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:31:01 jobapp01 CRON[2703861]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:32:01 jobapp01 CRON[2705497]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:32:01 jobapp01 CRON[2705497]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:33:01 jobapp01 CRON[2707142]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:33:01 jobapp01 CRON[2707142]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:34:01 jobapp01 CRON[2708790]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:34:01 jobapp01 CRON[2708790]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:35:01 jobapp01 CRON[2710415]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 08:35:01 jobapp01 CRON[2710416]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:35:01 jobapp01 CRON[2710415]: pam_unix(cron:session): session closed for user root
+Apr 28 08:35:01 jobapp01 CRON[2710416]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:36:01 jobapp01 CRON[2712062]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:36:01 jobapp01 CRON[2712062]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:37:01 jobapp01 CRON[2713705]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:37:01 jobapp01 CRON[2713705]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:38:01 jobapp01 CRON[2715348]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:38:01 jobapp01 CRON[2715348]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:39:01 jobapp01 CRON[2716991]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:39:01 jobapp01 CRON[2716991]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:40:01 jobapp01 CRON[2718635]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:40:02 jobapp01 CRON[2718635]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:41:01 jobapp01 CRON[2720248]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:41:01 jobapp01 CRON[2720248]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:42:01 jobapp01 CRON[2721883]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:42:01 jobapp01 CRON[2721883]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:43:01 jobapp01 CRON[2723527]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:43:01 jobapp01 CRON[2723527]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:44:01 jobapp01 CRON[2725170]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:44:01 jobapp01 CRON[2725170]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:45:01 jobapp01 CRON[2726813]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 08:45:01 jobapp01 CRON[2726814]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:45:01 jobapp01 CRON[2726813]: pam_unix(cron:session): session closed for user root
+Apr 28 08:45:01 jobapp01 CRON[2726814]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:46:01 jobapp01 CRON[2728460]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:46:01 jobapp01 CRON[2728460]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:47:01 jobapp01 CRON[2730083]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:47:01 jobapp01 CRON[2730083]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:48:01 jobapp01 CRON[2731726]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:48:01 jobapp01 CRON[2731726]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:49:01 jobapp01 CRON[2733382]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:49:01 jobapp01 CRON[2733382]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:50:01 jobapp01 CRON[2735012]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:50:01 jobapp01 CRON[2735012]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:51:01 jobapp01 CRON[2736656]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:51:02 jobapp01 CRON[2736656]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:52:01 jobapp01 CRON[2738281]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:52:01 jobapp01 CRON[2738281]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:53:01 jobapp01 CRON[2739925]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:53:01 jobapp01 CRON[2739925]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:54:01 jobapp01 CRON[2741548]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:54:01 jobapp01 CRON[2741548]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:55:01 jobapp01 CRON[2743191]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 08:55:01 jobapp01 CRON[2743192]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:55:01 jobapp01 CRON[2743191]: pam_unix(cron:session): session closed for user root
+Apr 28 08:55:01 jobapp01 CRON[2743192]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:56:01 jobapp01 CRON[2744841]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:56:01 jobapp01 CRON[2744841]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:57:01 jobapp01 CRON[2746481]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:57:01 jobapp01 CRON[2746481]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:58:01 jobapp01 CRON[2748124]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:58:01 jobapp01 CRON[2748124]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 08:59:01 jobapp01 CRON[2749768]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 08:59:01 jobapp01 CRON[2749768]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:00:01 jobapp01 CRON[2751411]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:00:01 jobapp01 CRON[2751411]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:01:01 jobapp01 CRON[2753054]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:01:01 jobapp01 CRON[2753054]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:02:01 jobapp01 CRON[2754679]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:02:02 jobapp01 CRON[2754679]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:03:01 jobapp01 CRON[2756303]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:03:01 jobapp01 CRON[2756303]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:04:01 jobapp01 CRON[2757946]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:04:01 jobapp01 CRON[2757946]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:05:01 jobapp01 CRON[2759590]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 09:05:01 jobapp01 CRON[2759591]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:05:01 jobapp01 CRON[2759590]: pam_unix(cron:session): session closed for user root
+Apr 28 09:05:01 jobapp01 CRON[2759591]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:06:01 jobapp01 CRON[2761218]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:06:01 jobapp01 CRON[2761218]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:07:01 jobapp01 CRON[2762861]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:07:01 jobapp01 CRON[2762861]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:08:01 jobapp01 CRON[2764505]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:08:01 jobapp01 CRON[2764505]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:09:01 jobapp01 CRON[2766148]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:09:01 jobapp01 CRON[2766148]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:10:01 jobapp01 CRON[2767792]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:10:01 jobapp01 CRON[2767792]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:11:01 jobapp01 CRON[2769435]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:11:01 jobapp01 CRON[2769435]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:12:01 jobapp01 CRON[2771078]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:12:01 jobapp01 CRON[2771078]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:13:01 jobapp01 CRON[2772722]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:13:02 jobapp01 CRON[2772722]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:14:01 jobapp01 CRON[2774327]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:14:01 jobapp01 CRON[2774327]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:15:01 jobapp01 CRON[2775970]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 09:15:01 jobapp01 CRON[2775971]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:15:01 jobapp01 CRON[2775970]: pam_unix(cron:session): session closed for user root
+Apr 28 09:15:01 jobapp01 CRON[2775971]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:16:01 jobapp01 CRON[2777617]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:16:01 jobapp01 CRON[2777617]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:17:01 jobapp01 CRON[2779260]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 09:17:01 jobapp01 CRON[2779261]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:17:01 jobapp01 CRON[2779260]: pam_unix(cron:session): session closed for user root
+Apr 28 09:17:01 jobapp01 CRON[2779261]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:18:01 jobapp01 CRON[2780887]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:18:01 jobapp01 CRON[2780887]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:19:01 jobapp01 CRON[2782550]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:19:01 jobapp01 CRON[2782550]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:20:01 jobapp01 CRON[2784174]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:20:01 jobapp01 CRON[2784174]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:21:01 jobapp01 CRON[2785817]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:21:01 jobapp01 CRON[2785817]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:22:01 jobapp01 CRON[2787459]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:22:01 jobapp01 CRON[2787459]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:23:01 jobapp01 CRON[2789083]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:23:01 jobapp01 CRON[2789083]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:24:01 jobapp01 CRON[2790729]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:24:02 jobapp01 CRON[2790729]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:25:01 jobapp01 CRON[2792351]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 09:25:01 jobapp01 CRON[2792352]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:25:01 jobapp01 CRON[2792351]: pam_unix(cron:session): session closed for user root
+Apr 28 09:25:01 jobapp01 CRON[2792352]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:26:01 jobapp01 CRON[2793999]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:26:01 jobapp01 CRON[2793999]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:27:01 jobapp01 CRON[2795623]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:27:01 jobapp01 CRON[2795623]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:28:01 jobapp01 CRON[2797285]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:28:01 jobapp01 CRON[2797285]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:29:01 jobapp01 CRON[2798913]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:29:01 jobapp01 CRON[2798913]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:30:01 jobapp01 CRON[2800552]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:30:01 jobapp01 CRON[2800552]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:31:01 jobapp01 CRON[2802195]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:31:01 jobapp01 CRON[2802195]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:32:01 jobapp01 CRON[2803827]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:32:01 jobapp01 CRON[2803827]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:33:01 jobapp01 CRON[2805481]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:33:01 jobapp01 CRON[2805481]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:34:01 jobapp01 CRON[2807124]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:34:01 jobapp01 CRON[2807124]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:35:01 jobapp01 CRON[2808749]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 09:35:01 jobapp01 CRON[2808750]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:35:01 jobapp01 CRON[2808749]: pam_unix(cron:session): session closed for user root
+Apr 28 09:35:02 jobapp01 CRON[2808750]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:36:01 jobapp01 CRON[2810358]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:36:01 jobapp01 CRON[2810358]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:37:01 jobapp01 CRON[2812020]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:37:01 jobapp01 CRON[2812020]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:38:01 jobapp01 CRON[2813652]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:38:01 jobapp01 CRON[2813652]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:39:01 jobapp01 CRON[2815286]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:39:01 jobapp01 CRON[2815286]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:40:01 jobapp01 CRON[2816929]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:40:01 jobapp01 CRON[2816929]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:41:01 jobapp01 CRON[2818562]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:41:01 jobapp01 CRON[2818562]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:42:01 jobapp01 CRON[2820216]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:42:01 jobapp01 CRON[2820216]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:43:01 jobapp01 CRON[2821840]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:43:01 jobapp01 CRON[2821840]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:44:01 jobapp01 CRON[2823483]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:44:01 jobapp01 CRON[2823483]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:45:01 jobapp01 CRON[2825127]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 09:45:01 jobapp01 CRON[2825128]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:45:01 jobapp01 CRON[2825127]: pam_unix(cron:session): session closed for user root
+Apr 28 09:45:01 jobapp01 CRON[2825128]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:46:01 jobapp01 CRON[2826755]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:46:02 jobapp01 CRON[2826755]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:47:01 jobapp01 CRON[2828379]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:47:01 jobapp01 CRON[2828379]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:48:01 jobapp01 CRON[2830022]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:48:01 jobapp01 CRON[2830022]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:49:01 jobapp01 CRON[2831664]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:49:01 jobapp01 CRON[2831664]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:50:01 jobapp01 CRON[2833295]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:50:01 jobapp01 CRON[2833295]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:51:01 jobapp01 CRON[2834950]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:51:01 jobapp01 CRON[2834950]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:52:01 jobapp01 CRON[2836594]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:52:01 jobapp01 CRON[2836594]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:53:01 jobapp01 CRON[2838219]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:53:01 jobapp01 CRON[2838219]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:54:01 jobapp01 CRON[2839881]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:54:01 jobapp01 CRON[2839881]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:55:01 jobapp01 CRON[2841505]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 09:55:01 jobapp01 CRON[2841506]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:55:01 jobapp01 CRON[2841505]: pam_unix(cron:session): session closed for user root
+Apr 28 09:55:01 jobapp01 CRON[2841506]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:56:01 jobapp01 CRON[2843152]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:56:01 jobapp01 CRON[2843152]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:57:01 jobapp01 CRON[2844796]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:57:02 jobapp01 CRON[2844796]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:58:01 jobapp01 CRON[2846420]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:58:01 jobapp01 CRON[2846420]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 09:59:01 jobapp01 CRON[2848045]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 09:59:01 jobapp01 CRON[2848045]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:00:01 jobapp01 CRON[2849688]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:00:01 jobapp01 CRON[2849688]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:00:24 jobapp01 sshd[2850322]: Accepted password for jobadmin from 10.10.10.1 port 11541 ssh2
+Apr 28 10:00:24 jobapp01 sshd[2850322]: pam_unix(sshd:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:00:24 jobapp01 systemd-logind[943]: New session 4824 of user jobadmin.
+Apr 28 10:00:25 jobapp01 sshd[2850445]: Accepted password for jobadmin from 10.10.10.1 port 11544 ssh2
+Apr 28 10:00:25 jobapp01 sshd[2850445]: pam_unix(sshd:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:00:25 jobapp01 systemd-logind[943]: New session 4825 of user jobadmin.
+Apr 28 10:01:01 jobapp01 CRON[2851772]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:01:01 jobapp01 CRON[2851772]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:02:01 jobapp01 CRON[2853869]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:02:01 jobapp01 CRON[2853869]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:03:01 jobapp01 CRON[2856000]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:03:01 jobapp01 CRON[2856000]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:04:01 jobapp01 CRON[2858103]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:04:01 jobapp01 CRON[2858103]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:04:10 jobapp01 sshd[2858242]: Accepted password for jobadmin from 10.10.10.1 port 44364 ssh2
+Apr 28 10:04:10 jobapp01 sshd[2858242]: pam_unix(sshd:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:04:10 jobapp01 systemd-logind[943]: New session 4830 of user jobadmin.
+Apr 28 10:05:01 jobapp01 CRON[2860294]: pam_unix(cron:session): session opened for user root(uid=0) by (uid=0)
+Apr 28 10:05:01 jobapp01 CRON[2860295]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:05:01 jobapp01 CRON[2860294]: pam_unix(cron:session): session closed for user root
+Apr 28 10:05:01 jobapp01 CRON[2860295]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:06:01 jobapp01 CRON[2862418]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:06:01 jobapp01 CRON[2862418]: pam_unix(cron:session): session closed for user jobadmin
+Apr 28 10:07:01 jobapp01 CRON[2864546]: pam_unix(cron:session): session opened for user jobadmin(uid=1000) by (uid=0)
+Apr 28 10:07:01 jobapp01 CRON[2864546]: pam_unix(cron:session): session closed for user jobadmin
+

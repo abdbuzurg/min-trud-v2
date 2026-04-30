@@ -18,6 +18,8 @@ import { Education, JobSeekerFromData } from '../../../../../types/jobSeeker';
 import { AdditionalContactInfromation, KnowledgeOfLanguages, WorkExperience } from '../../../../../jobseeker';
 import { useRouter } from 'next/navigation';
 import NewDatePicker from '@/components/ui/NewDatePicker';
+import { ApiErrorResponse, toValidationErrors } from '@/lib/apiErrorTypes';
+import { getFirstValidationErrorStep } from '@/lib/jobSeekerFieldSteps';
 
 const countries = ["Афганистан", "Албания", "Алжир", "Андорра", "Ангола", "Антигуа и Барбуда", "Аргентина", "Армения", "Австралия", "Австрия", "Азербайджан", "Багамы", "Бахрейн", "Бангладеш", "Барбадос", "Беларусь", "Бельгия", "Белиз", "Бенин", "Бутан", "Боливия", "Босния и Герцеговина", "Ботсвана", "Бразилия", "Бруней", "Болгария", "Буркина-Фасо", "Бурунди", "Кабо-Верде", "Камбоджа", "Камерун", "Канада", "Центральноафриканская Республика", "Чад", "Чили", "Китай", "Колумбия", "Коморы", "Конго", "Коста-Рика", "Хорватия", "Куба", "Кипр", "Чехия", "Демократическая Республика Конго", "Дания", "Джибути", "Доминика", "Доминиканская Республика", "Эквадор", "Египет", "Сальвадор", "Экваториальная Гвинея", "Эритрея", "Эстония", "Эсватини", "Эфиопия", "Фиджи", "Финляндия", "Франция", "Габон", "Гамбия", "Грузия", "Германия", "Гана", "Греция", "Гренада", "Гватемала", "Гвинея", "Гвинея-Бисау", "Гайана", "Гаити", "Ватикан", "Гондурас", "Венгрия", "Исландия", "Индия", "Индонезия", "Иран", "Ирак", "Ирландия", "Израиль", "Италия", "Ямайка", "Япония", "Иордания", "Казахстан", "Кения", "Кирибати", "Кувейт", "Киргизия", "Лаос", "Латвия", "Ливан", "Лесото", "Либерия", "Ливия", "Лихтенштейн", "Литва", "Люксембург", "Мадагаскар", "Малави", "Малайзия", "Мальдивы", "Мали", "Мальта", "Маршалловы Острова", "Мавритания", "Маврикий", "Мексика", "Микронезия", "Молдова", "Монако", "Монголия", "Черногория", "Марокко", "Мозамбик", "Мьянма", "Намибия", "Науру", "Непал", "Нидерланды", "Новая Зеландия", "Никарагуа", "Нигер", "Нигерия", "КНДР", "Северная Македония", "Норвегия", "Оман", "Пакистан", "Палау", "Палестина", "Панама", "Папуа — Новая Гвинея", "Парагвай", "Перу", "Филиппины", "Польша", "Португалия", "Катар", "Румыния", "Россия", "Руанда", "Сент-Китс и Невис", "Сент-Люсия", "Сент-Винсент и Гренадины", "Самоа", "Сан-Марино", "Сан-Томе и Принсипи", "Саудовская Аравия", "Сенегал", "Сербия", "Сейшельские Острова", "Сьерра-Леоне", "Сингапур", "Словакия", "Словения", "Соломоновы Острова", "Сомали", "Южная Африка", "Южная Корея", "Южный Судан", "Испания", "Шри-Ланка", "Судан", "Суринам", "Швеция", "Швейцария", "Сирия", "Таджикистан", "Танзания", "Таиланд", "Восточный Тимор", "Того", "Тонга", "Тринидад и Тобаго", "Тунис", "Турция", "Туркмения", "Тувалу", "Уганда", "Украина", "ОАЭ", "Великобритания", "Англия", "Шотландия", "Уэльс", "Северная Ирландия", "США", "Уругвай", "Узбекистан", "Вануату", "Венесуэла", "Вьетнам", "Йемен", "Замбия", "Зимбабве"];
 
@@ -47,6 +49,8 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
   const [certificates, setCertificates] = useState<File[] | null>(null)
 
   const [isSavingData, setIsSavingData] = useState(true)
+  const [isSaveSuccessful, setIsSaveSuccessful] = useState(false)
+  const [submitError, setSubmitError] = useState<string | null>(null)
 
   const [formData, setFormData] = useState<JobSeekerFromData>({
     lastName: '',
@@ -407,11 +411,40 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
 
   const updateForm = async (formData: globalThis.FormData): Promise<boolean> => {
     setIsSubmitted(true)
+    setIsSavingData(true)
+    setIsSaveSuccessful(false)
+    setSubmitError(null)
     try {
-      await axios.post(`/api/update-job-seeker-profile`, formData).then(res => res.data).finally(() => setIsSavingData(false))
+      await axios.post(`/api/update-job-seeker-profile`, formData)
+      setIsSaveSuccessful(true)
       return true
-    } catch {
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        const errorData = error.response?.data as ApiErrorResponse | undefined
+        const validationErrors = toValidationErrors(errorData?.errors)
+        const hasValidationErrors = Object.keys(validationErrors).length > 0
+
+        if (errorData?.tag === "VALIDATION") {
+          if (hasValidationErrors) {
+            setErrors((prev) => ({ ...prev, ...validationErrors }))
+            const step = getFirstValidationErrorStep(validationErrors)
+            if (step !== null) {
+              setCurrentStep(step)
+            }
+          }
+
+          setSubmitError(errorData.message ?? "Проверьте заполнение формы.")
+          setIsSubmitted(false)
+          return false
+        }
+
+        setSubmitError(errorData?.message ?? "Не удалось обновить анкету. Попробуйте позже.")
+      } else {
+        setSubmitError("Не удалось обновить анкету. Попробуйте позже.")
+      }
       return false
+    } finally {
+      setIsSavingData(false)
     }
   }
 
@@ -1491,7 +1524,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
                     Обновляем заявку...
                   </h2>
                 </>
-                :
+                : isSaveSuccessful ? (
                 <>
                   <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-full mb-4">
                     <Save className="w-8 h-8 text-white" />
@@ -1521,7 +1554,24 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
                     </button>
                   </div>
                 </>
-              }
+              ) : (
+                <>
+                  <h2 className="text-2xl font-bold text-red-600 mb-2">
+                    Ошибка сохранения
+                  </h2>
+                  <p className="text-gray-700 mb-6">
+                    {submitError ?? "Не удалось обновить анкету. Проверьте соединение и попробуйте снова."}
+                  </p>
+                  <button
+                    onClick={() => {
+                      setIsSubmitted(false)
+                    }}
+                    className="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl font-semibold hover:from-gray-800 hover:to-gray-900 transition-all duration-200"
+                  >
+                    Вернуться к форме
+                  </button>
+                </>
+              )}
             </div>
           </div>
         )}

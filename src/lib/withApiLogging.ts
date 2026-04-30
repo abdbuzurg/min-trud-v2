@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { structuredLogger } from "./structuredLogger";
+import type { ApiErrorTag } from "./apiErrorTypes";
 
 type RouteHandler<TContext = unknown> = (
   request: NextRequest,
@@ -40,6 +41,8 @@ export function withApiLogging<TContext = unknown>(
       const response = await handler(request, context);
       const durationMs = Date.now() - startedAt;
       const status = response.status;
+      const tag: ApiErrorTag | undefined =
+        status >= 500 ? "INTERNAL" : status >= 400 ? "VALIDATION" : undefined;
 
       if (status >= 500) {
         structuredLogger.error("api.request.finish", {
@@ -49,6 +52,7 @@ export function withApiLogging<TContext = unknown>(
           path,
           status,
           durationMs,
+          tag,
         });
       } else if (status >= 400) {
         structuredLogger.warn("api.request.finish", {
@@ -58,6 +62,7 @@ export function withApiLogging<TContext = unknown>(
           path,
           status,
           durationMs,
+          tag,
         });
       } else {
         structuredLogger.info("api.request.finish", {
@@ -85,14 +90,14 @@ export function withApiLogging<TContext = unknown>(
         method: request.method,
         path,
         durationMs,
+        tag: "INTERNAL",
         error: structuredLogger.errorDetails(error),
       });
 
       return NextResponse.json(
-        { message: "Internal server error", requestId },
+        { tag: "INTERNAL", message: "Internal server error", requestId },
         { status: 500 }
       );
     }
   };
 }
-

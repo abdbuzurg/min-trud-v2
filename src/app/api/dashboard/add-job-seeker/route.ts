@@ -5,6 +5,14 @@ import { promises as fs } from 'fs'
 import prisma from "../../../../../lib/prisma";
 import { AdditionalContactInformation, Candidate1CPayload, EducationItem, formatDateTo1C, LanguageKnowledge, sendTo1C, WorkExperienceItem } from "../../1c";
 import { withApiLogging } from "@/lib/withApiLogging";
+import { structuredLogger } from "@/lib/structuredLogger";
+import {
+  collectRequiredFieldErrors,
+  getRequiredStringField,
+  hasValidationErrors,
+  parseJsonFormField,
+  validationErrorResponse,
+} from "@/lib/jobSeekerApiForm";
 
 async function postAddJobSeeker(req: NextRequest) {
   try {
@@ -12,7 +20,16 @@ async function postAddJobSeeker(req: NextRequest) {
     const rawPhoneNumber = (formData.get("phoneNumber") as string) || ""
     const normalizedPhoneNumber = rawPhoneNumber.replace(/\D/g, "")
     if (!normalizedPhoneNumber) {
-      return NextResponse.json({ message: "invalid phone number" }, { status: 400 })
+      return validationErrorResponse("Некорректный номер телефона", {
+        phone: "Некорректный номер телефона",
+      })
+    }
+
+    const fieldErrors = collectRequiredFieldErrors(formData)
+    if (!formData.get("photo")) fieldErrors.photoFile = "Загрузите фотографию"
+
+    if (hasValidationErrors(fieldErrors)) {
+      return validationErrorResponse("Проверьте заполнение формы", fieldErrors)
     }
     const phoneForName = normalizedPhoneNumber
 
@@ -61,14 +78,18 @@ async function postAddJobSeeker(req: NextRequest) {
     };
     if (certificates) await saveCertificates(certificates)
 
-    const dateOfBirth = formData.get("dateOfBirth") as string
+    const dateOfBirth = getRequiredStringField(formData, "dateOfBirth")
     if (!dateOfBirth) {
-      return NextResponse.json({ message: "invalid date of birth" }, { status: 400 })
+      return validationErrorResponse("Некорректная дата рождения", {
+        birthDate: "Обязательное поле",
+      })
     }
 
-    const dateOfReadiness = formData.get("dateOfReadiness") as string
+    const dateOfReadiness = getRequiredStringField(formData, "dateOfReadiness")
     if (!dateOfReadiness) {
-      return NextResponse.json({ message: "invalid date of readiness" }, { status: 400 })
+      return validationErrorResponse("Некорректная дата готовности", {
+        dateOfReadiness: "Обязательное поле",
+      })
     }
 
     let user = await prisma.user.findFirst({
@@ -84,7 +105,9 @@ async function postAddJobSeeker(req: NextRequest) {
       })
     }
     if (!user) {
-      return NextResponse.json({ message: "Указанный номер телефона не совпадает с изначальным номером" }, { status: 400 })
+      return validationErrorResponse("Указанный номер телефона не совпадает с изначальным номером", {
+        phone: "Проверьте номер телефона",
+      })
     }
 
     const jobSeekerInfo = {
@@ -112,56 +135,81 @@ async function postAddJobSeeker(req: NextRequest) {
       updatedAt: new Date(),
     }
 
-    const additionalContactsFormData = formData.get("additionalContacts") as string | null
-    if (!additionalContactsFormData) {
-      return NextResponse.json({ message: "Additional contacts missing" }, { status: 400 })
+    const additionalContactsResult = parseJsonFormField<AdditionalContactInfromation[]>(
+      formData,
+      {
+        formKey: "additionalContacts",
+        missingMessage: "Отсутствуют контактные данные",
+        missingErrors: {
+          contactName: "Обязательное поле",
+          contactPhone: "Обязательное поле",
+          contactRelation: "Обязательное поле",
+        },
+        invalidMessage: "Некорректные контактные данные",
+        invalidErrors: {
+          contactName: "Проверьте значение",
+          contactPhone: "Проверьте значение",
+          contactRelation: "Проверьте значение",
+        },
+      }
+    )
+    if (additionalContactsResult.response) {
+      return additionalContactsResult.response
     }
-
-    let additionalContacts: AdditionalContactInfromation[] = []
-    try {
-      additionalContacts = JSON.parse(additionalContactsFormData)
-    } catch (error) {
-      return NextResponse.json({ message: "Invalid JSON for additional information" }, { status: 400 })
-    }
+    const additionalContacts = additionalContactsResult.data
     if (!additionalContacts.length) {
-      return NextResponse.json({ message: "At least one additional contact is required" }, { status: 400 })
+      return validationErrorResponse("Добавьте хотя бы один дополнительный контакт", {
+        contactName: "Обязательное поле",
+      })
     }
 
-    const educationFormData = formData.get("education") as string | null
-    if (!educationFormData) {
-      return NextResponse.json({ message: "Education missing" }, { status: 400 })
+    const educationResult = parseJsonFormField<Education[]>(formData, {
+      formKey: "education",
+      missingMessage: "Отсутствуют данные об образовании",
+      missingErrors: {
+        education_0: "Обязательное поле",
+      },
+      invalidMessage: "Некорректные данные об образовании",
+      invalidErrors: {
+        education_0: "Проверьте значение",
+      },
+    })
+    if (educationResult.response) {
+      return educationResult.response
     }
+    const education = educationResult.data
 
-    let education: Education[] = []
-    try {
-      education = JSON.parse(educationFormData)
-    } catch (error) {
-      return NextResponse.json({ message: "Invalid JSON for education" }, { status: 400 })
+    const knowledgeOfLanguagesResult = parseJsonFormField<KnowledgeOfLanguages[]>(formData, {
+      formKey: "knowledgeOfLanguages",
+      missingMessage: "Отсутствуют данные о языках",
+      missingErrors: {
+        language_0: "Обязательное поле",
+      },
+      invalidMessage: "Некорректные данные о языках",
+      invalidErrors: {
+        language_0: "Проверьте значение",
+      },
+    })
+    if (knowledgeOfLanguagesResult.response) {
+      return knowledgeOfLanguagesResult.response
     }
+    const knowledgeOfLanguages = knowledgeOfLanguagesResult.data
 
-    const knowledgeOfLanguagesFormData = formData.get("knowledgeOfLanguages") as string | null
-    if (!knowledgeOfLanguagesFormData) {
-      return NextResponse.json({ message: "Knowledge of languages missing" }, { status: 400 })
+    const workExperienceResult = parseJsonFormField<WorkExperience[]>(formData, {
+      formKey: "workExperience",
+      missingMessage: "Отсутствуют данные об опыте работы",
+      missingErrors: {
+        company_0: "Обязательное поле",
+      },
+      invalidMessage: "Некорректные данные об опыте работы",
+      invalidErrors: {
+        company_0: "Проверьте значение",
+      },
+    })
+    if (workExperienceResult.response) {
+      return workExperienceResult.response
     }
-
-    let knowledgeOfLanguages: KnowledgeOfLanguages[] = []
-    try {
-      knowledgeOfLanguages = JSON.parse(knowledgeOfLanguagesFormData)
-    } catch (error) {
-      return NextResponse.json({ message: "Invalid JSON for knowledge of languages" }, { status: 400 })
-    }
-
-    const workExperienceFormData = formData.get("workExperience") as string | null
-    if (!workExperienceFormData) {
-      return NextResponse.json({ message: "Work experience missing" }, { status: 400 })
-    }
-
-    let workExperience: WorkExperience[] = []
-    try {
-      workExperience = JSON.parse(workExperienceFormData)
-    } catch (error) {
-      return NextResponse.json({ message: "Invalid JSON for work experience" }, { status: 400 })
-    }
+    const workExperience = workExperienceResult.data
 
     const jobSeekerResult = await prisma.jobSeeker.create({
       data: {
@@ -272,9 +320,12 @@ async function postAddJobSeeker(req: NextRequest) {
 
     return NextResponse.json({ 'message': 'Success' }, { status: 200 })
   } catch (error) {
-    console.log(error)
+    structuredLogger.error("api.dashboard.add-job-seeker.post.internal_error", {
+      tag: "INTERNAL",
+      error: structuredLogger.errorDetails(error),
+    })
     return NextResponse.json(
-      { message: "Failed to save profile" },
+      { tag: "INTERNAL", message: "Failed to save profile" },
       { status: 500 }
     )
   }
