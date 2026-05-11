@@ -13,16 +13,16 @@ export default function SeekerModal({
   onClose: () => void;
 }) {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4 overflow-y-auto">
-      <div className="w-full max-w-4xl rounded-2xl bg-white shadow-xl ring-1 ring-black/5 max-h-[calc(100svh-2rem)] max-h-[calc(100dvh-2rem)] overflow-y-auto">
+    <div className="fixed inset-0 z-50 flex items-start justify-center overflow-y-auto bg-black/40 p-3 backdrop-blur-sm sm:items-center sm:p-4">
+      <div className="w-full max-w-4xl overflow-y-auto rounded-2xl bg-white shadow-xl ring-1 ring-black/5 max-h-[calc(100dvh-1.5rem)] sm:max-h-[calc(100dvh-2rem)]">
         {/* Header */}
-        <div className="flex items-start justify-between p-6 border-b border-gray-100">
+        <div className="flex flex-col gap-3 border-b border-gray-100 p-4 sm:flex-row sm:items-start sm:justify-between sm:p-6">
           <div className="flex items-start gap-3">
-            <div className="h-20 w-20 rounded-full bg-[#39B36E] grid place-items-center text-white">
+            <div className="grid h-16 w-16 place-items-center rounded-full bg-[#39B36E] text-white sm:h-20 sm:w-20">
               <img
                 src={`/api/files/${employee.phoneNumber[0] == "+" ? employee.phoneNumber.substring(1) : employee.phoneNumber}_image`}
                 alt="Profile"
-                className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-md"
+                className="h-16 w-16 rounded-full border-4 border-white object-cover shadow-md sm:h-20 sm:w-20"
               />
             </div>
             <div className="flex flex-col gap-y-1">
@@ -51,8 +51,8 @@ export default function SeekerModal({
         </div>
 
         {/* Body */}
-        <div className="p-6">
-          <div className="grid md:grid-cols-2 gap-8">
+        <div className="p-4 sm:p-6">
+          <div className="grid gap-6 md:grid-cols-2 md:gap-8">
             {/* Left column */}
             <div className="space-y-5">
               <SectionTitle icon={<UserRound className="h-4 w-4" />}>Личная информация</SectionTitle>
@@ -123,14 +123,14 @@ export default function SeekerModal({
           </div>
 
           {/* Footer */}
-          <div className="mt-6 flex items-center justify-between text-sm">
+          <div className="mt-6 flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between">
             <div className="inline-flex items-center gap-3">
               <span className="text-gray-700">Наличие судимости:</span>
               <span className={`inline-flex items-center gap-2 rounded-full ${employee.syncedWith1C ? "bg-emerald-50 text-emerald-700" : "bg-gray-100 text-gray-700"} px-3 py-1 ring-1 ring-gray-200`}>
                 <span className="h-2 w-2 rounded-full bg-gray-400" /> {employee.criminalRecord.toString()}
               </span>
             </div>
-            <div className="inline-flex items-center p-3">
+            <div className="inline-flex items-center gap-2">
               <span className="text-gray-700">Синхронизация с 1С:</span>
               <span className={`inline-flex items-center gap-2 rounded-full ${employee.syncedWith1C ? "bg-emerald-50 text-emerald-700" : "bg-gray-100 text-gray-700"}  px-3 py-1 ring-1 ring-emerald-100`}>
                 <span className="h-2 w-2 rounded-full bg-emerald-500" /> {employee.syncedWith1C ? "Включена" : "Отключена"}
@@ -166,7 +166,7 @@ function WorkExperienceInfoRow(
   return (
     <div>
       <SectionTitle icon={<Briefcase className="h-4 w-4" />}>
-        <div className="flex justify-between items-center w-full">
+        <div className="flex w-full flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           Трудовая информация
           <div className="flex gap-x-1">
             <button
@@ -190,7 +190,7 @@ function WorkExperienceInfoRow(
           </div>
         </div>
       </SectionTitle >
-      <div className="grid grid-cols-2 gap-3 text-sm py-1.5 border-b-gray-700">
+      <div className="grid grid-cols-1 gap-2 py-1.5 text-sm border-b-gray-700 sm:grid-cols-2 sm:gap-3">
         <div className="text-gray-500">Компания</div>
         <div className="text-gray-900">{workExperience[page].workplace}</div>
         <div className="text-gray-500">Позиция</div>
@@ -206,7 +206,7 @@ function InfoRows({ rows }: { rows: { label: string; value?: React.ReactNode }[]
   return (
     <div>
       {rows.map((r, i) => (
-        <div key={i} className="grid grid-cols-2 gap-3 text-sm py-1.5">
+        <div key={i} className="grid grid-cols-1 gap-1 py-1.5 text-sm sm:grid-cols-2 sm:gap-3">
           <div className="text-gray-500">{r.label}</div>
           <div className="text-gray-900">{r.value || "—"}</div>
         </div>
@@ -222,4 +222,3 @@ function formatDate(iso: string) {
   const yyyy = d.getFullYear();
   return `${dd}.${mm}.${yyyy}`;
 }
-

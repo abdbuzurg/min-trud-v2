@@ -2,7 +2,6 @@
 
 import React, { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { X } from "lucide-react";
-import { ru } from "date-fns/locale";
 import { startOfMonth } from "date-fns";
 import { DayPicker, type ClassNames, type Matcher } from "react-day-picker";
 import {
@@ -12,6 +11,7 @@ import {
   toStoredValue,
   type StoredDateKind,
 } from "../../../lib/date";
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 type DateLike = string | Date | number | null;
 
@@ -97,7 +97,7 @@ export default function NewDatePicker<TValue = DateLike>({
   minDate,
   maxDate,
   disabled = false,
-  placeholder = "Выберите дату",
+  placeholder,
   label,
   error,
   name,
@@ -107,6 +107,7 @@ export default function NewDatePicker<TValue = DateLike>({
   className,
   storageKind = "auto",
 }: NewDatePickerProps<TValue>) {
+  const { translate } = useLanguage();
   const generatedId = useId();
   const fieldId = id ?? `new-date-picker-${generatedId}`;
   const errorId = `${fieldId}-error`;
@@ -114,6 +115,7 @@ export default function NewDatePicker<TValue = DateLike>({
   const wrapperRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const [isOpen, setIsOpen] = useState(false);
+  const resolvedPlaceholder = placeholder ?? translate("Выберите дату");
 
   const selectedDate = useMemo(
     () => fromStoredValue(value, storageKind),
@@ -265,14 +267,14 @@ export default function NewDatePicker<TValue = DateLike>({
           )}
         >
           <span className={cn("block truncate text-sm", hasValue ? "text-gray-900" : "text-gray-400")}>
-            {hasValue ? formatDisplay(selectedDate) : placeholder}
+            {hasValue ? formatDisplay(selectedDate) : resolvedPlaceholder}
           </span>
         </button>
 
         {showClearButton ? (
           <button
             type="button"
-            aria-label="Очистить дату"
+            aria-label={translate("Очистить дату")}
             onClick={handleClear}
             className="absolute right-10 top-1/2 inline-flex h-6 w-6 -translate-y-1/2 items-center justify-center rounded-full text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-green-200"
           >
@@ -284,12 +286,11 @@ export default function NewDatePicker<TValue = DateLike>({
           <div
             id={popoverId}
             role="dialog"
-            aria-label="Выбор даты"
+            aria-label={translate("Выбор даты")}
             className="absolute left-0 top-[calc(100%+8px)] z-50 w-fit max-w-[calc(100vw-2rem)] rounded-xl border border-gray-200 bg-white p-3 shadow-xl"
           >
             <DayPicker
               mode="single"
-              locale={ru}
               weekStartsOn={1}
               captionLayout="dropdown"
               navLayout="around"
@@ -304,15 +305,15 @@ export default function NewDatePicker<TValue = DateLike>({
               fixedWeeks
               classNames={dayPickerClassNames}
               formatters={{
-                formatCaption: (date) => `${RU_MONTHS[date.getMonth()]} ${date.getFullYear()}`,
-                formatMonthDropdown: (date) => RU_MONTHS[date.getMonth()],
-                formatWeekdayName: (date) => RU_WEEKDAYS[date.getDay()],
+                formatCaption: (date) => `${translate(RU_MONTHS[date.getMonth()])} ${date.getFullYear()}`,
+                formatMonthDropdown: (date) => translate(RU_MONTHS[date.getMonth()]),
+                formatWeekdayName: (date) => translate(RU_WEEKDAYS[date.getDay()]),
               }}
               labels={{
-                labelMonthDropdown: () => "Выберите месяц",
-                labelYearDropdown: () => "Выберите год",
-                labelNext: () => "Следующий месяц",
-                labelPrevious: () => "Предыдущий месяц",
+                labelMonthDropdown: () => translate("Выберите месяц"),
+                labelYearDropdown: () => translate("Выберите год"),
+                labelNext: () => translate("Следующий месяц"),
+                labelPrevious: () => translate("Предыдущий месяц"),
               }}
             />
           </div>

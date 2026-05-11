@@ -177,17 +177,17 @@ export default function EmployeeListPage() {
   }
 
   return (
-    <div className="bg-[#F2FFF4]">
+    <div className="min-h-screen w-full bg-[#F2FFF4]">
       {/* Top bar */}
-      <header className="bg-[#39B36E] text-white px-6 py-3 font-semibold shadow-sm">
+      <header className="bg-[#39B36E] px-4 py-3 text-white font-semibold shadow-sm sm:px-6">
         Министерство Труда
       </header>
 
-      <main className="p-6">
+      <main className="p-3 sm:p-6">
         {/* Filters Card (no search by request) */}
         <section className="bg-white/90 backdrop-blur rounded-2xl shadow-sm ring-1 ring-black/5 p-4 md:p-5 mb-5">
-          <div className="flex flex-col md:items-left md:justify-between gap-3">
-            <div className="flex items-center justify-between gap-3">
+          <div className="flex flex-col gap-3 md:justify-between">
+            <div className="flex flex-col gap-3 xl:flex-row xl:items-center xl:justify-between">
               <div className="flex flex-wrap items-center gap-6 text-sm text-gray-700">
                 <span className="inline-flex items-center gap-2">
                   <Users className="h-4 w-4 text-[#39B36E]" />
@@ -199,11 +199,11 @@ export default function EmployeeListPage() {
                 </span>
               </div>
 
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex w-full flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center xl:w-auto">
 
                 <button
                   disabled={isSyncing1C}
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#2563eb] px-4 py-2 text-center font-medium text-white hover:opacity-95 sm:w-auto"
                   onClick={handleOneCSync}
                 >
                   {isSyncing1C ? (
@@ -224,7 +224,7 @@ export default function EmployeeListPage() {
                 </button>
 
                 <button
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#2563eb] px-4 py-2 text-center font-medium text-white hover:opacity-95 sm:w-auto"
                   onClick={() => router.push("/dashboard/add-job-seeker")}
                 >
                   <BadgePlus className="h-4 w-4" />
@@ -232,24 +232,24 @@ export default function EmployeeListPage() {
                 </button>
               </div>
             </div>
-            <div className="flex justify-between items-end gap-3">
-              <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-col gap-3 xl:flex-row xl:items-end xl:justify-between">
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-4">
                 <Input label="Имя" value={firstName} onChange={setFirstName} />
                 <Input label="Фамилия" value={lastName} onChange={setLastName} />
                 <DateInput label="Начало" value={start} onChange={setStart} />
                 <DateInput label="Конец" value={end} onChange={setEnd} />
               </div>
-              <div className="flex flex-wrap items-center gap-3">
+              <div className="flex w-full flex-col items-stretch gap-3 sm:flex-row sm:flex-wrap sm:items-center xl:w-auto">
                 <button
                   onClick={clearFilters}
-                  className="inline-flex items-center gap-2 rounded-xl bg-rose-500 text-white px-4 py-2 font-medium hover:opacity-95"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-rose-500 px-4 py-2 text-center font-medium text-white hover:opacity-95 sm:w-auto"
                 >
                   <X className="h-4 w-4" />
                   Очистить
                 </button>
 
                 <button
-                  className="inline-flex items-center gap-2 rounded-xl bg-[#2563eb] text-white px-4 py-2 font-medium hover:opacity-95"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl bg-[#2563eb] px-4 py-2 text-center font-medium text-white hover:opacity-95 sm:w-auto"
                   onClick={() => handleDownload()}
                 >
                   {isDownloading
@@ -311,7 +311,7 @@ export default function EmployeeListPage() {
                     </td>
                   </tr>
                   :
-                  tableData.map((e, idx) => (
+                  tableData.map((e) => (
                     <tr key={e.id} className="border-t border-gray-100">
                       <td className="px-5 py-4 text-center text-gray-800">{formatDate(e.createdAt.toString())}</td>
                       <td className="px-5 py-4 text-gray-800">{e.firstName}</td>
@@ -331,25 +331,27 @@ export default function EmployeeListPage() {
                           </span>
                         )}
                       </td>
-                      <td className="px-5 py-4 flex gap-x-2">
-                        <button
-                          className="cursor-pointer inline-flex items-center gap-2 rounded-full bg-[#39B36E] text-white px-3 py-1.5 text-sm font-medium hover:opacity-95"
-                          onClick={() => {
-                            setOpen(true)
-                            setSelected(e)
-                          }}
-                        >
-                          <Eye className="h-4 w-4" />
-                          Подробнее
-                        </button>
-                        <Link
-                          href={`/dashboard/edit-job-seeker/${e.phoneNumber[0] == "+" ? e.phoneNumber.substring(1) : e.phoneNumber}`}
-                          target="_blank"
-                          className="inline-flex items-center gap-2 rounded-full bg-red-500 text-white px-3 py-1.5 text-sm font-medium hover:opacity-95"
-                        >
-                          <Pencil className="h-4 w-4" />
-                          Изменить
-                        </Link>
+                      <td className="px-5 py-4">
+                        <div className="flex flex-col gap-2 sm:flex-row">
+                          <button
+                            className="cursor-pointer inline-flex items-center gap-2 rounded-full bg-[#39B36E] text-white px-3 py-1.5 text-sm font-medium hover:opacity-95"
+                            onClick={() => {
+                              setOpen(true)
+                              setSelected(e)
+                            }}
+                          >
+                            <Eye className="h-4 w-4" />
+                            Подробнее
+                          </button>
+                          <Link
+                            href={`/dashboard/edit-job-seeker/${e.phoneNumber[0] == "+" ? e.phoneNumber.substring(1) : e.phoneNumber}`}
+                            target="_blank"
+                            className="inline-flex items-center gap-2 rounded-full bg-red-500 text-white px-3 py-1.5 text-sm font-medium hover:opacity-95"
+                          >
+                            <Pencil className="h-4 w-4" />
+                            Изменить
+                          </Link>
+                        </div>
                       </td>
                     </tr>
                   ))
@@ -360,9 +362,9 @@ export default function EmployeeListPage() {
           </div>
 
         </section>
-        <div className="flex items-center justify-end bg-gradient-to-br from-green-50 to-emerald-50 px-6 py-4">
-          <div className="flex gap-2">
-            <div className="flex items-center">
+        <div className="flex items-center justify-center bg-gradient-to-br from-green-50 to-emerald-50 px-3 py-4 sm:justify-end sm:px-6">
+          <div className="flex flex-wrap items-center justify-center gap-2 sm:justify-end">
+            <div className="flex w-full items-center justify-center sm:w-auto">
               Страница {page} из {Math.floor(total / 10) + 1}
             </div>
             <button
@@ -407,14 +409,15 @@ function Input({ label, value, onChange }: { label: string; value: string; onCha
   }, [inputValue])
 
   return (
-    <label className="flex flex-col items-left gap-2 text-sm text-gray-700">
-      <span className="hidden md:block">{label}</span>
+    <label className="flex w-full flex-col gap-2 text-sm text-gray-700 sm:w-[170px]">
+      <span className="text-xs font-medium text-gray-600 sm:text-sm">{label}</span>
       <div className="relative">
         <input
           type="text"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
-          className="appearance-none w-[160px] md:w-[170px] rounded-xl border border-gray-200 px-3 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#39B36E]/30 focus:border-[#39B36E]"
+          placeholder={label}
+          className="appearance-none w-full rounded-xl border border-gray-200 px-3 py-2.5 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#39B36E]/30 focus:border-[#39B36E]"
         />
       </div>
     </label>
@@ -423,14 +426,14 @@ function Input({ label, value, onChange }: { label: string; value: string; onCha
 
 function DateInput({ label, value, onChange }: { label: string; value: string; onChange: (v: string) => void }) {
   return (
-    <label className="flex flex-col items-left gap-2 text-sm text-gray-700">
-      <span className="hidden md:block">{label}</span>
+    <label className="flex w-full flex-col gap-2 text-sm text-gray-700 sm:w-[170px]">
+      <span className="text-xs font-medium text-gray-600 sm:text-sm">{label}</span>
       <NewDatePicker
         value={value}
         onChange={(nextValue) => onChange(typeof nextValue === "string" ? nextValue : "")}
         storageKind="date-only-iso"
-        placeholder="Выберите дату"
-        className="w-[160px] md:w-[170px] border border-gray-200 py-2.5 focus:ring-2 focus:ring-[#39B36E]/30 focus:border-[#39B36E]"
+        placeholder={label}
+        className="w-full border border-gray-200 py-2.5 focus:ring-2 focus:ring-[#39B36E]/30 focus:border-[#39B36E]"
       />
     </label>
   );

@@ -733,7 +733,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Статус контактного лица *
           </label>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {['родитель', 'супруг/супруга', 'родственник', 'друг'].map((status) => (
               <label key={status} className="flex items-center">
                 <input
@@ -1278,7 +1278,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         )}
       </div>
 
-      <div className="flex gap-x-2 w-full">
+      <div className="flex w-full flex-col gap-4 lg:flex-row">
         <div className="flex-1">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Фронтальная сторона паспорта (скан/фото)
@@ -1377,7 +1377,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         )}
       </div>
 
-      <div className="flex gap-x-3 items-center">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
         <input
           className="w-8 h-8"
           type="checkbox"
@@ -1410,11 +1410,11 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="w-full max-w-4xl mx-auto">
         {/* Success Message */}
         {isSubmitted && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 text-center shadow-2xl">
+            <div className="mx-4 w-full max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl sm:p-8">
               {isSavingData
                 ?
                 <>
@@ -1471,7 +1471,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
 
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2 sm:text-3xl">
             Профиль соискателя работы
           </h1>
           <p className="text-gray-600">
@@ -1480,7 +1480,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         </div>
 
         {/* Progress Steps */}
-        <div className="bg-white rounded-2xl shadow-xl shadow-green-100 mb-8 p-6 border border-green-100">
+        <div className="mb-8 rounded-2xl border border-green-100 bg-white p-4 shadow-xl shadow-green-100 sm:p-6">
           <div className="flex flex-wrap justify-center gap-2">
             {steps.map((step) => {
               const Icon = step.icon;
@@ -1509,7 +1509,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         </div>
 
         {/* Form Content */}
-        <div className="bg-white rounded-2xl shadow-xl shadow-green-100 p-8 border border-green-100">
+        <div className="rounded-2xl border border-green-100 bg-white p-4 shadow-xl shadow-green-100 sm:p-6 lg:p-8">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-2">
               {steps.find(s => s.id === currentStep)?.title}
@@ -1525,11 +1525,11 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           {renderStepContent()}
 
           {/* Navigation Buttons */}
-          <div className="flex justify-between mt-8 pt-6 border-t border-gray-200">
+          <div className="mt-8 flex flex-col-reverse gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:items-center sm:justify-between">
             <button
               onClick={handlePrevStep}
               disabled={currentStep === 1}
-              className={`flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-200 ${currentStep === 1
+              className={`flex w-full items-center justify-center rounded-xl px-6 py-3 font-semibold transition-all duration-200 sm:w-auto ${currentStep === 1
                 ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
                 : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
                 }`}
@@ -1543,8 +1543,8 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 onClick={handleSubmit}
                 disabled={!agreement}
                 className={agreement
-                  ? "flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
-                  : "flex items-center px-6 py-3 rounded-xl font-semibold transition-all duration-200 bg-gray-200 text-gray-700 hover:bg-gray-300"
+                  ? "flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 px-8 py-3 font-semibold text-white shadow-lg shadow-green-200 transition-all duration-200 hover:from-green-600 hover:to-emerald-700 hover:shadow-xl hover:shadow-green-300 sm:w-auto"
+                  : "flex w-full items-center justify-center rounded-xl bg-gray-200 px-6 py-3 font-semibold text-gray-700 transition-all duration-200 hover:bg-gray-300 sm:w-auto"
                 }
               >
                 <Save size={20} className="mr-2" />
@@ -1553,7 +1553,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             ) : (
               <button
                 onClick={handleNextStep}
-                className="flex items-center px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+                className="flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-3 font-semibold text-white shadow-lg shadow-green-200 transition-all duration-200 hover:from-green-600 hover:to-emerald-700 hover:shadow-xl hover:shadow-green-300 sm:w-auto"
               >
                 Далее
                 <ChevronRight size={20} className="ml-2" />

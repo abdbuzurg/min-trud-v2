@@ -174,7 +174,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
           <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-green-400 to-emerald-500 rounded-2xl mb-4 shadow-lg shadow-green-200">
             <Shield className="w-8 h-8 text-white" />
           </div>
-          <h1 className="text-2xl font-bold text-gray-800 mb-2">
+          <h1 className="text-xl font-bold text-gray-800 mb-2 sm:text-2xl">
             Вход в систему
           </h1>
           <p className="text-gray-600">
@@ -186,7 +186,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
         </div>
 
         {/* Auth Form */}
-        <div className="bg-white rounded-3xl shadow-xl shadow-green-100 p-8 border border-green-100">
+        <div className="rounded-3xl border border-green-100 bg-white p-6 shadow-xl shadow-green-100 sm:p-8">
           {step === 'phone' ? (
             <form onSubmit={handlePhoneSubmit} className="space-y-6">
               <div className="group">
@@ -258,7 +258,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                   <MessageSquare size={16} className="mr-2 text-green-500" />
                   SMS-код
                 </label>
-                <div className="flex justify-center gap-3" onPaste={handlePaste}>
+                <div className="flex justify-center gap-2 sm:gap-3" onPaste={handlePaste}>
                   {smsCode.map((digit, index) => (
                     <input
                       key={index}
@@ -267,7 +267,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                       value={digit}
                       onChange={(e) => handleCodeChange(index, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(index, e)}
-                      className="w-12 h-14 border-2 border-gray-200 rounded-xl focus:border-green-400 focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none bg-gray-50 focus:bg-white text-xl text-center font-mono font-semibold"
+                      className="h-12 w-10 rounded-xl border-2 border-gray-200 bg-gray-50 text-center font-mono text-lg font-semibold transition-all duration-200 outline-none focus:border-green-400 focus:bg-white focus:ring-4 focus:ring-green-100 sm:h-14 sm:w-12 sm:text-xl"
                       maxLength={1}
                       required
                     />

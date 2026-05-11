@@ -788,7 +788,7 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Статус контактного лица *
           </label>
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {['родитель', 'супруг/супруга', 'родственник', 'друг'].map((status) => (
               <label key={status} className="flex items-center">
                 <input
@@ -1312,7 +1312,7 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
             </span>
           </span>
         </label>
-        <div className="flex gap-x-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <input
             type="file"
             accept=".jpg, .jpeg, .png"
@@ -1339,13 +1339,13 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
         )}
       </div>
 
-      <div className="flex gap-x-2 w-full">
+      <div className="flex w-full flex-col gap-4 lg:flex-row">
         <div className="flex-1">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             Фронтальная сторона паспорта (скан/фото)
           </label>
 
-          <div className="flex gap-x-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <input
               type="file"
               accept=".jpg, .jpeg, .png"
@@ -1376,7 +1376,7 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
             Задняя сторона паспорта (скан/фото)
           </label>
 
-          <div className="flex gap-x-2">
+          <div className="flex flex-col gap-2 sm:flex-row">
             <input
               type="file"
               accept=".jpg, .jpeg, .png"
@@ -1409,7 +1409,7 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
           Диплом
         </label>
 
-        <div className="flex gap-x-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <input
             type="file"
             accept="application/pdf"
@@ -1434,7 +1434,7 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
           Рекомендательное письмо
         </label>
 
-        <div className="flex gap-x-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <input
             type="file"
             accept="application/pdf,image/*"
@@ -1458,7 +1458,7 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
           Сертификаты
         </label>
 
-        <div className="flex gap-x-2">
+        <div className="flex flex-col gap-2 sm:flex-row">
           <input
             type="file"
             accept="application/pdf"
@@ -1499,11 +1499,11 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8 px-4">
-      <div className="max-w-4xl mx-auto">
+      <div className="w-full max-w-4xl mx-auto">
         {/* Success Message */}
         {isSubmitted && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-2xl p-8 max-w-md w-full mx-4 text-center shadow-2xl">
+            <div className="mx-4 w-full max-w-md rounded-2xl bg-white p-6 text-center shadow-2xl sm:p-8">
               {isSavingData
                 ?
                 <>
@@ -1527,7 +1527,7 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
                   <p className="text-gray-600 mb-6">
                     Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.
                   </p>
-                  <div className="flex gap-x-2 justify-center">
+                  <div className="flex flex-col justify-center gap-2 sm:flex-row">
                     <button
                       onClick={() => {
                         setIsSubmitted(false)
@@ -1570,7 +1570,7 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
 
         {/* Header */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+          <h1 className="text-2xl font-bold text-gray-800 mb-2 sm:text-3xl">
             Профиль соискателя работы
           </h1>
 
@@ -1587,7 +1587,7 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
         </div>
 
         {/* Progress Steps */}
-        <div className="bg-white rounded-2xl shadow-xl shadow-green-100 mb-8 p-6 border border-green-100">
+        <div className="mb-8 rounded-2xl border border-green-100 bg-white p-4 shadow-xl shadow-green-100 sm:p-6">
           <div className="flex flex-wrap justify-center gap-2">
             {steps.map((step) => {
               const Icon = step.icon;
@@ -1612,7 +1612,7 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
         </div>
 
         {/* Form Content */}
-        <div className="bg-white rounded-2xl shadow-xl shadow-green-100 p-8 border border-green-100">
+        <div className="rounded-2xl border border-green-100 bg-white p-4 shadow-xl shadow-green-100 sm:p-6 lg:p-8">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-2">
               {steps.find(s => s.id === currentStep)?.title}
@@ -1628,10 +1628,10 @@ export default function AdminEditJobSeeker({ phoneNumber }: Props) {
           {renderStepContent()}
 
           {/* Navigation Buttons */}
-          <div className="flex justify-end mt-8 pt-6 border-t border-gray-200">
+          <div className="mt-8 flex flex-col gap-3 border-t border-gray-200 pt-6 sm:flex-row sm:justify-end">
             <button
               onClick={handleSubmit}
-              className="flex items-center px-8 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transform hover:scale-105 shadow-lg shadow-green-200 hover:shadow-xl hover:shadow-green-300 transition-all duration-200"
+              className="flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 px-8 py-3 font-semibold text-white shadow-lg shadow-green-200 transition-all duration-200 hover:from-green-600 hover:to-emerald-700 hover:shadow-xl hover:shadow-green-300 sm:w-auto"
             >
               <Save size={20} className="mr-2" />
               Сохранить
