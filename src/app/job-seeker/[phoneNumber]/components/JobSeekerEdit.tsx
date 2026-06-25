@@ -20,6 +20,11 @@ import { useRouter } from 'next/navigation';
 import NewDatePicker from '@/components/ui/NewDatePicker';
 import { ApiErrorResponse, toValidationErrors } from '@/lib/apiErrorTypes';
 import { getFirstValidationErrorStep } from '@/lib/jobSeekerFieldSteps';
+import {
+  OrganizationContactsList,
+  SupportOrganizationsPanel,
+  useSupportOrganizations,
+} from '@/app/components/SupportOrganizations';
 import { useLanguage } from "@/i18n/LanguageProvider";
 
 const countries = ["Афганистан", "Албания", "Алжир", "Андорра", "Ангола", "Антигуа и Барбуда", "Аргентина", "Армения", "Австралия", "Австрия", "Азербайджан", "Багамы", "Бахрейн", "Бангладеш", "Барбадос", "Беларусь", "Бельгия", "Белиз", "Бенин", "Бутан", "Боливия", "Босния и Герцеговина", "Ботсвана", "Бразилия", "Бруней", "Болгария", "Буркина-Фасо", "Бурунди", "Кабо-Верде", "Камбоджа", "Камерун", "Канада", "Центральноафриканская Республика", "Чад", "Чили", "Китай", "Колумбия", "Коморы", "Конго", "Коста-Рика", "Хорватия", "Куба", "Кипр", "Чехия", "Демократическая Республика Конго", "Дания", "Джибути", "Доминика", "Доминиканская Республика", "Эквадор", "Египет", "Сальвадор", "Экваториальная Гвинея", "Эритрея", "Эстония", "Эсватини", "Эфиопия", "Фиджи", "Финляндия", "Франция", "Габон", "Гамбия", "Грузия", "Германия", "Гана", "Греция", "Гренада", "Гватемала", "Гвинея", "Гвинея-Бисау", "Гайана", "Гаити", "Ватикан", "Гондурас", "Венгрия", "Исландия", "Индия", "Индонезия", "Иран", "Ирак", "Ирландия", "Израиль", "Италия", "Ямайка", "Япония", "Иордания", "Казахстан", "Кения", "Кирибати", "Кувейт", "Киргизия", "Лаос", "Латвия", "Ливан", "Лесото", "Либерия", "Ливия", "Лихтенштейн", "Литва", "Люксембург", "Мадагаскар", "Малави", "Малайзия", "Мальдивы", "Мали", "Мальта", "Маршалловы Острова", "Мавритания", "Маврикий", "Мексика", "Микронезия", "Молдова", "Монако", "Монголия", "Черногория", "Марокко", "Мозамбик", "Мьянма", "Намибия", "Науру", "Непал", "Нидерланды", "Новая Зеландия", "Никарагуа", "Нигер", "Нигерия", "КНДР", "Северная Македония", "Норвегия", "Оман", "Пакистан", "Палау", "Палестина", "Панама", "Папуа — Новая Гвинея", "Парагвай", "Перу", "Филиппины", "Польша", "Португалия", "Катар", "Румыния", "Россия", "Руанда", "Сент-Китс и Невис", "Сент-Люсия", "Сент-Винсент и Гренадины", "Самоа", "Сан-Марино", "Сан-Томе и Принсипи", "Саудовская Аравия", "Сенегал", "Сербия", "Сейшельские Острова", "Сьерра-Леоне", "Сингапур", "Словакия", "Словения", "Соломоновы Острова", "Сомали", "Южная Африка", "Южная Корея", "Южный Судан", "Испания", "Шри-Ланка", "Судан", "Суринам", "Швеция", "Швейцария", "Сирия", "Таджикистан", "Танзания", "Таиланд", "Восточный Тимор", "Того", "Тонга", "Тринидад и Тобаго", "Тунис", "Турция", "Туркмения", "Тувалу", "Уганда", "Украина", "ОАЭ", "Великобритания", "Англия", "Шотландия", "Уэльс", "Северная Ирландия", "США", "Уругвай", "Узбекистан", "Вануату", "Венесуэла", "Вьетнам", "Йемен", "Замбия", "Зимбабве"];
@@ -31,6 +36,7 @@ interface Props {
 const JobSeekerEditForm = ({ phoneNumber }: Props) => {
   const router = useRouter()
   const { translate, setLanguageChangeWarning } = useLanguage();
+  const supportOrganizations = useSupportOrganizations();
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -1536,7 +1542,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8 px-4">
-      <div className="w-full max-w-4xl mx-auto">
+      <div className="relative w-full max-w-4xl mx-auto">
         {/* Success Message */}
         {isSubmitted && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -1564,6 +1570,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
                   <p className="text-gray-600 mb-6">
                     {translate("Ваша заявка успешно отправлена. Мы свяжемся с вами в ближайшее время.")}
                   </p>
+                  <OrganizationContactsList organizations={supportOrganizations} />
                   <div className="flex flex-col justify-center gap-2 sm:flex-row">
                     <button
                       onClick={() => {
@@ -1591,6 +1598,7 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
                   <p className="text-gray-700 mb-6">
                     {translate(submitError ?? "Не удалось обновить анкету. Проверьте соединение и попробуйте снова.")}
                   </p>
+                  <OrganizationContactsList organizations={supportOrganizations} />
                   <button
                     onClick={() => {
                       setIsSubmitted(false)
@@ -1675,6 +1683,8 @@ const JobSeekerEditForm = ({ phoneNumber }: Props) => {
             </button>
           </div>
         </div>
+
+        <SupportOrganizationsPanel organizations={supportOrganizations} />
       </div>
     </div>
   );
