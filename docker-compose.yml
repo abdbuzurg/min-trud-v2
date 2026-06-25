@@ -14,6 +14,24 @@ services:
       timeout: 5s
       retries: 20
 
+  backup:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      TZ: Asia/Dushanbe
+      PGHOST: db
+      PGPORT: "5432"
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      PGDATABASE: min_trud
+    entrypoint: ["/bin/sh", "/usr/local/bin/db-backup.sh"]
+    volumes:
+      - ./backup/db-backup.sh:/usr/local/bin/db-backup.sh:ro
+      - backups_data:/backups
+
   app:
     build:
       context: .
@@ -37,3 +55,4 @@ services:
 volumes:
   postgres_data:
   uploads_data:
+  backups_data:

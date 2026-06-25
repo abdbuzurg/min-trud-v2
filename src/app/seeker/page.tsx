@@ -3,13 +3,18 @@ import { Metadata } from "next";
 import Link from "next/link";
 import LoginForm from "./components/LoginForm";
 import Logos from "../components/logos";
+import { translateRuText } from "@/i18n/translate";
+import { getServerLanguage } from "@/i18n/server";
 
-export const metadata: Metadata = {
-  title: "Соискатели работы",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const language = await getServerLanguage();
+  return {
+    title: translateRuText("Соискатели работы", language),
+  };
+}
 
-export default function Seeker() {
-
+export default async function Seeker() {
+  const language = await getServerLanguage();
 
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-y-5">
@@ -18,11 +23,11 @@ export default function Seeker() {
           <Link
             href="/job-seeker-profile"
             className="flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-green-200 transition-all duration-200 hover:from-green-600 hover:to-emerald-700 hover:shadow-xl hover:shadow-green-300 sm:text-base"
-          >Соискатель работы</Link>
+          >{translateRuText("Соискатель работы", language)}</Link>
           <Link
             href="#"
             className="flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-4 text-sm font-semibold text-white shadow-lg shadow-green-200 transition-all duration-200 hover:from-green-600 hover:to-emerald-700 hover:shadow-xl hover:shadow-green-300 sm:text-base"
-          >Работодатель</Link>
+          >{translateRuText("Работодатель", language)}</Link>
         </div>
       </div>
       <Logos />

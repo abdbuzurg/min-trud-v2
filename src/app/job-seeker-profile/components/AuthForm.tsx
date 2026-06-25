@@ -2,12 +2,14 @@
 import React, { useEffect, useState } from 'react';
 import { Phone, MessageSquare, ArrowRight, Shield } from 'lucide-react';
 import axios from 'axios';
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 interface AuthFormProps {
   onAuthSuccess: (token: string | null, phoneNumber: string) => void;
 }
 
 const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
+  const { translate } = useLanguage();
   const [step, setStep] = useState<'phone' | 'code'>('phone');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [smsCode, setSmsCode] = useState(['', '', '', '', '', '']);
@@ -175,12 +177,12 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
             <Shield className="w-8 h-8 text-white" />
           </div>
           <h1 className="text-xl font-bold text-gray-800 mb-2 sm:text-2xl">
-            Вход в систему
+            {translate("Вход в систему")}
           </h1>
           <p className="text-gray-600">
             {step === 'phone'
-              ? 'Введите номер телефона для получения SMS-кода'
-              : 'Введите код из SMS для входа в систему'
+              ? translate('Введите номер телефона для получения SMS-кода')
+              : translate('Введите код из SMS для входа в систему')
             }
           </p>
         </div>
@@ -192,7 +194,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
               <div className="group">
                 <label className="flex items-center text-sm font-semibold text-gray-700 mb-3">
                   <Phone size={16} className="mr-2 text-green-500" />
-                  Номер телефона
+                  {translate("Номер телефона")}
                 </label>
                 <div className="relative">
                   <input
@@ -209,12 +211,12 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
 
               {error && (
                 <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-                  <p className="text-red-600 text-sm">{error}</p>
+                  <p className="text-red-600 text-sm">{translate(error)}</p>
                 </div>
               )}
               {isSendSMSButtonDisabled && (
                 <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-                  <p className="text-red-600 text-sm">Вам уже было отправлено спс подождите {formatRemainingTimeLeft(timeLeft)} секунд</p>
+                  <p className="text-red-600 text-sm">{translate(`Вам уже было отправлено спс подождите ${formatRemainingTimeLeft(timeLeft)} секунд`)}</p>
                 </div>
               )}
 
@@ -229,11 +231,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                 {isLoading ? (
                   <div className="flex items-center">
                     <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                    Отправляем SMS...
+                    {translate("Отправляем SMS...")}
                   </div>
                 ) : (
                   <>
-                    Получить SMS-код
+                    {translate("Получить SMS-код")}
                     <ArrowRight size={20} className="ml-2" />
                   </>
                 )}
@@ -246,7 +248,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                   <MessageSquare className="w-6 h-6 text-green-600" />
                 </div>
                 <p className="text-sm text-gray-600">
-                  SMS-код отправлен на номер<br />
+                  {translate("SMS-код отправлен на номер")}<br />
                   <span className="font-semibold text-gray-800">
                     {formatPhoneNumber(phoneNumber)}
                   </span>
@@ -256,7 +258,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
               <div className="group">
                 <label className="flex items-center text-sm font-semibold text-gray-700 mb-3">
                   <MessageSquare size={16} className="mr-2 text-green-500" />
-                  SMS-код
+                  {translate("SMS-код")}
                 </label>
                 <div className="flex justify-center gap-2 sm:gap-3" onPaste={handlePaste}>
                   {smsCode.map((digit, index) => (
@@ -274,13 +276,13 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                   ))}
                 </div>
                 <p className="text-xs text-gray-500 mt-2 text-center">
-                  Переотправить смс можно  {timeLeft
-                    ? `через ${formatRemainingTimeLeft(timeLeft)}`
+                  {translate("Переотправить смс можно")}  {timeLeft
+                    ? translate(`через ${formatRemainingTimeLeft(timeLeft)}`)
                     : <a
                       href="#"
                       className="text-blue-500"
                       onClick={() => sendSms()}>
-                      уже сейчас
+                      {translate("уже сейчас")}
                     </a>
                   }
                 </p>
@@ -288,7 +290,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
 
               {error && (
                 <div className="p-4 bg-red-50 border border-red-200 rounded-xl">
-                  <p className="text-red-600 text-sm">{error}</p>
+                  <p className="text-red-600 text-sm">{translate(error)}</p>
                 </div>
               )}
 
@@ -304,11 +306,11 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                   {isLoading ? (
                     <div className="flex items-center">
                       <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                      Проверяем код...
+                      {translate("Проверяем код...")}
                     </div>
                   ) : (
                     <>
-                      Войти
+                      {translate("Войти")}
                       <ArrowRight size={20} className="ml-2" />
                     </>
                   )}
@@ -323,7 +325,7 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
                   }}
                   className="w-full px-6 py-3 text-gray-600 font-medium rounded-xl hover:bg-gray-50 transition-all duration-200"
                 >
-                  Изменить номер телефона
+                  {translate("Изменить номер телефона")}
                 </button>
               </div>
             </form>
@@ -333,9 +335,9 @@ const AuthForm: React.FC<AuthFormProps> = ({ onAuthSuccess }) => {
         {/* Footer */}
         <div className="text-center mt-6">
           <p className="text-xs text-gray-500">
-            Нажимая "Получить SMS-код", вы соглашаетесь с{' '}
+            {translate('Нажимая "Получить SMS-код", вы соглашаетесь с')}{' '}
             <a href="#" className="text-green-600 hover:text-green-700 underline">
-              условиями использования
+              {translate("условиями использования")}
             </a>
           </p>
         </div>

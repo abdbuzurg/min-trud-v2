@@ -95,3 +95,14 @@ model SendSMS {
   userId Int
   code   String
 }
+
+model Organization {
+  id        Int      @id @default(autoincrement())
+  nameRu    String
+  nameEn    String
+  nameTj    String
+  phone     String
+  email     String
+  position  Int      @default(0)
+  createdAt DateTime @default(now())
+}

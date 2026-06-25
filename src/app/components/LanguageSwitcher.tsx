@@ -1,7 +1,11 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { APP_LANGUAGE_LABELS, AppLanguage } from "@/i18n/types";
 import { useLanguage } from "@/i18n/LanguageProvider";
+
+// Admin area is Russian-only
+const HIDDEN_PATH_PREFIXES = ["/dashboard", "/login"];
 
 const SWITCHER_LABELS: Record<AppLanguage, string> = {
   ru: "Язык",
@@ -17,12 +21,14 @@ const LANGUAGE_FLAGS: Record<AppLanguage, string> = {
 
 export default function LanguageSwitcher() {
   const { language, setLanguage } = useLanguage();
+  const pathname = usePathname();
+
+  if (HIDDEN_PATH_PREFIXES.some((prefix) => pathname?.startsWith(prefix))) {
+    return null;
+  }
 
   return (
-    <div
-      data-i18n-ignore="true"
-      className="fixed right-4 top-4 z-50 rounded-xl border border-green-100 bg-white/95 px-3 py-2 shadow-lg shadow-green-100 backdrop-blur"
-    >
+    <div className="fixed right-4 top-4 z-50 rounded-xl border border-green-100 bg-white/95 px-3 py-2 shadow-lg shadow-green-100 backdrop-blur">
       <label className="mr-2 text-xs font-semibold uppercase tracking-wide text-gray-600" htmlFor="app-language-switcher">
         {SWITCHER_LABELS[language]}
       </label>

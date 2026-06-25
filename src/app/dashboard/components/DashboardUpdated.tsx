@@ -178,11 +178,6 @@ export default function EmployeeListPage() {
 
   return (
     <div className="min-h-screen w-full bg-[#F2FFF4]">
-      {/* Top bar */}
-      <header className="bg-[#39B36E] px-4 py-3 text-white font-semibold shadow-sm sm:px-6">
-        Министерство Труда
-      </header>
-
       <main className="p-3 sm:p-6">
         {/* Filters Card (no search by request) */}
         <section className="bg-white/90 backdrop-blur rounded-2xl shadow-sm ring-1 ring-black/5 p-4 md:p-5 mb-5">

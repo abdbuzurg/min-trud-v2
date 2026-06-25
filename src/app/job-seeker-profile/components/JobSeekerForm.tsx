@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import {
   User,
   Phone,
@@ -21,6 +21,12 @@ import { Education, JobSeekerFromData } from '../../../../types/jobSeeker';
 import NewDatePicker from '@/components/ui/NewDatePicker';
 import { ApiErrorResponse, toValidationErrors } from '@/lib/apiErrorTypes';
 import { getFirstValidationErrorStep } from '@/lib/jobSeekerFieldSteps';
+import {
+  OrganizationContactsList,
+  SupportOrganizationsPanel,
+  useSupportOrganizations,
+} from '@/app/components/SupportOrganizations';
+import { useLanguage } from "@/i18n/LanguageProvider";
 
 
 const countries = ["Афганистан", "Албания", "Алжир", "Андорра", "Ангола", "Антигуа и Барбуда", "Аргентина", "Армения", "Австралия", "Австрия", "Азербайджан", "Багамы", "Бахрейн", "Бангладеш", "Барбадос", "Беларусь", "Бельгия", "Белиз", "Бенин", "Бутан", "Боливия", "Босния и Герцеговина", "Ботсвана", "Бразилия", "Бруней", "Болгария", "Буркина-Фасо", "Бурунди", "Кабо-Верде", "Камбоджа", "Камерун", "Канада", "Центральноафриканская Республика", "Чад", "Чили", "Китай", "Колумбия", "Коморы", "Конго", "Коста-Рика", "Хорватия", "Куба", "Кипр", "Чехия", "Демократическая Республика Конго", "Дания", "Джибути", "Доминика", "Доминиканская Республика", "Эквадор", "Египет", "Сальвадор", "Экваториальная Гвинея", "Эритрея", "Эстония", "Эсватини", "Эфиопия", "Фиджи", "Финляндия", "Франция", "Габон", "Гамбия", "Грузия", "Германия", "Гана", "Греция", "Гренада", "Гватемала", "Гвинея", "Гвинея-Бисау", "Гайана", "Гаити", "Ватикан", "Гондурас", "Венгрия", "Исландия", "Индия", "Индонезия", "Иран", "Ирак", "Ирландия", "Израиль", "Италия", "Ямайка", "Япония", "Иордания", "Казахстан", "Кения", "Кирибати", "Кувейт", "Киргизия", "Лаос", "Латвия", "Ливан", "Лесото", "Либерия", "Ливия", "Лихтенштейн", "Литва", "Люксембург", "Мадагаскар", "Малави", "Малайзия", "Мальдивы", "Мали", "Мальта", "Маршалловы Острова", "Мавритания", "Маврикий", "Мексика", "Микронезия", "Молдова", "Монако", "Монголия", "Черногория", "Марокко", "Мозамбик", "Мьянма", "Намибия", "Науру", "Непал", "Нидерланды", "Новая Зеландия", "Никарагуа", "Нигер", "Нигерия", "КНДР", "Северная Македония", "Норвегия", "Оман", "Пакистан", "Палау", "Палестина", "Панама", "Папуа — Новая Гвинея", "Парагвай", "Перу", "Филиппины", "Польша", "Португалия", "Катар", "Румыния", "Россия", "Руанда", "Сент-Китс и Невис", "Сент-Люсия", "Сент-Винсент и Гренадины", "Самоа", "Сан-Марино", "Сан-Томе и Принсипи", "Саудовская Аравия", "Сенегал", "Сербия", "Сейшельские Острова", "Сьерра-Леоне", "Сингапур", "Словакия", "Словения", "Соломоновы Острова", "Сомали", "Южная Африка", "Южная Корея", "Южный Судан", "Испания", "Шри-Ланка", "Судан", "Суринам", "Швеция", "Швейцария", "Сирия", "Таджикистан", "Танзания", "Таиланд", "Восточный Тимор", "Того", "Тонга", "Тринидад и Тобаго", "Тунис", "Турция", "Туркмения", "Тувалу", "Уганда", "Украина", "ОАЭ", "Великобритания", "Англия", "Шотландия", "Уэльс", "Северная Ирландия", "США", "Уругвай", "Узбекистан", "Вануату", "Венесуэла", "Вьетнам", "Йемен", "Замбия", "Зимбабве"];
@@ -31,6 +37,8 @@ interface Props {
 
 const JobSeekerForm = ({ phoneNumber }: Props) => {
   const router = useRouter()
+  const { translate, setLanguageChangeWarning } = useLanguage();
+  const supportOrganizations = useSupportOrganizations();
   const [currentStep, setCurrentStep] = useState(1);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -94,6 +102,32 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     dateOfReadiness: '',
   }
   );
+
+  // Switching the language reloads the page, so warn while the form holds
+  // unsaved input (unless it was already submitted successfully).
+  const initialFormDataJsonRef = useRef<string | null>(null);
+  if (initialFormDataJsonRef.current === null) {
+    initialFormDataJsonRef.current = JSON.stringify(formData);
+  }
+
+  useEffect(() => {
+    const hasFiles = Boolean(
+      photoFile || frontPassportFile || backPassportFile || diplomaFile ||
+      recommendationLetterFile || (certificates && certificates.length > 0)
+    );
+    const isDirty =
+      currentStep > 1 ||
+      agreement ||
+      hasFiles ||
+      JSON.stringify(formData) !== initialFormDataJsonRef.current;
+
+    setLanguageChangeWarning(isDirty && !(isSubmitted && isSaveSuccessful));
+    return () => setLanguageChangeWarning(false);
+  }, [
+    formData, currentStep, agreement, photoFile, frontPassportFile,
+    backPassportFile, diplomaFile, recommendationLetterFile, certificates,
+    isSubmitted, isSaveSuccessful, setLanguageChangeWarning,
+  ]);
 
   const steps = [
     { id: 1, title: 'Личная информация', icon: User },
@@ -288,7 +322,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
 
     if (value.trim()) {
       const filtered = countries
-        .filter(c => c.toLowerCase().includes(value.toLowerCase()))
+        .filter(c => translate(c).toLowerCase().includes(value.toLowerCase()))
         .slice(0, 10);
       setFilteredCountries(filtered);
       setShowCountryDropdown(true);
@@ -487,7 +521,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Фамилия *
+            {translate("Фамилия *")}
           </label>
           <input
             type="text"
@@ -495,14 +529,14 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             onChange={(e) => handleInputChange('lastName', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.lastName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
-            placeholder="Каримов"
+            placeholder={translate("Каримов")}
           />
-          {errors.lastName && <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>}
+          {errors.lastName && <p className="text-red-500 text-sm mt-1">{translate(errors.lastName)}</p>}
         </div>
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Имя *
+            {translate("Имя *")}
           </label>
           <input
             type="text"
@@ -510,9 +544,9 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             onChange={(e) => handleInputChange('firstName', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.firstName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
-            placeholder="Азиз"
+            placeholder={translate("Азиз")}
           />
-          {errors.firstName && <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>}
+          {errors.firstName && <p className="text-red-500 text-sm mt-1">{translate(errors.firstName)}</p>}
         </div>
       </div>
 
@@ -520,27 +554,27 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Отчество
+            {translate("Отчество")}
           </label>
           <input
             type="text"
             value={(formData.middleName ?? '')}
             onChange={(e) => handleInputChange('middleName', e.target.value)}
             className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-400 focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none"
-            placeholder="Азизович"
+            placeholder={translate("Азизович")}
           />
         </div>
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
             <span className="inline-flex items-center gap-2">
-              Идентификационный номер налогоплательщика (ИНН)
+              {translate("Идентификационный номер налогоплательщика (ИНН)")}
               <span className="text-red-500">*</span>
               <span className="relative inline-flex items-center group">
                 <button
                   type="button"
                   className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-gray-300 text-[10px] font-bold text-gray-500 cursor-help"
-                  aria-label="Что такое ИНН?"
+                  aria-label={translate("Что такое ИНН?")}
                   aria-describedby="tin-tooltip-job-seeker-form"
                 >
                   ?
@@ -550,7 +584,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                   role="tooltip"
                   className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-80 -translate-x-1/2 rounded-lg border border-gray-200 bg-white p-2 text-xs font-normal text-gray-600 opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
                 >
-                  ИНН — это идентификационный номер налогоплательщика. Его можно найти на свидетельстве ИНН, в личном кабинете налоговой, а также в некоторых банковских приложениях или документах.
+                  {translate("ИНН — это идентификационный номер налогоплательщика. Его можно найти на свидетельстве ИНН, в личном кабинете налоговой, а также в некоторых банковских приложениях или документах.")}
                 </span>
               </span>
             </span>
@@ -563,7 +597,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
               }`}
             placeholder="1234567"
           />
-          {errors.tin && <p className="text-red-500 text-sm mt-1">{errors.tin}</p>}
+          {errors.tin && <p className="text-red-500 text-sm mt-1">{translate(errors.tin)}</p>}
         </div>
       </div>
 
@@ -571,7 +605,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Дата рождения *
+            {translate("Дата рождения *")}
           </label>
           <NewDatePicker
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.birthDate ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
@@ -582,12 +616,12 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             value={formData.birthDate}
             onChange={(date) => setFormData({ ...formData, birthDate: typeof date === "string" ? date : '' })}
           />
-          {errors.birthDate && <p className="text-red-500 text-sm mt-1">{errors.birthDate}</p>}
+          {errors.birthDate && <p className="text-red-500 text-sm mt-1">{translate(errors.birthDate)}</p>}
         </div>
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Пол *
+            {translate("Пол *")}
           </label>
           <select
             value={(formData.gender ?? '')}
@@ -595,18 +629,18 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.gender ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
           >
-            <option value="">Выберите пол</option>
-            <option value="мужской">Мужской</option>
-            <option value="женский">Женский</option>
+            <option value="">{translate("Выберите пол")}</option>
+            <option value="мужской">{translate("Мужской")}</option>
+            <option value="женский">{translate("Женский")}</option>
           </select>
-          {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
+          {errors.gender && <p className="text-red-500 text-sm mt-1">{translate(errors.gender)}</p>}
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Номер паспорта *
+            {translate("Номер паспорта *")}
           </label>
           <input
             type="text"
@@ -616,12 +650,12 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
               }`}
             placeholder="A012345678"
           />
-          {errors.passportCode && <p className="text-red-500 text-sm mt-1">{errors.passportCode}</p>}
+          {errors.passportCode && <p className="text-red-500 text-sm mt-1">{translate(errors.passportCode)}</p>}
         </div>
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Семейное положение *
+            {translate("Семейное положение *")}
           </label>
           <select
             value={(formData.maritalStatus ?? '')}
@@ -629,13 +663,13 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.maritalStatus ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
           >
-            <option value="">Выберите статус</option>
-            <option value="холост/не замужем">не женат / не замужем</option>
-            <option value="женат/замужем">Женат/Замужем</option>
-            <option value="разведен/разведена">Разведен/Разведена</option>
-            <option value="вдовец/вдова">Вдовец/Вдова</option>
+            <option value="">{translate("Выберите статус")}</option>
+            <option value="холост/не замужем">{translate("не женат / не замужем")}</option>
+            <option value="женат/замужем">{translate("Женат/Замужем")}</option>
+            <option value="разведен/разведена">{translate("Разведен/Разведена")}</option>
+            <option value="вдовец/вдова">{translate("Вдовец/Вдова")}</option>
           </select>
-          {errors.maritalStatus && <p className="text-red-500 text-sm mt-1">{errors.maritalStatus}</p>}
+          {errors.maritalStatus && <p className="text-red-500 text-sm mt-1">{translate(errors.maritalStatus)}</p>}
         </div>
       </div>
     </div>
@@ -646,7 +680,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Телефон *
+            {translate("Телефон *")}
           </label>
           <input
             type="tel"
@@ -657,7 +691,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             placeholder="+7 (999) 123-45-67"
             disabled={true}
           />
-          {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
+          {errors.phone && <p className="text-red-500 text-sm mt-1">{translate(errors.phone)}</p>}
         </div>
 
         <div>
@@ -672,7 +706,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
               }`}
             placeholder="example@email.com"
           />
-          {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
+          {errors.email && <p className="text-red-500 text-sm mt-1">{translate(errors.email)}</p>}
         </div>
       </div>
 
@@ -689,14 +723,14 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
               }`}
             placeholder="+7 (999) 123-45-67"
           />
-          {errors.messengerNumber && <p className="text-red-500 text-sm mt-1">{errors.messengerNumber}</p>}
+          {errors.messengerNumber && <p className="text-red-500 text-sm mt-1">{translate(errors.messengerNumber)}</p>}
         </div>
 
       </div>
 
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Место рождения, страна и город (район, село)
+          {translate("Место рождения, страна и город (район, село)")}
         </label>
         <textarea
           value={(formData.addressOfBirth ?? '')}
@@ -704,14 +738,14 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none resize-none ${errors.addressOfBirth ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
           rows={3}
-          placeholder="Введите полный адрес рождения"
+          placeholder={translate("Введите полный адрес рождения")}
         />
-        {errors.addressOfBirth && <p className="text-red-500 text-sm mt-1">{errors.addressOfBirth}</p>}
+        {errors.addressOfBirth && <p className="text-red-500 text-sm mt-1">{translate(errors.addressOfBirth)}</p>}
       </div>
 
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Адрес проживания *
+          {translate("Адрес проживания *")}
         </label>
         <textarea
           value={(formData.address ?? '')}
@@ -719,19 +753,19 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none resize-none ${errors.address ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
           rows={3}
-          placeholder="Введите полный адрес проживания"
+          placeholder={translate("Введите полный адрес проживания")}
         />
-        {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}
+        {errors.address && <p className="text-red-500 text-sm mt-1">{translate(errors.address)}</p>}
       </div>
 
       <div className="space-y-4">
         <span className="text-2xl font-semibold text-gray-700">
-          Добавить дополнительное контактное лицо
+          {translate("Добавить дополнительное контактное лицо")}
         </span>
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Статус контактного лица *
+            {translate("Статус контактного лица *")}
           </label>
           <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
             {['родитель', 'супруг/супруга', 'родственник', 'друг'].map((status) => (
@@ -744,17 +778,17 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                   onChange={(e) => handleInputChange('contactRelation', e.target.value)}
                   className="w-4 h-4 text-green-600 border-gray-300 focus:ring-green-500"
                 />
-                <span className="ml-2 text-sm text-gray-700 capitalize">{status}</span>
+                <span className="ml-2 text-sm text-gray-700 capitalize">{translate(status)}</span>
               </label>
             ))}
           </div>
-          {errors.contactRelation && <p className="text-red-500 text-sm mt-1">{errors.contactRelation}</p>}
+          {errors.contactRelation && <p className="text-red-500 text-sm mt-1">{translate(errors.contactRelation)}</p>}
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              ФИО контактного лица *
+              {translate("ФИО контактного лица *")}
             </label>
             <input
               type="text"
@@ -762,14 +796,14 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
               onChange={(e) => handleInputChange('contactName', e.target.value)}
               className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.contactName ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                 }`}
-              placeholder="Введите ФИО"
+              placeholder={translate("Введите ФИО")}
             />
-            {errors.contactName && <p className="text-red-500 text-sm mt-1">{errors.contactName}</p>}
+            {errors.contactName && <p className="text-red-500 text-sm mt-1">{translate(errors.contactName)}</p>}
           </div>
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Телефон контактного лица *
+              {translate("Телефон контактного лица *")}
             </label>
             <input
               type="tel"
@@ -779,7 +813,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 }`}
               placeholder="+7 (999) 123-45-67"
             />
-            {errors.contactPhone && <p className="text-red-500 text-sm mt-1">{errors.contactPhone}</p>}
+            {errors.contactPhone && <p className="text-red-500 text-sm mt-1">{translate(errors.contactPhone)}</p>}
           </div>
         </div>
       </div>
@@ -796,13 +830,13 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           className="flex items-center px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors duration-200"
         >
           <Plus size={16} className="mr-2" />
-          Добавить образование
+          {translate("Добавить образование")}
         </button>
       </div>
       {formData.education.map((education, index) => (
         <div key={index} className="bg-gray-50 p-6 rounded-xl flex flex-col gap-y-2">
           <div className="flex items-center justify-between mb-4">
-            <h4 className="font-semibold text-gray-700">Образование {index + 1}</h4>
+            <h4 className="font-semibold text-gray-700">{translate(`Образование ${index + 1}`)}</h4>
             {formData.education.length > 1 && (
               <button
                 type="button"
@@ -816,7 +850,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Уровень образования *
+              {translate("Уровень образования *")}
             </label>
             <select
               value={(education.education ?? '')}
@@ -824,26 +858,26 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
               className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.education ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                 }`}
             >
-              <option value="">Выберите уровень образования</option>
-              <option value="без образования">без образования</option>
-              <option value="неполное начальное (4 класса)">неполное начальное (4 класса)</option>
-              <option value="неполное среднее (9 классов)">неполное среднее (9 классов)</option>
-              <option value="полное среднее (11 классов)">полное среднее (11 классов)</option>
-              <option value="средняя специальность">среднее профессиональное</option>
-              <option value="профессиональное техническое">среднее профессиональное (профессионально-техническое)</option>
-              <option value="неполное высшее (бакалавриат)">неполное высшее (бакалавриат)</option>
-              <option value="высшее">полное высшее (магистратура)</option>
-              <option value="аспирантура">аспирантура</option>
-              <option value="докторантура">докторантура</option>
-              <option value="другое">другое</option>
+              <option value="">{translate("Выберите уровень образования")}</option>
+              <option value="без образования">{translate("без образования")}</option>
+              <option value="неполное начальное (4 класса)">{translate("неполное начальное (4 класса)")}</option>
+              <option value="неполное среднее (9 классов)">{translate("неполное среднее (9 классов)")}</option>
+              <option value="полное среднее (11 классов)">{translate("полное среднее (11 классов)")}</option>
+              <option value="средняя специальность">{translate("среднее профессиональное")}</option>
+              <option value="профессиональное техническое">{translate("среднее профессиональное (профессионально-техническое)")}</option>
+              <option value="неполное высшее (бакалавриат)">{translate("неполное высшее (бакалавриат)")}</option>
+              <option value="высшее">{translate("полное высшее (магистратура)")}</option>
+              <option value="аспирантура">{translate("аспирантура")}</option>
+              <option value="докторантура">{translate("докторантура")}</option>
+              <option value="другое">{translate("другое")}</option>
             </select>
-            {errors[`education_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`education_${index}`]}</p>}
+            {errors[`education_${index}`] && <p className="text-red-500 text-sm mt-1">{translate(errors[`education_${index}`])}</p>}
           </div>
 
           {education.education === 'другое' && (
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Укажите уровень образования *
+                {translate("Укажите уровень образования *")}
               </label>
               <input
                 type="text"
@@ -851,15 +885,15 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 onChange={(e) => handleEducationChange(index, 'educationOther', e.target.value)}
                 className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.educationOther ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                   }`}
-                placeholder="Введите уровень образования"
+                placeholder={translate("Введите уровень образования")}
               />
-              {errors[`educationOther_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`educationOther_${index}`]}</p>}
+              {errors[`educationOther_${index}`] && <p className="text-red-500 text-sm mt-1">{translate(errors[`educationOther_${index}`])}</p>}
             </div>
           )}
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Учебное заведение *
+              {translate("Учебное заведение *")}
             </label>
             <input
               type="text"
@@ -867,14 +901,14 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
               onChange={(e) => handleEducationChange(index, 'institution', e.target.value)}
               className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.institution ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                 }`}
-              placeholder="Название учебного заведения"
+              placeholder={translate("Название учебного заведения")}
             />
-            {errors[`institution_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`institution_${index}`]}</p>}
+            {errors[`institution_${index}`] && <p className="text-red-500 text-sm mt-1">{translate(errors[`institution_${index}`])}</p>}
           </div>
 
           <div>
             <label className="block text-sm font-semibold text-gray-700 mb-2">
-              Специальность *
+              {translate("Специальность *")}
             </label>
             <input
               type="text"
@@ -882,9 +916,9 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
               onChange={(e) => handleEducationChange(index, 'specialty', e.target.value)}
               className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.specialty ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                 }`}
-              placeholder="Введите специальность"
+              placeholder={translate("Введите специальность")}
             />
-            {errors[`specialty_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`specialty_${index}`]}</p>}
+            {errors[`specialty_${index}`] && <p className="text-red-500 text-sm mt-1">{translate(errors[`specialty_${index}`])}</p>}
           </div>
         </div>
       ))}
@@ -894,21 +928,21 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
   const renderLanguages = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-800">Знание языков</h3>
+        <h3 className="text-lg font-semibold text-gray-800">{translate("Знание языков")}</h3>
         <button
           type="button"
           onClick={addLanguage}
           className="flex items-center px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors duration-200"
         >
           <Plus size={16} className="mr-2" />
-          Добавить язык
+          {translate("Добавить язык")}
         </button>
       </div>
 
       {formData.languages.map((language, index) => (
         <div key={index} className="bg-gray-50 p-6 rounded-xl">
           <div className="flex items-center justify-between mb-4">
-            <h4 className="font-semibold text-gray-700">Язык {index + 1}</h4>
+            <h4 className="font-semibold text-gray-700">{translate(`Язык ${index + 1}`)}</h4>
             {formData.languages.length > 1 && (
               <button
                 type="button"
@@ -923,7 +957,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Язык *
+                {translate("Язык *")}
               </label>
               <select
                 value={(language.language ?? '')}
@@ -931,19 +965,19 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`language_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                   }`}
               >
-                <option value="">Выберите язык</option>
-                <option value="русский">Русский</option>
-                <option value="английский">Английский</option>
-                <option value="корейский">Корейский</option>
-                <option value="арабский">Арабский</option>
-                <option value="другое">Другое</option>
+                <option value="">{translate("Выберите язык")}</option>
+                <option value="русский">{translate("Русский")}</option>
+                <option value="английский">{translate("Английский")}</option>
+                <option value="корейский">{translate("Корейский")}</option>
+                <option value="арабский">{translate("Арабский")}</option>
+                <option value="другое">{translate("Другое")}</option>
               </select>
-              {errors[`language_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`language_${index}`]}</p>}
+              {errors[`language_${index}`] && <p className="text-red-500 text-sm mt-1">{translate(errors[`language_${index}`])}</p>}
             </div>
 
             <div>
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Уровень владения *
+                {translate("Уровень владения *")}
               </label>
               <select
                 value={(language.level ?? '')}
@@ -951,20 +985,20 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`level_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                   }`}
               >
-                <option value="">Выберите уровень</option>
-                <option value="отлично">Отлично</option>
-                <option value="хорошо">Хорошо</option>
-                <option value="удовлетворительно">Удовлетворительно</option>
-                <option value="со словарем">Со словарем</option>
+                <option value="">{translate("Выберите уровень")}</option>
+                <option value="отлично">{translate("Отлично")}</option>
+                <option value="хорошо">{translate("Хорошо")}</option>
+                <option value="удовлетворительно">{translate("Удовлетворительно")}</option>
+                <option value="со словарем">{translate("Со словарем")}</option>
               </select>
-              {errors[`level_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`level_${index}`]}</p>}
+              {errors[`level_${index}`] && <p className="text-red-500 text-sm mt-1">{translate(errors[`level_${index}`])}</p>}
             </div>
           </div>
 
           {language.language === 'другое' && (
             <div className="mt-4">
               <label className="block text-sm font-semibold text-gray-700 mb-2">
-                Укажите язык *
+                {translate("Укажите язык *")}
               </label>
               <input
                 type="text"
@@ -972,9 +1006,9 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 onChange={(e) => handleLanguageChange(index, 'languageOther', e.target.value)}
                 className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`languageOther_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                   }`}
-                placeholder="Введите название языка"
+                placeholder={translate("Введите название языка")}
               />
-              {errors[`languageOther_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`languageOther_${index}`]}</p>}
+              {errors[`languageOther_${index}`] && <p className="text-red-500 text-sm mt-1">{translate(errors[`languageOther_${index}`])}</p>}
             </div>
           )}
         </div>
@@ -985,21 +1019,21 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
   const renderWorkExperience = () => (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h3 className="text-lg font-semibold text-gray-800">Опыт работы</h3>
+        <h3 className="text-lg font-semibold text-gray-800">{translate("Опыт работы")}</h3>
         <button
           type="button"
           onClick={addWorkExperience}
           className="flex items-center px-4 py-2 bg-green-100 text-green-700 rounded-lg hover:bg-green-200 transition-colors duration-200"
         >
           <Plus size={16} className="mr-2" />
-          Добавить опыт
+          {translate("Добавить опыт")}
         </button>
       </div>
 
       {formData.workExperience.map((experience, index) => (
         <div key={index} className="bg-gray-50 p-6 rounded-xl">
           <div className="flex items-center justify-between mb-4">
-            <h4 className="font-semibold text-gray-700">Опыт работы {index + 1}</h4>
+            <h4 className="font-semibold text-gray-700">{translate(`Опыт работы ${index + 1}`)}</h4>
             {formData.workExperience.length > 1 && (
               <button
                 type="button"
@@ -1015,7 +1049,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Компания *
+                  {translate("Компания *")}
                 </label>
                 <input
                   type="text"
@@ -1023,14 +1057,14 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                   onChange={(e) => handleWorkExperienceChange(index, 'company', e.target.value)}
                   className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`company_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                     }`}
-                  placeholder="Название компании"
+                  placeholder={translate("Название компании")}
                 />
-                {errors[`company_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`company_${index}`]}</p>}
+                {errors[`company_${index}`] && <p className="text-red-500 text-sm mt-1">{translate(errors[`company_${index}`])}</p>}
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Должность *
+                  {translate("Должность *")}
                 </label>
                 <input
                   type="text"
@@ -1038,16 +1072,16 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                   onChange={(e) => handleWorkExperienceChange(index, 'position', e.target.value)}
                   className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors[`position_${index}`] ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
                     }`}
-                  placeholder="Ваша должность"
+                  placeholder={translate("Ваша должность")}
                 />
-                {errors[`position_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`position_${index}`]}</p>}
+                {errors[`position_${index}`] && <p className="text-red-500 text-sm mt-1">{translate(errors[`position_${index}`])}</p>}
               </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Дата начала работы *
+                  {translate("Дата начала работы *")}
                 </label>
 
                 <NewDatePicker
@@ -1060,12 +1094,12 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                   onChange={(date) => handleWorkExperienceChange(index, 'startDate', typeof date === "string" ? date : '')}
                 />
 
-                {errors[`startDate_${index}`] && <p className="text-red-500 text-sm mt-1">{errors[`startDate_${index}`]}</p>}
+                {errors[`startDate_${index}`] && <p className="text-red-500 text-sm mt-1">{translate(errors[`startDate_${index}`])}</p>}
               </div>
 
               <div>
                 <label className="block text-sm font-semibold text-gray-700 mb-2">
-                  Дата окончания работы *
+                  {translate("Дата окончания работы *")}
                 </label>
                 <NewDatePicker
                   className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.birthDate ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
@@ -1075,7 +1109,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                   value={experience.endDate}
                   onChange={(date) => handleWorkExperienceChange(index, 'endDate', typeof date === "string" ? date : '')}
                 />
-                <p className="text-sm italic text-gray-400 mt-1">Оставьте пустым если до сих пор работаете</p>
+                <p className="text-sm italic text-gray-400 mt-1">{translate("Оставьте пустым если до сих пор работаете")}</p>
               </div>
             </div>
 
@@ -1089,7 +1123,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
     <div className="space-y-6">
       <div className="relative">
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Предпочитаемая страна работы *
+          {translate("Предпочитаемая страна работы *")}
         </label>
         {/* Selected countries as chips */}
         <div className="flex flex-wrap gap-2 mb-2">
@@ -1098,12 +1132,12 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
               key={c}
               className="inline-flex items-center px-3 py-1 rounded-full border text-sm bg-green-50 text-green-700"
             >
-              {c}
+              {translate(c)}
               <button
                 type="button"
                 onClick={() => removeCountry(c)}
                 className="ml-2 leading-none focus:outline-none hover:opacity-70 cursor-pointer"
-                aria-label={`Удалить ${c}`}
+                aria-label={translate(`Удалить ${c}`)}
               >
                 ×
               </button>
@@ -1118,7 +1152,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           onFocus={() => {
             if (countryQuery.trim()) {
               const filtered = countries
-                .filter(c => c.toLowerCase().includes(countryQuery.toLowerCase()))
+                .filter(c => translate(c).toLowerCase().includes(countryQuery.toLowerCase()))
                 .slice(0, 10);
               setFilteredCountries(filtered);
               setShowCountryDropdown(true);
@@ -1126,11 +1160,11 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           }}
           onBlur={() => setTimeout(() => setShowCountryDropdown(false), 200)}
           className="w-full px-4 py-3 border-2 rounded-xl /* keep your existing focus/invalid classes here */"
-          placeholder={selectedCountries.length ? 'Добавьте ещё страны' : 'Начните вводить название страны'}
+          placeholder={selectedCountries.length ? translate('Добавьте ещё страны') : translate('Начните вводить название страны')}
         />
 
         {errors.desiredCountry && (
-          <p className="text-red-500 text-sm mt-1">{errors.desiredCountry}</p>
+          <p className="text-red-500 text-sm mt-1">{translate(errors.desiredCountry)}</p>
         )}
 
         {showCountryDropdown && filteredCountries.length > 0 && (
@@ -1142,7 +1176,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 onClick={() => selectCountry(country)}
                 className="w-full px-4 py-3 text-left hover:bg-green-50 transition-colors duration-200 first:rounded-t-xl last:rounded-b-xl"
               >
-                {country}
+                {translate(country)}
               </button>
             ))}
           </div>
@@ -1153,7 +1187,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Предпочитаемый город*
+            {translate("Предпочитаемый город*")}
           </label>
           <input
             type="text"
@@ -1161,14 +1195,14 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             onChange={(e) => handleInputChange('desiredCity', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.desiredCity ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
-            placeholder="Москва, Новосибирск, Санкт-Питербург"
+            placeholder={translate("Москва, Новосибирск, Санкт-Питербург")}
           />
-          {errors.desiredCity && <p className="text-red-500 text-sm mt-1">{errors.desiredCity}</p>}
+          {errors.desiredCity && <p className="text-red-500 text-sm mt-1">{translate(errors.desiredCity)}</p>}
         </div>
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Дата готовности к выезду
+            {translate("Дата готовности к выезду")}
           </label>
           <NewDatePicker
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.dateOfReadiness ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
@@ -1179,14 +1213,14 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             value={formData.dateOfReadiness}
             onChange={(date) => handleInputChange('dateOfReadiness', typeof date === "string" ? date : '')}
           />
-          {errors.dateOfReadiness && <p className="text-red-500 text-sm mt-1">{errors.dateOfReadiness}</p>}
+          {errors.dateOfReadiness && <p className="text-red-500 text-sm mt-1">{translate(errors.dateOfReadiness)}</p>}
         </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Ожидаемая зарплата(в сомони) *
+            {translate("Ожидаемая зарплата(в сомони) *")}
           </label>
           <input
             type="text"
@@ -1194,14 +1228,14 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             onChange={(e) => handleInputChange('expectedSalary', e.target.value)}
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.expectedSalary ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
-            placeholder="Например: 6000"
+            placeholder={translate("Например: 6000")}
           />
-          {errors.expectedSalary && <p className="text-red-500 text-sm mt-1">{errors.expectedSalary}</p>}
+          {errors.expectedSalary && <p className="text-red-500 text-sm mt-1">{translate(errors.expectedSalary)}</p>}
         </div>
 
         <div>
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Наличие судимости
+            {translate("Наличие судимости")}
           </label>
           <select
             value={(formData.criminalRecord ?? '')}
@@ -1209,24 +1243,24 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none ${errors.gender ? 'border-red-300 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
           >
-            <option value="">Наличие судимости</option>
-            <option value="да">Да</option>
-            <option value="нет">Нет</option>
+            <option value="">{translate("Наличие судимости")}</option>
+            <option value="да">{translate("Да")}</option>
+            <option value="нет">{translate("Нет")}</option>
           </select>
-          {errors.gender && <p className="text-red-500 text-sm mt-1">{errors.gender}</p>}
+          {errors.gender && <p className="text-red-500 text-sm mt-1">{translate(errors.gender)}</p>}
         </div>
       </div>
 
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Дополнительная информация
+          {translate("Дополнительная информация")}
         </label>
         <textarea
           value={(formData.additionalInfo ?? '')}
           onChange={(e) => handleInputChange('additionalInfo', e.target.value)}
           className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-400 focus:ring-4 focus:ring-green-100 transition-all duration-200 outline-none resize-none"
           rows={4}
-          placeholder="Расскажите о себе, своих навыках, что вы можете делать, о своих достижения и т.д. (не более 100 слов)"
+          placeholder={translate("Расскажите о себе, своих навыках, что вы можете делать, о своих достижения и т.д. (не более 100 слов)")}
         />
       </div>
     </div>
@@ -1238,13 +1272,13 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
           <span className="inline-flex items-center gap-2">
-            Фотография (изображение)
+            {translate("Фотография (изображение)")}
             <span className="text-red-500">*</span>
             <span className="relative inline-flex items-center group">
               <button
                 type="button"
                 className="inline-flex h-4 w-4 items-center justify-center rounded-full border border-gray-300 text-[10px] font-bold text-gray-500 cursor-help"
-                aria-label="Требования к фотографии?"
+                aria-label={translate("Требования к фотографии?")}
                 aria-describedby="photo-tooltip-job-seeker-form"
               >
                 ?
@@ -1254,7 +1288,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 role="tooltip"
                 className="pointer-events-none absolute left-1/2 top-full z-20 mt-2 w-80 -translate-x-1/2 rounded-lg border border-gray-200 bg-white p-2 text-xs font-normal text-gray-600 opacity-0 shadow-lg transition-opacity duration-200 group-hover:opacity-100 group-focus-within:opacity-100"
               >
-                Загрузите фото размером 3х4 см, фото должно быть официальным: деловая одежда, белый или голубой фон, лицо четко видно, без головных уборов и солнцезащитных очков
+                {translate("Загрузите фото размером 3х4 см, фото должно быть официальным: деловая одежда, белый или голубой фон, лицо четко видно, без головных уборов и солнцезащитных очков")}
               </span>
             </span>
           </span>
@@ -1266,12 +1300,12 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.photoFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
         />
-        {errors.photoFile && <p className="text-red-500 text-sm mt-1">{errors.photoFile}</p>}
+        {errors.photoFile && <p className="text-red-500 text-sm mt-1">{translate(errors.photoFile)}</p>}
         {photoFile && photoPreview && (
           <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
             <img
               src={photoPreview}
-              alt="Превью фотографии"
+              alt={translate("Превью фотографии")}
               className="max-w-full max-h-64 object-contain mx-auto"
             />
           </div>
@@ -1281,7 +1315,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
       <div className="flex w-full flex-col gap-4 lg:flex-row">
         <div className="flex-1">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Фронтальная сторона паспорта (скан/фото)
+            {translate("Фронтальная сторона паспорта (скан/фото)")}
           </label>
           <input
             type="file"
@@ -1290,12 +1324,12 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.frontPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
           />
-          {errors.frontPassportFile && <p className="text-red-500 text-sm mt-1">{errors.frontPassportFile}</p>}
+          {errors.frontPassportFile && <p className="text-red-500 text-sm mt-1">{translate(errors.frontPassportFile)}</p>}
           {frontPassportFile && frontPassportPreview && (
             <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
               <img
                 src={frontPassportPreview}
-                alt="Превью передняй части паспорта"
+                alt={translate("Превью передняй части паспорта")}
                 className="max-w-full max-h-64 object-contain mx-auto"
               />
             </div>
@@ -1303,7 +1337,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         </div>
         <div className="flex-1">
           <label className="block text-sm font-semibold text-gray-700 mb-2">
-            Задняя сторона паспорта (скан/фото)
+            {translate("Задняя сторона паспорта (скан/фото)")}
           </label>
           <input
             type="file"
@@ -1312,12 +1346,12 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
             className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.backPassportFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
               }`}
           />
-          {errors.backPassportFile && <p className="text-red-500 text-sm mt-1">{errors.backPassportFile}</p>}
+          {errors.backPassportFile && <p className="text-red-500 text-sm mt-1">{translate(errors.backPassportFile)}</p>}
           {backPassportFile && backPassportPreview && (
             <div className="border border-gray-200 rounded-lg p-2 w-full max-w-full mt-2">
               <img
                 src={backPassportPreview}
-                alt="Превью задней части паспорта"
+                alt={translate("Превью задней части паспорта")}
                 className="max-w-full max-h-64 object-contain mx-auto"
               />
             </div>
@@ -1327,7 +1361,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
 
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Диплом
+          {translate("Диплом")}
         </label>
         <input
           type="file"
@@ -1336,13 +1370,13 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.diplomaFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
         />
-        {errors.diplomaFile && <p className="text-red-500 text-sm mt-1">{errors.diplomaFile}</p>}
-        {diplomaFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {diplomaFile.name}</p>}
+        {errors.diplomaFile && <p className="text-red-500 text-sm mt-1">{translate(errors.diplomaFile)}</p>}
+        {diplomaFile && <p className="text-sm text-gray-600 mt-2">{translate(`Выбран файл: ${diplomaFile.name}`)}</p>}
       </div>
 
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Рекомендательное письмо *
+          {translate("Рекомендательное письмо *")}
         </label>
         <input
           type="file"
@@ -1351,13 +1385,13 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.recommendationLetterFile ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
         />
-        {errors.recommendationLetterFile && <p className="text-red-500 text-sm mt-1">{errors.recommendationLetterFile}</p>}
-        {recommendationLetterFile && <p className="text-sm text-gray-600 mt-2">Выбран файл: {recommendationLetterFile.name}</p>}
+        {errors.recommendationLetterFile && <p className="text-red-500 text-sm mt-1">{translate(errors.recommendationLetterFile)}</p>}
+        {recommendationLetterFile && <p className="text-sm text-gray-600 mt-2">{translate(`Выбран файл: ${recommendationLetterFile.name}`)}</p>}
       </div>
 
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-2">
-          Сертификаты
+          {translate("Сертификаты")}
         </label>
         <input
           type="file"
@@ -1367,7 +1401,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-4 focus:ring-green-100 ${errors.certificates ? 'border-red-400 focus:border-red-400' : 'border-gray-200 focus:border-green-400'
             }`}
         />
-        {errors.certificates && <p className="text-red-500 text-sm mt-1">{errors.certificates}</p>}
+        {errors.certificates && <p className="text-red-500 text-sm mt-1">{translate(errors.certificates)}</p>}
         {certificates && certificates?.length > 0 && (
           <ul className="mt-2 text-sm text-gray-600 list-disc pl-4">
             {certificates.map((file, idx) => (
@@ -1385,12 +1419,12 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
           checked={agreement}
         />
         <span>
-          Я согласен(на) на обработку персональных данных (ссылка на полный текст согласия) и ознакомлен(а) с [политикой конфиденциальности](ссылка на политику).
+          {translate("Я согласен(на) на обработку персональных данных (ссылка на полный текст согласия) и ознакомлен(а) с [политикой конфиденциальности](ссылка на политику).")}
         </span>
       </div>
 
       <span className="text-center font-bold">
-        Предупреждение! Заполнение анкеты не дает сто процентную гарантию того что вас могут выбрать и вы поедете на миграцию в другую страну
+        {translate("Предупреждение! Заполнение анкеты не дает сто процентную гарантию того что вас могут выбрать и вы поедете на миграцию в другую страну")}
       </span>
     </div>
   );
@@ -1410,7 +1444,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-50 py-8 px-4">
-      <div className="w-full max-w-4xl mx-auto">
+      <div className="relative w-full max-w-4xl mx-auto">
         {/* Success Message */}
         {isSubmitted && (
           <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -1424,7 +1458,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                     ></div>
                   </div>
                   <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                    Отправляем заявку
+                    {translate("Отправляем заявку")}
                   </h2>
                 </>
                 : isSaveSuccessful ? (
@@ -1433,35 +1467,37 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                     <Save className="w-8 h-8 text-white" />
                   </div>
                   <h2 className="text-2xl font-bold text-gray-800 mb-2">
-                    Заявка отправлена!
+                    {translate("Заявка отправлена!")}
                   </h2>
                   <p className="text-gray-600 mb-6">
-                    Ваша заявка успешно отправлена. Благодарим Вас за заполненую анкету
+                    {translate("Ваша заявка успешно отправлена. Благодарим Вас за заполненую анкету")}
                   </p>
+                  <OrganizationContactsList organizations={supportOrganizations} />
                   <button
                     onClick={() => {
                       router.push("/seeker")
                     }}
                     className="px-6 py-3 bg-gradient-to-r from-green-500 to-emerald-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-emerald-700 transition-all duration-200"
                   >
-                    Закрыть
+                    {translate("Закрыть")}
                   </button>
                 </>
               ) : (
                 <>
                   <h2 className="text-2xl font-bold text-red-600 mb-2">
-                    Ошибка сохранения
+                    {translate("Ошибка сохранения")}
                   </h2>
                   <p className="text-gray-700 mb-6">
-                    {submitError ?? "Не удалось сохранить анкету. Проверьте соединение и попробуйте снова."}
+                    {translate(submitError ?? "Не удалось сохранить анкету. Проверьте соединение и попробуйте снова.")}
                   </p>
+                  <OrganizationContactsList organizations={supportOrganizations} />
                   <button
                     onClick={() => {
                       setIsSubmitted(false)
                     }}
                     className="px-6 py-3 bg-gradient-to-r from-gray-700 to-gray-800 text-white rounded-xl font-semibold hover:from-gray-800 hover:to-gray-900 transition-all duration-200"
                   >
-                    Вернуться к форме
+                    {translate("Вернуться к форме")}
                   </button>
                 </>
               )}
@@ -1472,10 +1508,10 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         {/* Header */}
         <div className="text-center mb-8">
           <h1 className="text-2xl font-bold text-gray-800 mb-2 sm:text-3xl">
-            Профиль соискателя работы
+            {translate("Профиль соискателя работы")}
           </h1>
           <p className="text-gray-600">
-            Заполните все разделы для создания полного профиля
+            {translate("Заполните все разделы для создания полного профиля")}
           </p>
         </div>
 
@@ -1500,7 +1536,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                     }`}
                 >
                   <Icon size={18} className="mr-2" />
-                  <span className="hidden sm:inline">{step.title}</span>
+                  <span className="hidden sm:inline">{translate(step.title)}</span>
                   <span className="sm:hidden">{step.id}</span>
                 </button>
               );
@@ -1512,7 +1548,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
         <div className="rounded-2xl border border-green-100 bg-white p-4 shadow-xl shadow-green-100 sm:p-6 lg:p-8">
           <div className="mb-6">
             <h2 className="text-2xl font-bold text-gray-800 mb-2">
-              {steps.find(s => s.id === currentStep)?.title}
+              {translate(steps.find(s => s.id === currentStep)?.title ?? '')}
             </h2>
             <div className="w-full bg-gray-200 rounded-full h-2">
               <div
@@ -1535,7 +1571,7 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 }`}
             >
               <ChevronLeft size={20} className="mr-2" />
-              Назад
+              {translate("Назад")}
             </button>
 
             {currentStep === steps.length ? (
@@ -1548,19 +1584,21 @@ const JobSeekerForm = ({ phoneNumber }: Props) => {
                 }
               >
                 <Save size={20} className="mr-2" />
-                Отправить заявку
+                {translate("Отправить заявку")}
               </button>
             ) : (
               <button
                 onClick={handleNextStep}
                 className="flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-green-500 to-emerald-600 px-6 py-3 font-semibold text-white shadow-lg shadow-green-200 transition-all duration-200 hover:from-green-600 hover:to-emerald-700 hover:shadow-xl hover:shadow-green-300 sm:w-auto"
               >
-                Далее
+                {translate("Далее")}
                 <ChevronRight size={20} className="ml-2" />
               </button>
             )}
           </div>
         </div>
+
+        <SupportOrganizationsPanel organizations={supportOrganizations} />
       </div>
     </div>
   );
